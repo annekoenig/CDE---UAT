@@ -1,0 +1,178 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+<apex:composition template="SectionHeader">
+
+        <apex:define name="body">
+        <table width="100%">
+                <tr>    
+                    <td width="60%">
+                        <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                            <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                        </apex:outputPanel>
+                    </td>
+                    <!-- <td width="40%" style="text-align: center;">
+                            <div width="100%" style="padding-top: 8px;">
+                                Page {!addendumPositionMap['ESEA__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                                <apex:outputPanel rendered="{!addendumPositionMap['ESEA__c'] <= countAddendum && addendumPositionMap['ESEA__c'] != 1}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['ESEA__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!addendumPositionMap['ESEA__c'] < countAddendum}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['ESEA__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!(addendumPositionMap['ESEA__c'] <= countAddendum && addendumPositionMap['ESEA__c'] != 1) || addendumPositionMap['ESEA__c'] < countAddendum}">
+                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                    
+                                </div>
+                            </apex:outputPanel>
+                        </td> -->
+                        <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+            <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="70%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                        </td>
+                        <td width="30%">
+                            <apex:inputField value="{!uip.ESEA_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b>
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+             <p style="padding: 10px 10px 50px;">
+                <span style="font-size:130%; color:#101e8e;"><b>Required ESEA Proposed Budget: {!uip.UIP_Annual_CDE_Plan__r.Next_School_Year__c} Title Funds</b></span><br/><br/>
+          
+            
+            This chart must be completed for any district that is accredited with a Priority Improvement or Turnaround plan and accepts 
+            ESEA Title funds (i.e., Titles I, IIA, III). The chart must be completed for each applicable Title program.  This includes:<br/>
+                <span style="padding: 20px 20px;">
+                (1) Title IA Priority Performance Challenge (PPC) activities (10% of district allocation)</span><br/>
+                <span style="padding: 20px 20px;">
+                (2) Title IIA activities (entire allocation)</span><br/>
+                <span style="padding: 20px 20px;">
+                (3) Title III activities, if the district is a Title III grantee lead (entire allocation)</span><br/><br/>
+            
+            The approval of Colorado’s ESEA Flexibility waiver enabled the state to align state and federal accountability requirements.  
+            In turn, districts accredited with a Priority Improvement or Turnaround plan type are expected to enter into a formal agreement with the state
+            on the use of the Title IA PPC set aside (10% of district allocation) and Title IIA funds for the upcoming school year (i.e., {!uip.UIP_Annual_CDE_Plan__r.Next_School_Year__c}). Additionally,  
+            in order to ensure program coherence and grant coordination, Title III funds must be accounted for as well.  Building on this addendum, CDE Federal 
+            Programs staff will arrange meetings with LEA staff to follow up on proposed use of funds and to provide technical assistance in the planning of Title 
+            programming for the {!uip.UIP_Annual_CDE_Plan__r.Next_School_Year__c} school year.  Districts can expect initial feedback on proposed activities as part of the comprehensive UIP feedback and 
+            then continued follow up.<br/><br/>
+            
+            For activities already referenced in the Action Plan-Planning Form (Section IV), list references to the respective strategies
+            and action steps in the crosswalk.  In the crosswalk, provide specifics about the section and line references. Add rows in 
+            the table, as needed.  Use the {!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} allocation as a baseline.  If the LEA intends to Transfer or REAP-Flex Title IIA funds, type “Transfer” 
+            or “REAP” into the first Title IIA cell. 
+            
+            </p>
+            <!-- <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div> -->
+            
+            <apex:actionFunction name="rerenderESEAForm" reRender="ESEAForm" action="{!selectAllAddendums}" status="loadingStatus"/>
+            
+            <apex:outputPanel id="ESEAForm">
+                <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                    <table width="100%" style = "border: 1px solid;display: grid">
+                        <tr>
+                            <td width="25%" class="addendum-table-header">
+                            <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                            Description of Proposed Activity</h1></td>
+                            <td width="25%" class="addendum-table-header">
+                            <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                            Crosswalk of Description in Action Plan</h1></td>
+                            <td width="10%" class="addendum-table-header">
+                            <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Title IA PPC Proposed Amount</h1></td>
+                            <td width="10%" class="addendum-table-header">
+                            <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                            Title IIA Proposed Amount</h1></td>
+                            <td width="10%" class="addendum-table-header">
+                            <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                            Title III Proposed Amount</h1></td>
+                        </tr>
+                        <apex:repeat value="{!supAddList}" var="suppAddendum">
+                            <tr>
+                                <td class="addendum-table-row">
+                                    <u><apex:commandLink value="{!suppAddendum.Description_of_Proposed_Activity__c}" action="{!populateESEA}" oncomplete="window.open('/{!IF(isCommunityUser,'UIP','apex')}/NewESEAForm?id={!currentId}&addendumId={!addendum.Id}&eseaId={!eseaId}&isNewElem=false','_blank','width=810,height=510,top=100,left=200,directories=0,titlebar=0,toolbar=0,location=0,status=0,scrollbars=yes,resizable=yes',!1);" rerender="empty" style="width:170px; color:blue; ">
+                                        <apex:param value="{!suppAddendum.Id}" name="eseaId" />
+                                    </apex:commandLink></u>
+                                </td>
+                                <td class="addendum-table-row">{!suppAddendum.Crosswalk_of_Description_in_Action_Plan__c}</td>
+                                <td class="addendum-table-row"><apex:outputField value="{!suppAddendum.Title_IA_PPC_Proposed_Amount__c}" style="width:90%;"/></td>
+                                <td class="addendum-table-row"><apex:outputField value="{!suppAddendum.Title_IIA_Proposed_Amount__c}" style="width:90%;"/></td>
+                                <td class="addendum-table-row"><apex:outputField value="{!suppAddendum.Title_III_Proposed_Amount__c}" style="width:90%;"/></td>
+                                
+                            </tr>
+                        </apex:repeat>
+                        <tr>
+                            <td class="addendum-table-row"><b>Total (use {!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} allocations as a baseline)</b></td>
+                            <td class="addendum-table-row"></td>
+                            <td class="addendum-table-row"><b><apex:outputField value="{!Addendum.Title_IA_PPC_Proposed_Amount_Total__c}" style="width:90%;"/></b></td>
+                            <td class="addendum-table-row"><b><apex:outputField value="{!Addendum.Title_IIA_Proposed_Amount_Total__c}" style="width:90%;"/></b></td>
+                            <td class="addendum-table-row"><b><apex:outputField value="{!Addendum.Title_III_Proposed_Amount_Total__c}" style="width:90%;"/></b></td>
+                            </tr>
+                        <tr>
+                            <td class="addendum-table-row"></td>
+                            <td class="addendum-table-row"></td>
+                            <td class="addendum-table-row">*  Must be 10% of projected total district allocation</td>
+                            <td class="addendum-table-row">* Must reflect entire projected allocation</td>
+                            <td class="addendum-table-row">* Must reflect entire projected allocation</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="padding-left: 10px; ">
+                                <u><apex:commandLink value=" + Add New ESEA Supporting Addenda Form" oncomplete="window.open('/{!IF(isCommunityUser,'UIP','apex')}/NewESEAForm?id={!currentId}&addendumId={!addendum.Id}&isNewElem=true','_blank','width=810,height=510,top=100,left=200,directories=0,titlebar=0,toolbar=0,location=0,status=0,scrollbars=yes,resizable=yes',!1);" rerender="empty" style="width:170px; color:blue; "/></u>
+                            </td>
+                        </tr>
+                    </table>
+                </div><br/><br/>
+            </apex:outputPanel>
+            
+            <!-- <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div> -->
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+</apex:Composition>
+
+</apex:page>

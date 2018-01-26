@@ -1,0 +1,191 @@
+<apex:page standardController="UIP__c" extensions="Section1" showHeader="false" standardStylesheets="false" contenttype="application/vnd.ms-excel#Section1_District_Export.xls" cache="true">
+    <table>
+        <tr>
+            <td colspan="12">
+                <apex:outputpanel rendered="{!uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null}">
+                    <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section I:  Summary Information about the District</h1>
+                </apex:outputpanel>
+            </td>
+        </tr>
+        <tr><td colspan="12"></td></tr>
+        <tr>
+            <td colspan="12">
+                <p>
+                    Directions:  This section summarizes program accountability requirements unique to the district/consortium based upon federal and state accountability measures.    In the tables below, CDE has pre-populated the district/consortium’s data in blue text.  This data shows the district/consortium’s performance in meeting minimum federal and state accountability program expectations.
+                </p>
+            </td>
+        </tr>
+        <tr><td colspan="12"></td></tr>
+        <tr>
+            <td colspan="12">
+                <p>
+                    <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                        <b>State Accountability and Grant Programs</b>
+                    </div>
+                </p>
+            </td>
+        </tr>
+        <tr><td colspan="12"></td></tr>
+    </table>
+    <table border="1">
+            <thead>
+                <tr>
+                    <th colspan="2" class="uip-element-header-purp">Program</th>
+                    <th colspan="3" class="uip-element-header-purp">Identification Process</th>
+                    <th colspan="3" class="uip-element-header-purp">Identification for School</th>
+                    <th colspan="4" class="uip-element-header-purp">Directions for Completing Improvement Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="4" colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>Plan Type for State Accreditation</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">Plan type is assigned based on the districts overall District Performance Framework score (achievement, growth, postsecondary and workforce readiness) and meeting requirements for finance, safety, participation and test administration.</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.A_TTL_RATING_OFFICIAL__c} {!uip.YEAR_ENTERING_PI_TA__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.RATING_DIRECTIONS__c}</td>
+                </tr>
+                <tr>
+
+                    <td colspan="3" class="section1-element-col">Achievement Performance Indicator on District Performance Framework</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.x1_3_ACHIEVE_RATING__c} -------- {!uip.x1_3_DISAG_ACHIEVEMENT__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.Disag_Ach_Directions__c}</td>
+                </tr>
+                <tr>
+
+                    <td colspan="3" class="section1-element-col">Academic Growth Indicator on District Performance Framework</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.x1_3_GROWTH_RATING__c}-------- {!uip.x1_3_DISAG_GROWTH__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.Disag_Growth_Directions__c}</td>
+                </tr>
+                <tr>
+
+                    <td colspan="3" class="section1-element-col">Postsecondary and Workforce Readiness Indicator on District Performance Framework</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.x1_3_POST_SEC_RATING__c}-------- {!uip.x1_3_SUB_IND_PWR__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.Sub_Ind_PWR_Directions__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>School(s) on Accountability Clock</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">At least one school in the district has a Priority Improvement or Turnaround plan type – meaning that the school is on the accountability clock.</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">Number of Schools on Clock: {!uip.SCHLS_ON_CLOCK_NUM__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.UIP_Annual_CDE_Plan__r.School_s_on_Accountability_Clock__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>Biennial UIP Submission Flexibility (District)</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">Districts that received an Accredited or Accredited with Distinction plan type on the District Performance Framework.</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.Biennial_Flex__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.Biennial_Flex_Instructions__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>Biennial UIP Submission Flexibility (Schools)</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">School(s) assigned a Performance plan type on the School Performance Framework</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">Number of schools eligible for biennial flexibility {!uip.SCHLS_BIENNIAL_FLEX__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">This is informational to help the district manage school level plans that may or may not be eligible for biennial UIP. A listing of the eligible schools may be found at: [URL].}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>Student Graduation and Completion Plan (Designated Graduation District)</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">In one or more of the four prior school years, the district (1) had an overall Postsecondary and Workforce Readiness rating of “Does Not Meet” or “Approaching” on the District Performance Framework and (2) had an on-time graduation rate below 59.5% or an annual dropout rate at least two times greater than the statewide dropout rate for that year</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.GRAD_PLAN_TYPE__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.GRAD_PLAN_DIRECTIONS__c}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>Student Course Taking Analysis</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">All Schools and Districts must complete this analysis.</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">Yes</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">Districts must review and reflect on disparities of disaggregated groups within the school course offerings Schools may use the CDE Course Taking Report or analyze their own course participation data.</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                        <b>Gifted Education</b>
+                    </td>
+                    <td colspan="3" class="section1-element-col">All Administrative Units (AUs) that are the lead agency for the Gifted Program.  Multiple district AUs (including BOCES) may incorporate the Gifted Program requirements into each individual district level UIP.</td>
+                    <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.GIFTED_TYPE__c}</td>
+                    <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.GIFTED_DIRECTIONS__c}</td>
+                </tr>
+            </tbody>
+
+    </table>
+    <br/><br/>
+
+    <table>
+        <tr>
+            <td colspan="12">
+                <apex:outputpanel rendered="{!uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null}">
+                    <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                        <b>ESEA and Grant Accountability</b>
+                    </div>
+                </apex:outputpanel>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <table border="1">
+        <thead>
+            <tr>
+                <th colspan="2" class="uip-element-header-purp">Program</th>
+                <th colspan="3" class="uip-element-header-purp">Identification Process</th>
+                <th colspan="3" class="uip-element-header-purp">Identification for School</th>
+                <th colspan="4" class="uip-element-header-purp">Directions for Completing Improvement Plan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                    <b>Title IA</b>
+                </td>
+                <td colspan="3" class="section1-element-col">Title IA funded Districts with a Priority Improvement or Turnaround plan type assignment.</td>
+                <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE1A_TYPE__c}</td>
+                <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE1A_DIRECTIONS__c}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                    <b>Title IIA</b>
+                </td>
+                <td colspan="3" class="section1-element-col">Title IIA funded Districts with a Priority Improvement or Turnaround plan type assignment.</td>
+                <td colspan="3" class="section1-element-col-blue" style="text-align:left;"> {!uip.TITLE2A_TYPE__c}</td>
+                <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE2A_DIRECTIONS__c}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                    <b>Program Improvement under Title III</b>
+                </td>
+                <td colspan="3" class="section1-element-col">District/Consortium missed AMAOs for two or more consecutive years.</td>
+                <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE3_TYPE__c}</td>
+                <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE3_DIRECTIONS__c}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                    <b>State Assessment Participation</b>
+                </td>
+                <td colspan="3" class="section1-element-col">Districts with less than 95% student participation in one or more content area, disaggregated group(s), or overall on the 2016 DPF.</td>
+                <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.Participation_95__c}</td>
+                <td colspan="4" class="section1-element-col-blue" style="text-align:left;">Per the 2016 waiver approval with the USDE, districts not meeting state assessment participation requirements must address why participation expectations were not met, including what strategies will be put in to place as a result. Note that specialized requirements are included for Title I in the Quality Criteria document.</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                    <b>District with an Identified Focus School and /or School with a Tiered Intervention Grant (TIG)</b>
+                </td>
+                <td colspan="3" class="section1-element-col">District has at least one school that (1) has been identified as a Title I Focus School and/or (2) has a current TIG award.</td>
+                <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.TIG_Type__c}</td>
+                <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.TIG_DIRECTIONS__c}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="table-row-target" style="background-color:#f5eedf;">
+                    <b>Early Pathways Grant</b>
+                </td>
+                <td colspan="3" class="section1-element-col">Title I competitive grant that includes funding and support for accountability clock pathway exploration and planning.</td>
+                <td colspan="3" class="section1-element-col-blue" style="text-align:left;">{!uip.Early_Pathways_Grant__c}</td>
+                <td colspan="4" class="section1-element-col-blue" style="text-align:left;">{!uip.Early_Pathways_Grant_Text__c}</td>
+            </tr>
+        </tbody>
+    </table>
+</apex:page>

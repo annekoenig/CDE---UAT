@@ -1,0 +1,272 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <div class="thetabcontent">
+                <link rel="stylesheet"
+                      href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />
+                <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+                <script
+                src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+                
+                <style>
+                    #example select {
+                    width: 80px !important;
+                    }
+                </style>
+               
+                <script>
+                var filteredPicklistValue = [];
+                function getStatusData(){
+                    console.log('inside update record onclick');
+                    saveUpdatedRecord();  
+                    return false;
+                }
+                </script>
+                <!-- Action function in order to update status change updates on page. Rerender attribute added to make sure function call-->
+                <apex:actionFunction name="saveUpdatedRecord" action="{!saveUpdatedRecord}" reRender="OuterPanel"/>
+                <apex:outputPanel id="OuterPanel">
+                    <div width="100%"
+                         style="padding-right: 5px; text-align: right; padding-bottom: 20px;">
+                        <apex:commandLink StyleClass="btn btn-custom"
+                                          action="{!DownloadExcel_S4_FullPlanForm}">
+                            <span class="glyphicon glyphicon glyphicon-download"></span>&nbsp;Download
+                        </apex:commandLink>
+                    </div>
+                    
+                    <style>
+                        table.table-striped>tbody>tr>td {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        }
+                        
+                        table.table-striped {
+                        table-layout: fixed;
+                        width: 100%;
+                        }
+                    </style>
+                    
+                    <table id="example" class="table table-striped table-bordered"
+                           cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>MIS Title</th>
+                                <th>AS/IB</th>
+                                <th>AS/IB Name</th>
+                                <th>AS/IB Description</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Key Personnel</th>
+                                <th>Resource</th>
+                                <th>Status</th>
+                                <th>AS/IB Association</th>
+                            </tr>
+                            <tr>
+                                <td><b> MIS Title </b></td>
+                                <td><b> AS/IB </b></td>
+                                <td><b> AS/IB Name </b></td>
+                                <td><b> AS/IB Description </b></td>
+                                <td><b> Start </b></td>
+                                <td><b> End </b></td>
+                                <td><b> Key Personnel </b></td>
+                                <td><b> Resource </b></td>
+                                <td><b> Status </b></td>
+                                <td><b> AS/IB Association </b></td>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                                <apex:repeat value="{!misWrapper.iasList}" var="iasWrapper">
+                                    <tr class="tablerows">
+                                        <td title='{!misWrapper.mis.Name}'>{!misWrapper.mis.Name}</td>
+                                        <td>Action Step</td>
+                                        <td title='{!iasWrapper.ias.Name}'>{!iasWrapper.ias.Name}</td>
+                                        <td title='{!iasWrapper.ias.Description_of_Action_Step__c}'>{!iasWrapper.ias.Description_of_Action_Step__c}</td>
+                                        <td>{!iasWrapper.Start_Date}</td>
+                                        <td>{!iasWrapper.Target_Date}</td>
+                                        <td title='{!iasWrapper.ias.Key_Personnel__c}'>{!iasWrapper.ias.Key_Personnel__c}</td>
+                                        <td title='{!iasWrapper.ias.Resources__c}'>{!iasWrapper.ias.Resources__c}</td>
+                                        <td>
+                                            <apex:inputField value="{!iasWrapper.ias.Status_of_Action_Step__c}" />
+                                            <script>
+                                            if(filteredPicklistValue.indexOf('{!iasWrapper.ias.Status_of_Action_Step__c}') == -1 && '{!iasWrapper.ias.Status_of_Action_Step__c}' !== "") {
+                                                filteredPicklistValue.push('{!iasWrapper.ias.Status_of_Action_Step__c}');
+                                                }
+                                            </script>
+                                        <!--    <select id='{!iasWrapper.ias.Id}' >
+                                                   <option  value="{!iasWrapper.ias.Status_of_Action_Step__c}">{!iasWrapper.ias.Status_of_Action_Step__c}</option> 
+                                              <apex:repeat value="{!Iasoptions}" var="o" >
+                                                 
+                                                  <option rendered="{!IF(iasWrapper.ias.Status_of_Action_Step__c=o.value,false,true)}"  value="{!o.value}" >{!o.value}</option>
+                                                
+                                                </apex:repeat> -->
+                                              <!--  <option value="{!iasWrapper.ias.Status_of_Action_Step__c}">{!iasWrapper.ias.Status_of_Action_Step__c}</option>
+                                                <option value="None">None</option>
+                                                <option value="Not Started">Not Started</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Completes">Complete</option>
+                                            </select> -->
+                                        </td>
+                                        <td><apex:repeat value="{!iasWrapper.ias.BenchMar_ActiontSteps__r}" var="u">
+                                            <apex:outputText rendered="{!IF(u.Implementation_Benchmark__r.Name='',false,true)}">{!u.Implementation_Benchmark__r.Name},</apex:outputText>
+                                            </apex:repeat></td>
+                                        
+                                    </tr>
+                                </apex:repeat>
+                            </apex:repeat>
+                            <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                                <apex:repeat value="{!misWrapper.ibList}" var="ibWrapper">
+                                    <tr class="tablerows">
+                                        <td title='{!misWrapper.mis.Name}'>{!misWrapper.mis.Name}</td>
+                                        <td>IB</td>
+                                        <td title='{!ibWrapper.ib.Name}'>{!ibWrapper.ib.Name}</td>
+                                        <td title='{!ibWrapper.ib.Description__c}'>{!ibWrapper.ib.Description__c}</td>
+                                        <td>{!ibWrapper.Start_Date}</td>
+                                        <td>{!ibWrapper.End_Date}</td>
+                                        <td title='{!ibWrapper.ib.Key_Personel__c}'>{!ibWrapper.ib.Key_Personel__c}</td>
+                                        <td>N/A</td>
+                                         <td> 
+                                             <apex:inputField value="{!ibWrapper.ib.Status__c}" />
+                                             <script>
+                                            if(filteredPicklistValue.indexOf('{!ibWrapper.ib.Status__c}') == -1 && '{ibWrapper.ib.Status__c}' !== "") {
+                                                filteredPicklistValue.push('{!ibWrapper.ib.Status__c}');
+                                                }
+                                            </script>
+                                            <!--<select id='{!ibWrapper.ib.Id}' data-attr="{!ibWrapper.ib.Status__c}">
+                                                 <option value="{!ibWrapper.ib.Status__c}">{!ibWrapper.ib.Status__c}</option>     
+                                              <apex:repeat value="{!ibOptions}" var="o">
+                                                  <option value="{!o.value}">{!o.value}</option>
+                                                
+                                                </apex:repeat>
+                                              <!--  <option value="{!iasWrapper.ias.Status_of_Action_Step__c}">{!iasWrapper.ias.Status_of_Action_Step__c}</option>
+                                                <option value="None">None</option>
+                                                <option value="Not Started">Not Started</option>
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Completes">Complete</option>
+                                            </select>-->
+                                        </td>
+                                        <td><apex:repeat value="{!ibWrapper.ib.BenchMar_ActiontSteps__r}" var="v">
+                                            <apex:outputText rendered="{!IF(v.Improvement_Action_Step__r.name='',false,true)}">{!v.Improvement_Action_Step__r.name},</apex:outputText>
+                                            </apex:repeat></td>
+                                    </tr>
+                                </apex:repeat>
+                            </apex:repeat>
+                        </tbody>
+                    </table>
+                   
+                </apex:outputPanel>
+                <!--  Preeti K :- Modified to navigate Previous and Next from Planning Form -->
+               <div style="width: 100%; padding: 4px; text-align: left;">
+                   <apex:commandLink StyleClass="btn btn-custom"
+                                      action="{!NextPlanningForm}" rerender="errorSection"
+                                      status="loadingStatus" onclick="if(!goNext()) {return};">
+                        <span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous
+                   </apex:commandLink>
+                </div>
+            <div style="width: 100%; padding: 4px; text-align: center;">
+                 <apex:commandLink StyleClass="btn btn-custom" onclick="getStatusData();">
+                        <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                    </apex:commandLink>
+                   </div>
+            </div>     
+               
+       
+            
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                var isPageChanged = false;
+                var isNewContact = false;
+                var isEditContact = false;
+                var isEditRTF = '{!isEditRTF}';
+                var isEditPit = '{!isEditPit}';
+                var isEditPint = '{!isEditPint}';
+                var elementValue = '{!elementValue}';
+                var isEditElem = '{!isEditElem}';
+                var isEditElemx = '{!isEditElemx}';
+                var isTextChanged = '{!isTextChanged}';
+                var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+    
+    <script>
+                
+                (function($) {                    
+                    $.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUnique, bFiltered, bIgnoreEmpty ) {
+                        if ( typeof iColumn == "undefined" ) return new Array();
+                        if ( typeof bUnique == "undefined" ) bUnique = true;
+                        if ( typeof bFiltered == "undefined" ) bFiltered = true;
+                        if ( typeof bIgnoreEmpty == "undefined" ) bIgnoreEmpty = true;
+                        var aiRows;
+                        
+                        if (bFiltered == true) aiRows = oSettings.aiDisplay;
+                        else aiRows = oSettings.aiDisplayMaster; // all row numbers
+                        
+                        var asResultData = new Array();
+                        
+                        for (var i=0,c=aiRows.length; i<c; i++) {
+                            iRow = aiRows[i];
+                            var aData = this.fnGetData(iRow);
+                            var sValue = aData[iColumn];
+                            
+                            if (bIgnoreEmpty == true && sValue.length == 0) continue; 
+                            else if (bUnique == true && jQuery.inArray(sValue, asResultData) > -1) continue;         
+                                else asResultData.push(sValue);
+                        }     
+                        return asResultData;
+                        
+                    }}(jQuery));
+                
+                
+                function fnCreateSelect( aData )
+                {
+                    var r='<select><option value=""></option>', i, iLen=aData.length;
+                     console.log(filteredPicklistValue);
+                    for ( i=0 ; i<iLen ; i++ )
+                    {
+                        //debugger;
+                        if(aData[i].indexOf('select')>=0){
+                           for(var j=0;j<filteredPicklistValue.length;j++) 
+                                r += '<option value="'+filteredPicklistValue[j]+'">'+filteredPicklistValue[j]+'</option>';
+                          
+                            return r+'</select>';
+                        }
+                        //if(aData[i].indexOf('<select id="SelectedValueIb">')>=0){
+                        // var a1=   $("select[id='SelectedValueIb'] option:selected").val();  
+                        //   var a1=$('#SelectedValueIb').find("option:selected").text();
+                        //     debugger;
+                        //      r += '<option value="'+a1+'">'+a1+'</option>';
+                        //}
+                           else{
+                             console.log(aData[i]);
+                             r += '<option value="'+aData[i]+'">'+aData[i]+'</option>';
+                          } 
+                }
+                    return r+'</select>';
+                }
+                                
+     
+                $(document).ready(function() {
+                    /* Initialise the DataTable */
+                    var oTable = $('#example').dataTable( {
+                        "oLanguage": {
+                            "sSearch": "Search all columns:"
+                        }
+                    });
+                    
+                    var filterIndexes = [0,1,2,3,4,5,6,7,8,9];
+                    $("thead th").each( function ( i ) {
+                        if($.inArray(i, filterIndexes) != -1) {
+                            this.innerHTML = fnCreateSelect( oTable.fnGetColumnData(i) );
+                            $('select', this).change( function () {
+                                oTable.fnFilter( $(this).val(), i );
+                            });
+                        }
+                    }); 
+                });
+                </script>
+    
+</apex:page>

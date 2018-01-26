@@ -1,0 +1,138 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false"> 
+<apex:composition template="SectionHeader">
+
+               <apex:define name="body">
+               <table width="100%">
+                    <tr>
+                        <td width="60%">
+                            <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                                <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                            </apex:outputPanel>
+                        </td>
+                        <!-- <td width="40%" style="text-align: center;">
+                            <div width="100%" style="padding-top: 8px;">
+                            Page {!addendumPositionMap['TIG_Closure__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                                <apex:outputPanel rendered="{!addendumPositionMap['TIG_Closure__c'] <= countAddendum && addendumPositionMap['TIG_Closure__c'] != 1}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['TIG_Closure__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!addendumPositionMap['TIG_Closure__c'] < countAddendum}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['TIG_Closure__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!(addendumPositionMap['TIG_Closure__c'] <= countAddendum && addendumPositionMap['TIG_Closure__c'] != 1) || addendumPositionMap['TIG_Closure__c'] < countAddendum}">
+                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                    
+                              </div>  
+                            </apex:outputPanel>
+                        </td> -->
+                        <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+                <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="70%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                       </td>
+                        <td width="30%" style="text-align: left;">
+                            <apex:inputField value="{!uip.TIG_Closure_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b>
+                        </td>
+                    </tr>
+                    </table></div>
+                    
+               <!-- </div> -->
+             <p style="padding: 10px 10px  50px;">
+                <span style="font-size:130%; color:#101e8e;"><b>Required For Schools with a Tiered Intervention Grant (TIG) that Selected a Closure Model</b></span><br/><br/>
+          
+            <span style="padding: 10px ;">
+            Schools that participate in the Tiered Intervention Grant and selected the Closure Model must use this form to document 
+            grant requirements.  As a part of the improvement planning process, schools are strongly encouraged to weave appropriate 
+            requirements into earlier sections of the UIP.  This form provides a way to ensure all components of the program are met 
+            through descriptions of the requirements or a cross-walk of the grant program elements in the UIP.
+            </span></p>
+           <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+           <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                <table width="100%" style = "border: 1px solid;">
+                    <tr>
+                        <td width="30%" class="addendum-table-header"><h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of TIG (Closure) Requirements</h1></td>
+                        <td width="20%" class="addendum-table-header"><h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Recommended Location in UIP</h1></td>
+                        <td width="50%" class="addendum-table-header"><h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of Requirement or Crosswalk of Description in UIP Data Narrative or Action Plan (include page numbers)</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Model Selection: Describe generally why the closure model was chosen and the 
+                        process for closing the school.</td>
+                        <td class="addendum-table-row">Section III: Data Narrative</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!addendum.Model_Section__c}" style="width:90%;"/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Student Enrollment: Describe where students who previously attended the closed school are now 
+                        enrolled. Include how far away this school(s) is from the school that was closed.</td>
+                        <td class="addendum-table-row">Section III: Data Narrative or Section IV: Action Plan, Action Steps</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!addendum.Student_Enrollment__c}" style="width:90%;"/> </td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">School Performance: Describe the process for ensuring this school(s) is higher performing (i.e., student 
+                        achievement data) than the school which was closed and how this was determined.</td>
+                        <td class="addendum-table-row">Section III: Data Narrative or Section IV: Action Plan, Action Steps</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!addendum.School_Performance__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Transition Support: Describe how the LEA supported families and students in their transition to the 
+                        new school(s).</td>
+                        <td class="addendum-table-row">Section III: Data Narrative or Section IV: Action Plan, Action Steps</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!addendum.Transition_Support__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                       
+                    </tr>
+                </table>
+            </div><br/><br/>
+            <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+</apex:Composition>
+
+</apex:page>

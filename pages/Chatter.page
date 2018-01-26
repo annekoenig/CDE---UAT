@@ -1,0 +1,4 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false">
+	<!-- <chatter:feedWithFollowers entityId="{!IF(uip.SCHOOL_NAME__c != null, uip.SCHOOL_NAME__c , uip.Id)}" /> -->
+	<chatter:feedWithFollowers entityId="{!uip.Id}" />
+</apex:page>

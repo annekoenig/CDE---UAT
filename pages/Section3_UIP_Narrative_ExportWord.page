@@ -1,0 +1,182 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" contentType="application/msword#Section3_UIPNarrative.doc" cache="true">
+	<apex:outputPanel rendered="{!NOT(uip.Section_3__c != 'No' && uip.Section_3__c != null)}">
+		<div class="emptySection">School is not required to fill this section of the UIP out!</div>
+	</apex:outputPanel>
+	<apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+		<div id="empty"></div>
+		
+		<div width="100%" style="background-color: #d3ccbc;">
+			<table width="100%">
+				<tr>
+					<td width="60%">
+						<h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section III: Narrative on Data Analysis and Root Cause Identification</h1>
+					</td>
+					<td width="40%" style="text-align: right; padding-right: 50px;">
+						<!-- <apex:outputField value="{!uip.Section_III_Data_Narrative_Complete__c}" />
+						<b>Complete &amp; Ready to submit</b> -->
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br/>
+		<div width="100%" style="padding-right: 100px; text-align: right; padding-bottom: 5px;">
+		</div>
+		<div class="col-md-9" style= "padding-right: 0px;">
+			<p style="padding: 10px 10px 20px 10px;"> This section corresponds with the "Evaluate" 
+			portion of the continuous improvement cycle. The main outcome is to construct a narrative that describes 
+			the process and results of the analysis of the data for your school. The analysis should justify the performance 
+			targets and actions proposed in Section IV. Two worksheets have been provided to help organize your data 
+			analysis for your narrative. This analysis section includes: identifying where the school did not at least meet 
+			minimum state and federal accountability expectations; describing progress toward targets for the prior school 
+			year; describing what performance data were used in the analysis of trends; identifying trends and priority 
+			performance challenges (negative trends); describing how performance challenges were prioritized; identifying 
+			the root causes of performance challenges; describing how the root causes were identified and verified and what 
+			data were used; and describing stakeholder involvement in the analysis.  Additional guidance on how to engage in 
+			the data analysis process is provided in Unified Improvement Planning Handbook. </p>
+		</div> 
+		<div class="col-md-3 left-col" style= "padding-top: 10px; padding-bottom: 70px; text-align: center;">
+		</div>
+		
+		<HR Style="border: 2px outset #5c666f" />
+		
+		
+		<apex:outputPanel id="mainSection">
+		<div style="padding-left:10px; padding-right: 10px; align: center;" width="100%">
+			<apex:outputPanel id="briefDescription">
+				<h3>Brief Description</h3>
+				<p style="margin-left:20px;">
+					<apex:outputPanel rendered="{!uip.TextAreaRich_Test__c != null && uip.TextAreaRich_Test__c != '' && NOT(isEditRTF)}">
+						<div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+							<apex:outputText value="{!uip.TextAreaRich_Test__c}" escape="false"/>
+						</div>
+					</apex:outputPanel>
+				</p>
+			</apex:outputPanel>
+			
+			<h3>Prior Year Targets</h3>
+			<p style="margin-left:20px;">
+			</p>
+			<apex:repeat value="{!pitTargetsMap}" var="target">
+			
+				<apex:outputPanel id="PriorYearTargets">
+					<p style="margin-left:20px;">
+						<apex:outputPanel rendered="{!uip[pitNarrativeMap[target]] != null && uip[pitNarrativeMap[target]] != '' && NOT(isEditRTF)}">
+							<div style="padding-left: 20px;">
+							
+								<strong><apex:outputText value="{!target}"/></strong>
+								<br/>
+								<apex:repeat value="{!pitTargetsMap[target]}" var="pit">
+									<p style= "Margin : 20px;">
+										<em><strong>Prior Year Target: </strong></em>
+										<apex:outputText value="{!pit.Last_Year_Target_1__c}" escape="false" />
+										<br/>
+										<em><strong>Performance: </strong></em>
+										<apex:outputText value="{!pit.Performance_against_Target_1__c}" escape="false" />
+									</p>
+								</apex:repeat>
+								
+								<div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+									<p><apex:outputText value="{!uip[pitNarrativeMap[target]]}" escape="false"/></p>
+								</div>
+								<hr/>
+								
+							</div>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!(uip[pitNarrativeMap[target]] == null || uip[pitNarrativeMap[target]] == '') && NOT(isEditRTF)}">
+							<div style="padding-left: 20px;">
+							</div>
+						</apex:outputPanel>
+					</p>
+				</apex:outputPanel>
+			
+			</apex:repeat>
+			<apex:outputPanel id="CurrentPerformance">  
+				<h3>Current Performance</h3>
+				<p style="margin-left:20px;">
+					<apex:outputPanel rendered="{!uip.Target_Reflection__c != null && uip.Target_Reflection__c != '' && NOT(isEditRTF)}">
+						<div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+							<apex:outputText value="{!uip.Target_Reflection__c}" escape="false"/>
+						</div>
+					</apex:outputPanel>
+				</p>
+			</apex:outputPanel>
+			
+			<h3>Trend Analysis</h3>
+			<apex:repeat value="{!piNotableTrendsMap}" var="target">
+				<apex:repeat value="{!piNotableTrendsMap[target]}" var="pint">
+					<apex:outputPanel rendered="{!pint.Notable_Trend__c == 'Yes'}">
+						<blockquote>
+							<div style="padding-left: 10px;">
+								<p>
+									<b>{!target}: </b>
+									<apex:outputText value="{!pint.Notable_Trends_1__c}" escape="false"/><br/>
+									Trend Direction: <i><apex:outputText value="{!pint.Trend_Direction__c}"/></i>
+								</p>
+							</div>
+						</blockquote>
+					</apex:outputPanel>
+				</apex:repeat>
+			</apex:repeat>
+			
+			<apex:outputPanel id="PPC">
+				<h3>Priority Performance Challenges</h3>
+				<apex:repeat value="{!challengeMap}" var="challenge">
+					<div style="padding : 10px; margin : 10px;">
+						<p style="margin-left:20px;">
+							<b><apex:outputText value="{!challengeMap[challenge].Name}" /></b><br/>
+							<apex:outputText value="{!challengeMap[challenge].Description__c}"/>
+						</p>
+					</div>
+				</apex:repeat>
+				<p style="margin-left:20px;">
+					
+					<apex:outputPanel rendered="{!uip.Performance_Challenge_Narrative__c != null && uip.Performance_Challenge_Narrative__c != '' && NOT(isEditRTF)}">
+						<div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+						<h5><i>Reflection of Priority Performance Challenges</i></h5>
+							<apex:outputText value="{!uip.Performance_Challenge_Narrative__c }" escape="false"/>
+						</div>
+					</apex:outputPanel>
+				</p>
+			</apex:outputPanel>
+			
+			<apex:outputPanel id="RootCauses">
+				<h3>Root Causes</h3>
+				<div style="padding : 10px; margin : 10px;">
+				<apex:repeat value="{!challengeMap}" var="challenge">
+				<b><i>Priority Performance Challenge: </i></b><apex:outputText value="{!challengeMap[challenge].Name}" />
+				<apex:repeat value="{!rcForChallengeMap[challenge]}" var="rc">
+					
+					<p style="margin-left:20px;"><br/>
+					<b><apex:outputText value="{!rc.Name}"/></b><br/> 
+					<apex:outputText value="{!rc.Description__c}"/></p>
+					
+				</apex:repeat><br/>
+				</apex:repeat>
+				</div>
+				<p style="margin-left:20px;">
+					<apex:outputPanel rendered="{!uip.Root_Cause_Narrative__c != null && uip.Root_Cause_Narrative__c != '' && NOT(isEditRTF)}">
+						<div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+								<h5><i>Reflection on Root Causes</i></h5>
+							<apex:outputText value="{!uip.Root_Cause_Narrative__c}" escape="false"/>
+						</div>
+					</apex:outputPanel>
+				</p>
+			</apex:outputPanel>
+			
+			<apex:outputPanel id="AdditionalNarrative">
+				<h3>Additional Narrative / Conclusion</h3>
+				<p style="margin-left:20px;">
+					<apex:outputPanel rendered="{!uip.Narrative_Additional__c != null && uip.Narrative_Additional__c != '' && NOT(isEditRTF)}">
+						
+						<div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+							<apex:outputText value="{!uip.Narrative_Additional__c}" escape="false"/>
+						</div>
+					</apex:outputPanel>
+				</p>
+			</apex:outputPanel>
+			
+		</div><br/><br/><br/><br/>
+		
+		</apex:outputPanel>
+	</apex:outputPanel>
+</apex:page>

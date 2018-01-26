@@ -1,0 +1,9 @@
+<apex:page controller="Comments" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+	<apex:composition template="SectionHeader">
+		<apex:define name="body">
+			<div class="thetabcontent">
+				<apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/Chatter?id={!uip.Id}" scrolling="true" id="theIframe" height="600px;"/>
+			</div>
+		</apex:define>
+	</apex:composition>
+</apex:page>

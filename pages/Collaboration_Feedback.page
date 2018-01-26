@@ -1,0 +1,2017 @@
+<apex:page controller="Comments" showHeader="false"
+    standardStylesheets="false" docType="HTML-5.0" >  
+    <apex:composition template="SectionHeader">
+        <apex:define name="body"> 
+        <div class="thetabcontent">
+          <apex:outputPanel rendered="{!IF((($Profile.Name='CDE Reviewer'||$Profile.Name='CDE Lead Reviewer'||$Profile.Name='System Administrator'||$Profile.Name='CDE Admin')||approvedFlag),true,false)}">
+          <apex:outputPanel rendered="{!IF((!recordUnderApproval||(recordUnderApproval&&currentuserflag)||($Profile.Name='System Administrator')||($Profile.Name='CDE Admin')),true,false)}">            
+                    <div width="100%" style="background-color: #F0F0F0;">
+                        <table width="100%">
+                            <tr>
+                                <td width="65%">
+                                    <h1
+                                        style="font-size: 150%; padding-left: 10px; font-weight: bold; color: #5c666f;">Overview</h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <apex:outputPanel >
+                        <br />
+                        <p style="padding: 10px 10px 10px 10px;">
+                            The Unified Improvement Plan (UIP) is designed to provide {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "districts", "schools")} with a consistent format to capture and streamline improvement planning efforts that address state and federal planning requirements.  To assist with the improvement planning process, CDE offers several resources available at:  <a
+                                href="http://www.cde.state.co.us/uip/uip_trainingandsupport_resources">http://www.cde.state.co.us/uip/uip_trainingandsupport_resources</a>.
+                            In particular, the UIP {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "District", "School")} Level Quality Criteria provide the discrete criteria needed to meet all expectations.  The feedback provided in this form is intended to identify areas which, if addressed, are likely to strengthen the plan for dramatic change and improved student outcomes.  While the feedback considers the Quality Criteria, it is not necessarily a comprehensive evaluation of each individual criterion. Where applicable, CDE feedback from the 2015-2016 plan was examined along with the current plan to determine plan quality/required changes.
+                        </p>
+                    </apex:outputPanel>
+                    <br />
+                    <div width="100%" style="background-color: #F0F0F0;">
+                        <table width="100%">
+                            <tr>
+                                <td width="65%">
+                                    <h1
+                                        style="font-size: 150%; padding-left: 10px; font-weight: bold; color: #5c666f;">Symbol
+                                        Key</h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--<apex:outputPanel rendered="{!isfeedback}">-->
+                    <apex:outputPanel >
+                        <br />
+                        <p style="padding: 10px 10px 10px 10px;">Some {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "districts", "schools")} must
+                            address additional state and federal Title I program
+                            requirements, as indicated by the following symbols:</p>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td width="5%"><apex:image url="{!$Resource.STPI}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Priority
+                                        Improvement Plan Type</p>
+                                </td>
+                                <td width="5%"><apex:image url="{!$Resource.DR}" width="60"
+                                        height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Diagnostic Review
+                                        and Improvement Planning Grant</p>
+                                </td>
+                            </tr>
+                            <br />
+
+                            <tr>
+                                <td width="5%"><apex:image url="{!$Resource.STT}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Turnaround Plan
+                                        Type</p>
+                                </td>
+                                <td width="5%"><apex:image url="{!$Resource.SCTR}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Student Course Taking Report</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="5%"><apex:image url="{!$Resource.TIF}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Title I Focus
+                                        School</p>
+                                </td>
+                               <!-- <td width="5%"><apex:image url="{!$Resource.SAP}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Student Assessment Participation</p> 
+                                </td>-->
+                            </tr>
+                            <tr>
+                                <td width="5%"><apex:image url="{!$Resource.TIG}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Tiered Intervention Grantee</p>
+                                </td>
+                                <td width="5%"><apex:image url="{!$Resource.Read}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Colorado Reading
+                                        to Ensure Academic Development Act (Colorado READ Act)</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="5%"><apex:image url="{!$Resource.PEAC}"
+                                        width="60" height="40" /></td>
+                                <td width="45%">
+                                    <p style="padding: 10px 10px 10px 10px;">Pathways Early Action Grant</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <table style="width: 100%;" border="1">
+                            <tr>
+                                <td width="20%">
+                                    <p style="padding: 10px 10px 10px 10px;">
+                                        <b>School Name:</b>
+                                    </p>
+                                </td>
+                                <td width="30%">
+                                    <p style="padding: 10px 10px 10px 10px;">{!uip.SCHOOL_NAME__r.Name}</p>
+                                </td>
+                                <td width="20%">
+                                    <p style="padding: 10px 10px 10px 10px;">
+                                        <b>District Name:</b>
+                                    </p>
+                                </td>
+                                <td width="30%">
+                                    <p style="padding: 10px 10px 10px 10px;">{!uip.DISTRICT_NAME__r.Name}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="20%">
+                                    <p style="padding: 10px 10px 10px 10px;">
+                                        <b>School Code:</b>
+                                    </p>
+                                </td>
+                                <td width="30%">
+                                    <p style="padding: 10px 10px 10px 10px;">{!uip.SCHOOL_NUMBER__c}</p>
+                                </td>
+                                <td width="20%">
+                                    <p style="padding: 10px 10px 10px 10px;">
+                                        <b>District Code:</b>
+                                    </p>
+                                </td>
+                                <td width="30%">
+                                    <p style="padding: 10px 10px 10px 10px;">{!uip.DISTRICT_NAME__r.DIST_NUMBER__c}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><p style="padding: 10px 10px 10px 10px;">
+                                        <b>Additional Questions? </b>Consult with your district staff
+                                        to determine how this feedback might be incorporated into {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} planning work. As a reminder, the UIP must be
+                                        submitted to CDE by April 17, 2017 for public posting to
+                                        SchoolView.org.
+                                    </p></td>
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+
+                    <div class="page-header clearfix">
+                        <h3 class="pull-left">{!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "District", "School")} UIP Quality Criteria Reviewer
+                            Feedback Form</h3>
+                    </div>
+                    <div class="panel-group" id="accordion-x" role="tablist"
+                        aria-multiselectable="true">
+                        <div class="panel panel-default panel-top">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h1 class="panel-title"
+                                    style="font-size: 140%; font-weight: bold; color: #5c666f;">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                        href="#collapseOne" aria-expanded="true"
+                                        aria-controls="collapseOne"> Full UIP <span
+                                        class="pull-right"><i
+                                            class="fa fa-check-circle text-success"></i> </span>
+                                    </a>
+                                </h1>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse "
+                                role="tabpanel" aria-labelledby="headingOne">                               
+                                <div class="panel-body">
+                                    <apex:include pageName="PublicUIPFeedback" />
+                                    <br />
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div width="100%" style="background-color: #F0F0F0;">
+                        <table width="100%">
+                            <tr>
+                                <td width="65%">
+                                    <h1
+                                        style="font-size: 150%; padding-left: 10px; font-weight: bold; color: #5c666f;">Summary
+                                        Reviewer Feedback</h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <p style="padding: 10px 10px 10px 10px;">
+                        Feedback on ways to strengthen the UIP can be found in the
+                        Feedback Form. Consult with your district staff to determine how
+                        this feedback might be incorporated into {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} planning
+                        work. As a reminder, the UIP must be resubmitted by
+                        April 17, 2017 for posting to SchoolView.org.<br />
+                    </p>
+                    <p style="padding: 10px 10px 10px 10px;">As it is written, this
+                        plan:</p>
+                    <apex:outputPanel id="SRFeedback">
+                        <table width="100%"
+                            style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                            <tr>
+                                <td width="80%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid;">Investigates
+                                    the most critical performance areas and prioritizes the most urgent <b>performance 
+                                    challenges</b>;</td>
+                                <td width="20%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:outputText value="{!IF(feedbackOfCurrentYear.Feedback_Question1__c,'YES','NO')}" /></td>
+                            </tr>
+                            <tr>
+                                <td width="80%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid;">Identifies
+                                     <b>root causes</b> that explain the magnitude of the performance 
+                                     challenges;</td>
+                                <td width="20%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:outputText value="{!IF(feedbackOfCurrentYear.Feedback_Question2__c,'YES','NO')}" /></td>
+                            </tr>
+                            <tr>
+                                <td width="80%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid;">Identifies
+                                    evidenced-based <b>major improvement strategies</b> that are likely to eliminate 
+                                    the root causes; </td>
+                                <td width="20%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:outputText value="{!IF(feedbackOfCurrentYear.Feedback_Question3__c,'YES','NO')}" /></td>
+                            </tr>
+                            <tr>
+                                <td width="80%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid;">Presents
+                                    a well-designed <b>action plan</b> for implementing the major improvement
+                                    strategies to bring about dramatic improvement; and </td>
+                                <td width="20%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:outputText value="{!IF(feedbackOfCurrentYear.Feedback_Question4__c,'YES','NO')}" /></td>
+                            </tr>
+                             <tr>
+                                <td width="80%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid;">Includes
+                                    elements that effectively <b>monitor</b> the impact and <b>progress</b> of the action plan;</td>
+                                <td width="20%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:outputText value="{!IF(feedbackOfCurrentYear.Feedback_Question5__c,'YES','NO')}" /></td>
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+
+                    <div class="page-header clearfix">
+                        <h3 class="pull-left">Summary of Next Steps</h3>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="panel panel-default  ">
+                                <div class="panel-heading text-center">
+                                    <h4 class="panel-title">Description of Determination</h4>
+                                </div>
+                                
+                                <div class="panel-body clearfix">
+                                    <table>
+                                    <tr>
+                                        
+                                        
+                                        <td width = "100%">
+                                        <apex:inputField value="{!feedbackOfCurrentYear.Urgent_Action__c}"/> &nbsp;
+                                        
+                                        <apex:outputText value="Urgent Action: Elements of the plan have been flagged for district review prior to submission for public posting." />
+                                        </td>
+                                    </tr>
+                                    </table>
+                                    </div>
+                                    
+                                
+                                <div class="panel-body">
+                                    <apex:inputField value="{!feedbackOfCurrentYear.Summary_Info__c}"
+                                        StyleClass="btn btn-primary dropdown-toggle"
+                                        style="vertical-align:top; width:300px; white-space:normal;" rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator' || $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}">
+                                        
+                                        <apex:actionSupport action="{!populateTimeLine}"
+                                            event="onchange" reRender="timeline" />
+
+                                    </apex:inputField>
+                                    <apex:outputField value="{!feedbackOfCurrentYear.Summary_Info__c}"
+                                        StyleClass="btn btn-primary dropdown-toggle"
+                                        style="vertical-align:top; width:300px; white-space:normal;"
+                                        rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                </div>
+                            </div>
+                        </div>
+                        <apex:outputPanel id="RequiredChanges">
+                            <div class="col-sm-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title text-center">Required Change(s)</h4>
+                                    </div>
+                                  <div class="panel-body">
+                                        <ul class="list-unstyled">
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="TI-Focus"
+                                                        rendered="{!feedbackOfCurrentYear.Sec01FocusReqchange__c == true || feedbackOfCurrentYear.Sec04FocusReqchange__c ==true}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="ST-PI"
+                                                        rendered="{!feedbackOfCurrentYear.Sec03TurnaroundStrategyIncluded__c == true || feedbackOfCurrentYear.Sec04PITARequiredChange__c ==true}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="ST-T"
+                                                        rendered="{!feedbackOfCurrentYear.Sec03EnoughChangeReqchange__c == true || feedbackOfCurrentYear.Sec03TurnaroundStrategyIncluded__c || feedbackOfCurrentYear.Sec04PITARequiredChange__c ==true}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="SIS"
+                                                        rendered="{!feedbackOfCurrentYear.Sec01SISReqchange__c == true || feedbackOfCurrentYear.Sec03SISReqchange__c ==true || feedbackOfCurrentYear.Sec04SISReqchange__c == true}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="CGP"
+                                                        rendered="{!feedbackOfCurrentYear.Sec01_21Reqchange__c == true || feedbackOfCurrentYear.Sec04_21Reqchange__c==true}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="TIG"
+                                                        rendered="{!(feedbackOfCurrentYear.Sec06TIGReqchange__c == true)}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="DR"
+                                                        rendered="{!feedbackOfCurrentYear.Sec01DRReqchange__c == true || feedbackOfCurrentYear.Sec04DRReqchange__c ==true}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="READ"
+                                                        rendered="{!feedbackOfCurrentYear.Sec01READReqchange__c == true || feedbackOfCurrentYear.Sec04READReqchange__c ==true}" /></a></li>
+                                          <!--  <li style="text-align: center;"><a href="#"><apex:outputtext value="Federal Participation"
+                                                        rendered="{!feedbackOfCurrentYear.Sec01SAPReqchange__c  == true || feedbackOfCurrentYear.Sec04SAPReqchange__c ==true}" /></a></li> -->
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="Student Course Taking Requirement"
+                                                        rendered="{!feedbackOfCurrentYear.Sec04SCTRReqchange__c == true || feedbackOfCurrentYear.Sec01SCTRReqchange__c==true}" /></a></li>
+
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="Section 1 (PPC)"
+                                                        rendered="{!(feedbackOfCurrentYear.Sec01Reqchange__c == true)}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="Section 2 (RC)"
+                                                        rendered="{!(feedbackOfCurrentYear.Sec02Reqchange__c == true)}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="Section 3 (MIS)"
+                                                        rendered="{!(feedbackOfCurrentYear.Sec03Reqchange__c == true)}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="Section 4 (AS)"
+                                                        rendered="{!(feedbackOfCurrentYear.Sec04Reqchange__c == true)}" /></a></li>
+                                            <li style="text-align: center;"><a href="#"><apex:outputtext value="Section 5 (PM)"
+                                                        rendered="{!(feedbackOfCurrentYear.Sec05Reqchange__c == true)}" /></a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <div class="col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center">
+                                    <h4 class="panel-title">Timeline</h4>
+                                </div>
+                                <apex:outputPanel id="timeline">
+                                    <div class="panel-body clearfix">
+                                    <table>
+                                       <tr>
+                                        <td width = "30%">
+                                        <apex:outputText value="April 17,2017"/>
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                        <apex:outputText value="Make changes as needed and submit to CDE for the April 17 deadline for public posting on SchoolView. "/> 
+                                                                                
+                                        </td>
+                                    </tr>
+                                  <!--  <tr>
+                                        <td width = "35%">
+                                        <apex:outputText value=""
+                                                    rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "65%">
+                                        <apex:outputText value="The {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} must make changes to the UIP and update in the Online System."
+                                                    rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes' ,true,false)}" />
+                                        </td>
+                                    </tr> -->
+                                   
+                                  <!--  <tr>
+                                        <td width = "35%">
+                                        <apex:outputText value="Reminder for April 17, 2017"
+                                                    rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "65%">
+                                        <apex:outputText value="Submit most current version of UIP to CDE for public posting on SchoolView."
+                                                    rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes' ,true,false)}" />
+                                        </td> 
+                                    </tr>-->
+                                    <tr>    
+                                        <td width = "30%">
+                                        <apex:outputText value="June 15, 2017"
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='SummaryInfo_1' ,true,false)}" />
+                                        
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                            <apex:outputText value="Submit UIP to CDE for additional review to ensure that required changes were addressed."
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes' ,true,false)}" />
+                                        </td>
+                                    </tr>
+                                    <tr>    
+                                        
+                                    </tr>
+                                    <tr>    
+                                        <td width = "30%">
+                                            <apex:outputText value="Jan 15, 2018"
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes for next year' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                            <apex:outputText value="(If applicable) Required changes must be addressed. "
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan has required changes for next year' ,true,false)}" />
+                                        </td>
+                                    </tr>
+                                     <tr>    
+                                        <td width = "30%">
+                                            <apex:outputText value=""
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan meets basic expectations' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                            <apex:outputText value="Recommendations have been provided to help strengthen the plan. The {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} may make adjustments to the UIP based upon this feedback."
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan meets basic expectations' ,true,false)}" />
+                                        </td>
+                                    </tr>
+                                  
+                                    <tr>    
+                                        <td width = "30%">
+                                            <apex:outputText value=" "
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan meets basic expectations' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                            <apex:outputText value=" "
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='The plan meets basic expectations' ,true,false)}" />
+                                        </td>
+                                    </tr>
+                                    <tr>    
+                                        <td width = "30%">
+                                            <apex:outputText value="April 17, 2017"
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='none' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                            <apex:outputText value="Submit most current version of UIP to CDE for public posting on SchoolView."
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='none' ,true,false)}" />
+                                        </td>
+                                    </tr>
+                                    <tr>    
+                                        <td width = "30%">
+                                            <apex:outputText value=" "
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='none' ,true,false)}" />
+                                        </td>
+                                        <td></td>
+                                        <td width = "70%">
+                                            <apex:outputText value=" "
+                                                rendered="{!IF(feedbackOfCurrentYear.Summary_Info__c ='none' ,true,false)}" />
+                                        </td>                                       
+                                    </tr>                                   
+                                    </table>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                    <apex:outputPanel >
+                        <div width="100%" style="height: 50px; background-color: #F0F0F0;">
+                            <div
+                                style="height: 50px; font-size: 130%; padding-left: 10px; font-weight: bold; vertical-align: middle; display: table-cell; color: #5c666f;">
+                                2015-16 Summary of Feedback about the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "District", "School")} Plan</div>
+                        </div>
+                        <br />
+                        <table style="padding: 10px 10px 10px 10px; width: 100%;">
+                            <tr>
+                                <td class="wrapWithWordBreak" width="80%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid; height: 50px;background-color:#faf6ee; "><apex:outputfield value="{!feedbackOfLastYear.FeedbackSummary__c}" /></td>
+                            </tr>
+                        </table>
+                        <br />
+                    </apex:outputPanel>
+
+                    <apex:outputPanel >
+
+                        <div width="100%" style="height: 50px; background-color: #F0F0F0;">
+                            <div
+                                style="height: 50px; font-size: 130%; padding-left: 10px; font-weight: bold; vertical-align: middle; display: table-cell; color: #5c666f;">
+                                2016-17 Summary of Feedback about the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "District", "School")} Plan</div>
+                        </div>
+                        <br />
+                        <table width="100%"
+                            style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                            <tr>
+                                <td width="100%"
+                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.FeedbackSummary__c}"
+                                        style="width:90%;" richText="true"
+                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                            </tr>
+                        </table>
+                        <div style="width: 100%; text-align: right; padding: 30px;">
+                            <apex:commandButton styleClass="btn btn-primary"
+                                value="Save" action="{!saveCurrentFeedback}"
+                                status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                        </div>
+                        <br />
+                    </apex:outputPanel>
+                    <apex:outputPanel >
+                        <apex:outputPanel >
+                            <div width="100%"
+                                style="height: 50px; background-color: #F0F0F0;">
+                                <div
+                                    style="height: 50px; font-size: 130%; padding-left: 10px; font-weight: bold; vertical-align: middle; display: table-cell; color: #5c666f;">
+                                    Detailed Feedback on {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "District", "School")} UIP</div>
+                            </div>
+
+                            <apex:outputPanel >
+                                <table width="100%"
+                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+
+                                   
+                                    <tr>
+                                        <td
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #5C8EF5;"><font
+                                            color='white'><b>1. As written, does the plan
+                                                    investigate the most critical performance areas and
+                                                    prioritize the most urgent performance challenges?</b></font>&nbsp;&nbsp;&nbsp;
+                                            <apex:outputPanel id="fbq1">
+                                                <apex:inputCheckBox value="{!fbq1True}"
+                                                    styleclass="section2-element-col"
+                                                    disabled="{!feedbackOfCurrentYear.Feedback_Question1__c}">
+                                                    <apex:actionSupport event="onchange"
+                                                        action="{!popuateSummaryFeedbackTable}"
+                                                        rerender="SRFeedback,fbq1" status="loadingStatus" />
+                                                </apex:inputCheckBox>&nbsp;<font color='white'><i>Yes</i></font>&nbsp;&nbsp;
+                                            <apex:inputCheckBox value="{!fbq1False}" styleclass="section2-element-col"
+                                                    disabled="{!NOT(feedbackOfCurrentYear.Feedback_Question1__c)}">
+                                                    <apex:actionSupport event="onchange"
+                                                        action="{!popuateSummaryFeedbackTable}"
+                                                        rerender="SRFeedback,fbq1" status="loadingStatus" />
+                                                </apex:inputCheckBox>&nbsp;<font color='white'><i>No</i></font>
+                                            </apex:outputPanel></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="1000%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #F0F0F0;"><b>Feedback in this section addresses the Quality Criteria related to the Data Narrative (within the Narrative: Notable Trends, Priority Performance Challenges, relevant Program Requirements) and Current Performance (including Previous Performance Targets).</b></td>
+                                    </tr>
+                                    <br />
+
+                                    <tr>
+                                        <td width="100%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b><i>Guiding
+                                                    Questions</i></b><br /> Does the plan:<br /> 
+                                                    
+                                                    <ul>
+                                                   <li> Provide a description of the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")}'s demographics and other relevant contextual information? </li>
+                                                    <li> Describe who was involved in the development of the UIP?</li>
+                                                   <li>  Identify what student performance data (state and local) were examined in analyses of learning, including why specific data sources were not analyzed?</li>
+                                                    <li> Reflect that a {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} team reviewed the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} report and acknowledged where the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "DPF", "SPF")} did not meet local, state and/or federal performance expectations? </li>
+                                                   <li> Reflect on previous improvement efforts and impacts on previous performance targets to identify which previous performance efforts were effective and to verify or adjust priority performance challenges and guide the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")}'s focus?</li>
+                                                  <li>  Describe both positive and negative trends for performance using at least three years of state and local data that demonstrate that the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} has examined the student performance at the appropriate level of detail?  </li>
+                                                   <li> Use trend analysis to narrow the focus by prioritizing trends that are "notable?"</li>
+                                                    <li>Identify no more than five priority performance challenges that describe the strategic focus for the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} at the appropriate magnitude and that are focused on student performance, rather than on adult actions?  </li>
+                                                   <li> Provide a strong rationale, based on data that justifies the performance challenges prioritized or not prioritized?  </li>
+                                                  </ul>
+                                                    <br /> <br /> <apex:outputPanel id="cde1">
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf"></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE
+                                                                    Feedback - Winter 2015-16 (if applicable)</b></font>&nbsp;&nbsp;&nbsp;</td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE Feedback - Winter 2016-17</b></font>&nbsp;&nbsp;&nbsp;</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Section 1 Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01Feedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01Feedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="True"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01Reqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01Reqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Addressed in Previous Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01LastYearAddressed__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputField value="{!feedbackOfCurrentYear.Sec01LastYearAddressed__c}"
+                                                                StyleClass="btn btn-primary dropdown-toggle"
+                                                                style="vertical-align:top; float: center; width:150px" rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                                <apex:outputField value="{!feedbackOfCurrentYear.Sec01LastYearAddressed__c}"
+                                                                StyleClass="btn btn-primary dropdown-toggle"
+                                                                style="vertical-align:top; float: center; width:150px" 
+                                                    rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                                                                
+                                                                </td>
+
+                                                    </tr>
+
+                                                </table>
+                                                <br />
+                                                
+                                                <apex:outputPanel >
+                                                <apex:image url="{!$Resource.SCTR}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">Student Course Taking Report SCTR 
+                                                 Include an analysis of student course taking patterns by disaggregated groups?  </p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 SCTR Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01SCTRFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01SCTRFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="True"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 SCTR Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01SCTRReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; text-align: center; border: 1px solid;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01SCTRReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br />
+                                                
+                                            </apex:outputPanel> <b><i>Program Specific Criteria</i></b> <br />
+                                        <br /> 
+                                        <apex:outputPanel rendered="{!IF(uip.FOCUS_TYPE__c=='Identified as a Title I Focus School',true,false)}">
+                                                <apex:image url="{!$Resource.TIF}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                    address the low achievement of applicable disaggregated
+                                                    groups, including notable performance trends for these
+                                                    groups?</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 Focus Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01FocusFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01FocusFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="True"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 Focus Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01FocusReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; text-align: center; border: 1px solid;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01FocusReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br />
+                                             <apex:outputPanel rendered="{!IF(uip.Diagnostic_Review_Grant_Type__c =='Diagnostic Review Grantee',true,false)}">
+                                                <apex:image url="{!$Resource.DR}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                    describe updates to the data analysis, priority performance
+                                                    challenges, root causes and/or major improvement strategies
+                                                    based on the Diagnostic Review and/or improvement planning
+                                                    support process?</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 DR Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01DRFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01DRFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="true"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 DR Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01DRReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01DRReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br /> <apex:outputPanel rendered="{!IF(uip.SIS_Grant__c == 'SIS Grantee',true,false)}">
+                                                <apex:image url="{!$Resource.SIS}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                    describe the specific improvement strategy or strategies
+                                                    supported by the SIS grant? Such strategies should reflect
+                                                    the results of the diagnostic review as a part of the
+                                                    overall needs assessment. Strategies should be aimed at
+                                                    reducing systemic barriers to student achievement and
+                                                    support improvement for all students?</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 SIS Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01SISFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01SISFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="true"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 SIS Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01SISReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01SISReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br /> <apex:outputPanel rendered="{!IF((uip.X21st_Century__c = '21st Century Learning Center Grant Awardee'),true,false)}">
+                                                <apex:image url="{!$Resource.CGP}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                    include analysis of notable trends based on data submitted
+                                                    for the Annual Performance Report? These data include
+                                                    graduation rates, dropout rates, attendance rates and
+                                                    credit accrual rates?</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 CGP Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01_21Feedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01_21Feedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="true"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 CGP Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01_21Reqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01_21Reqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br /> 
+                                            <apex:outputPanel rendered="{!IF(uip.usip_READ_type__c=='Currently serving grades K-3',true,false)}">
+                                                <apex:image url="{!$Resource.Read}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">The plan
+                                                    include trend data that considers K-3 literacy data
+                                                    school-wide?</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 READ Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01READFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01READFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="true"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 READ Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01READReqchange__c = true, 'Yes', 'No' )}"
+                                                                rendered="{!feedbackOfLastYear.Sec01READReqchange__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01READReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br />
+                                            <!--
+                                            <apex:outputPanel rendered="{!IF(uip.Participation_95__c =='Did not meet 95% student participation in all areas.',true,false)}">
+                                                <apex:image url="{!$Resource.SAP}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">Address why the school did not meet the 95% participation expectation 
+                                                (e.g., cautions in data interpretation, potential causes for low participation)?
+                                                This is an ESEA requirement that extends statewide, regardless of Title I status.</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 Participation Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec01SAPFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec01SAPFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="true"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec01 Participation Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec01SAPReqchange__c = true, 'Yes', 'No' )}"
+                                                                 /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec01SAPReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br /> -->
+                                            </td>
+                                    </tr>
+                                </table>
+
+                            </apex:outputPanel>
+
+                            <div style="width: 100%; text-align: right; padding: 30px;">
+                                <apex:commandButton styleClass="btn btn-primary"
+                                    value="Save" action="{!saveCurrentFeedback}"
+                                    status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+
+                            <apex:outputPanel >
+                                <table width="100%"
+                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+
+                                    <tr>
+
+                                        <td width="100%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #5C8EF5;"><font
+                                            color='white'><b>2. As written, does the plan
+                                                    identify root causes that explain the magnitude of the
+                                                    performance challenges?</b></font>&nbsp;&nbsp;&nbsp; <apex:outputPanel id="fbq2">
+                                                <apex:inputCheckBox value="{!fbq2True}"
+                                                    styleclass="section2-element-col"
+                                                    disabled="{!feedbackOfCurrentYear.Feedback_Question2__c}">
+                                                    <apex:actionSupport event="onchange"
+                                                        action="{!popuateSummaryFeedbackTable}"
+                                                        rerender="SRFeedback,fbq2" status="loadingStatus" />
+                                                </apex:inputCheckBox>&nbsp;<font color='white'><i>Yes</i></font>&nbsp;&nbsp;
+        <apex:inputCheckBox value="{!fbq2False}"
+                                                    styleclass="section2-element-col"
+                                                    disabled="{!NOT(feedbackOfCurrentYear.Feedback_Question2__c)}">
+                                                    <apex:actionSupport event="onchange"
+                                                        action="{!popuateSummaryFeedbackTable}"
+                                                        rerender="SRFeedback,fbq2" status="loadingStatus" />
+                                                </apex:inputCheckBox>&nbsp;<font color='white'><i>No</i></font>
+                                            </apex:outputPanel></td>
+
+                                    </tr>
+                                    <br />
+                                      <tr>
+                                        <td width="1000%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #F0F0F0;"><b>Feedback in this section addresses the Quality Criteria related to Root Cause Analysis in the Data Narrative and Root Causes.</b></td>
+                                    </tr>
+                                    <br />
+                                    <tr>
+                                        <td width="100%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b><i>Guiding
+                                                    Questions</i></b><br /> Does the plan:
+                                                    <ul>
+                                                    <li>Identify at least one root cause for each priority performance challenge? </li>
+                                                      <li>Identify root causes that are under the control of the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")}?</li>
+                                                       <li>Provide an explanation of how root causes were selected, including the data (e.g., process data, perception data) used to select and verify the root cause(s)? </li>
+                                                        <li>Identify root causes that are aligned with the other plan elements and indicate that the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} understands its overall system? </li>
+                                                        </ul>
+                                                        
+                                                        <br /> <br />
+
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf"></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE
+                                                                    Feedback - Winter 2015-16 (if applicable)</b></font>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE Feedback - Winter 2016-17</b></font>&nbsp;&nbsp;&nbsp;</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Section 2 Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec02Feedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec02Feedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;  background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec02Reqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec02Reqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Addressed in Previous Feedback?</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec02LastYearAddressed__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputField value="{!feedbackOfCurrentYear.Sec02LastYearAddressed__c}"
+                                                            StyleClass="btn btn-primary dropdown-toggle"
+                                                            style="vertical-align:top; float: center; width:150px" rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                            <apex:outputField value="{!feedbackOfCurrentYear.Sec02LastYearAddressed__c}"
+                                                            StyleClass="btn btn-primary dropdown-toggle"
+                                                            style="vertical-align:top; float: center; width:150px" rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                                            </td>
+
+                                                </tr>
+                                            </table></td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                            <br />
+                            <div style="width: 100%; text-align: right; padding: 30px;">
+                                <apex:commandButton styleClass="btn btn-primary"
+                                    value="Save" action="{!saveCurrentFeedback}"
+                                    status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+
+                            <table width="100%"
+                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #5C8EF5;"><b>3. As
+                                            it is written, does the plan identify research-based major
+                                            improvement strategies that are likely to eliminate the root
+                                            causes?</b>&nbsp;&nbsp;&nbsp; <apex:outputPanel id="fbq3">
+                                            <apex:inputCheckBox value="{!fbq3True}"
+                                                styleclass="section2-element-col"
+                                                disabled="{!feedbackOfCurrentYear.Feedback_Question3__c}">
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!popuateSummaryFeedbackTable}"
+                                                    rerender="SRFeedback,fbq3" status="loadingStatus" />
+                                            </apex:inputCheckBox>&nbsp;<font color='white'><i>Yes</i></font>&nbsp;&nbsp;
+        <apex:inputCheckBox value="{!fbq3False}"
+                                                styleclass="section2-element-col"
+                                                disabled="{!NOT(feedbackOfCurrentYear.Feedback_Question3__c)}">
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!popuateSummaryFeedbackTable}"
+                                                    rerender="SRFeedback,fbq3" status="loadingStatus" />
+                                            </apex:inputCheckBox>&nbsp;<font color='white'><i>No</i></font>
+                                        </apex:outputPanel></td>
+                                </tr>
+                                <br />
+                                <tr>
+                                        <td width="1000%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #F0F0F0;"><b>Feedback in this section addresses Quality Criteria related to the Major Improvement Strategies.</b></td>
+                                    </tr>
+                                    <br />
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid;">
+                                        <br /> <br /> <b><i>Guiding
+                                                Questions</i></b><br /> 
+                                        <ul>
+                                        <li>Identify major improvement strategies that respond specifically to the articulated root causes and associated priority performance challenges?
+                                        </li>
+                                        <li> Include major improvement strategies that are evidence-based?
+                                        </li>
+                                        <br /> <br />
+                                        </ul>
+                                        <table width="100%"
+                                            style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf"></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE
+                                                                    Feedback - Winter 2015-16 (if applicable)</b></font>&nbsp;&nbsp;&nbsp;</td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE Feedback - Winter 2016-17</b></font>&nbsp;&nbsp;&nbsp;</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Section 3 Feedback</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec03Feedback__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec03Feedback__c}"
+                                                        styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Required Change</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec03Reqchange__c = true, 'Yes', 'No' )}"
+                                                        rendered="{!feedbackOfLastYear.Sec03Reqchange__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec03Reqchange__c}"
+                                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Addressed in Previous Feedback?</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec03LastYearAddressed__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputField value="{!feedbackOfCurrentYear.Sec03LastYearAddressed__c}"
+                                                        StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                        <apex:outputField value="{!feedbackOfCurrentYear.Sec03LastYearAddressed__c}"
+                                                        StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                                        </td>
+
+                                            </tr>
+
+
+
+                                        </table> <br /> <b><i>Program Specific Criteria</i></b><br /> <br />
+                                        <apex:outputPanel rendered="{!IF((uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='Priority Improvement Plan'||uip.A_TTL_RATING_OFFICIAL__c=='AEC: Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='AEC: Priority Improvement Plan'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Decreased due to Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Low Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Priority Improvement Plan: Decreased due to Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Priority Improvement Plan: Low Participation'),true,false)}">
+                                            <apex:image url="{!$Resource.STT}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                identify an approach to improvement that will result in
+                                                enough change in performance for the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} to have a plan
+                                                type assignment of Improvement or above (thus moving off of
+                                                the accountability clock) within a reasonable time frame?
+                                                Note: This is a key criterion for evaluation by the State
+                                                Review Panel.</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec03 Dramatic Enough Change?</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec03EnoughChangeFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec03EnoughChangeFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec03 Dramatic Enough Req Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec03EnoughChangeReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec03EnoughChangeReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br /> <apex:outputPanel rendered="{!IF(uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='AEC: Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Decreased due to Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Low Participation',true,false)}">
+                                            <apex:image url="{!$Resource.STT}" width="60" height="40" /> &nbsp;
+                                        <apex:image url="{!$Resource.STPI}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                include at least one of the state-required Turnaround
+                                                strategies?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec03 Turnaround Strategy Included?</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec03TurnaroundStrategy__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputfield value="{!feedbackOfCurrentYear.Sec03TurnaroundStrategy__c}"  StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px"  rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                        <apex:outputfield value="{!feedbackOfCurrentYear.Sec03TurnaroundStrategy__c}"  StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px"  rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec03 Turnaround Strategy Included - Req Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec03TurnaroundStrategyIncluded__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec03TurnaroundStrategyIncluded__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br /> <apex:outputPanel rendered="{!IF(uip.SIS_Grant__c == 'SIS Grantee',true,false)}">
+                                            <apex:image url="{!$Resource.SIS}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">Does the plan
+                                                identify the grant-supported major improvement strategy or
+                                                strategies?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec03 SIS Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec03SISFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec03SISFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec03 SIS Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec03SISReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec03SISReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br /></td>
+                                </tr>
+                            </table>
+
+                            <div style="width: 100%; text-align: right; padding: 30px;">
+                                <apex:commandButton styleClass="btn btn-primary"
+                                    value="Save" action="{!saveCurrentFeedback}"
+                                    status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <table width="100%"
+                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #5C8EF5;"><b>4. As
+                                            it is written, does the UIP present a well-designed action plan for
+                                            implementing the major improvement strategies to bring about
+                                            dramatic improvement?</b><br /> <apex:outputPanel id="fbq4">
+                                            <apex:inputCheckBox value="{!fbq4True}"
+                                                styleclass="section2-element-col"
+                                                disabled="{!feedbackOfCurrentYear.Feedback_Question4__c}">
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!popuateSummaryFeedbackTable}"
+                                                    rerender="SRFeedback,fbq4" status="loadingStatus" />
+                                            </apex:inputCheckBox>&nbsp;<font color='white'><i>Yes</i></font>&nbsp;&nbsp;
+                                            <apex:inputCheckBox value="{!fbq4False}"
+                                                styleclass="section2-element-col"
+                                                disabled="{!NOT(feedbackOfCurrentYear.Feedback_Question4__c)}">
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!popuateSummaryFeedbackTable}"
+                                                    rerender="SRFeedback,fbq4" status="loadingStatus" />
+                                            </apex:inputCheckBox>&nbsp;<font color='white'><i>No</i></font>
+                                        </apex:outputPanel></td>
+                                </tr>
+                              <tr>
+                                        <td width="1000%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #F0F0F0;"><b>Feedback in this section addresses the Quality Criteria related to action steps, timeline, key personnel, and resources.</b></td>
+                                    </tr>
+                              
+                                <br />
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid;">
+                                        <b><i>Guiding Questions</i></b><br />
+                                        Does the plan include action steps that:<br /> 
+                                        <ul>
+                                        <li>Directly align with and are sufficiently detailed to explain how the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} will carry out the associated major improvement strategy?  </li>
+                                        <li>Can be successfully carried out within the designated timeframe? </li>
+                                        <li>Span the 2016-17 and 2017-18 school years? </li>
+                                        <li>Include specific personnel responsible for overseeing implementation of the plan? </li>
+                                        <li>Identify funding sources or other resources necessary to implement the plan? </li>
+                                        </ul>
+                                        
+                                        <br />
+                                        <br />
+                                        <table width="100%"
+                                            style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf"></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE
+                                                                    Feedback - Winter 2015-16 (if applicable)</b></font>&nbsp;&nbsp;&nbsp;</td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE Feedback - Winter 2016-17</b></font>&nbsp;&nbsp;&nbsp;</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Section 4 Feedback</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04Feedback__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04Feedback__c}"
+                                                        styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Required Change</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04Reqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04Reqchange__c}"
+                                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>  
+
+                                            </tr>  
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Addressed in Previous Feedback?</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04LastYearAddressed__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputField value="{!feedbackOfCurrentYear.Sec04LastYearAddressed__c}"
+                                                        StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                        <apex:outputField value="{!feedbackOfCurrentYear.Sec04LastYearAddressed__c}"
+                                                        StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                                        </td>
+                                            </tr>
+                                        </table> <br />
+                                        
+                                    <!--    <apex:outputPanel >
+                                                <apex:image url="{!$Resource.SCTR}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">
+                                                 If the school identified a pattern of significant disparities in disaggregated groups taking challenging coursework, does the plan include action steps to address these issues?    </p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 Student Course Taking Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04SCTRFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04SCTRFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="True"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 Student Course Taking Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04SCTRReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; text-align: center; border: 1px solid;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04SCTRReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br /> -->
+                                        
+                                        
+                                         <b><i>Program Specific Criteria</i></b><br /> <br />
+                                        <apex:outputPanel rendered="{!IF((uip.CGP_PLAN_TYPE__c=='CGP Systems Change School'||uip.CGP_PLAN_TYPE__c=='CGP Capacity Building School'||uip.CGP_PLAN_TYPE__c=='CGP Universal Support'),true,false)}">
+                                            <apex:image url="{!$Resource.CGP}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;"> Do the action
+                                                steps include methods and tactics of the Dropout Prevention
+                                                Framework? For the 2015-16 school year, if CGP funds will
+                                                support action steps, are the funds included and aligned
+                                                with the action steps and major improvement strategies?
+                                                For the 2015-16 school year, does the plan provide detailed
+                                                information on funds and other resources that will sustain
+                                                action steps, including methods and tactics from the Dropout
+                                                Prevention Framework?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 CGP Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04_21Feedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04_21Feedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 CGP Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04_21Reqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04_21Reqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br />
+                                         <apex:outputPanel rendered="{!IF(uip.FOCUS_TYPE__c=='Identified as a Title I Focus School',true,false)}">
+                                            <apex:image url="{!$Resource.TIF}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">Do the action
+                                                steps address the needs of identified low achieving
+                                                disaggregated groups?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 Focus Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04FocusFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04FocusFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 Focus Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04FocusReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04FocusReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel>
+                                        <br /> 
+                                        <apex:outputPanel rendered="{!IF(uip.usip_READ_type__c=='Currently serving grades K-3',true,false)}">
+                                            <apex:image url="{!$Resource.Read}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;"> For schools
+                                                serving grade K-3, do the action steps include strategies
+                                                that address the needs of K-3 students identified as having
+                                                significant reading deficiencies (e.g., instructional
+                                                strategies, parent involvement strategies)? For schools that
+                                                serve grade(s) K-3?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 READ Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04READFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04READFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 READ Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04READReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04READReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br /> 
+                                        <apex:outputPanel rendered="{!IF(uip.SIS_Grant__c == 'SIS Grantee',true,false)}">
+                                            <apex:image url="{!$Resource.SIS}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;"> Does the plan
+                                                include the grant-funded action steps to improve performance
+                                                for all school? Does the plan identify the action steps
+                                                funded, including amount, with the SIS grant in the
+                                                Resources section?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 SIS Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04SISFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04SISFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 SIS Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04SISReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04SISReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br />
+                                         <apex:outputPanel rendered="{!IF(uip.Diagnostic_Review_Grant_Type__c=='Diagnostic Review Grantee',true,false)}">
+                                            <apex:image url="{!$Resource.DR}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;"> Does the plan
+                                                identify the specific action steps funded, including amount,
+                                                with the Diagnostic Review and Improvement Planning grant in
+                                                the Resources column?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 DR Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04DRFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04DRFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04DR Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04DRReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04DRReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br />
+                                        
+                                        <apex:outputPanel rendered="{!IF((uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='Priority Improvement Plan'||uip.A_TTL_RATING_OFFICIAL__c=='AEC: Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='AEC: Priority Improvement Plan'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Decreased due to Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Low Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Priority Improvement Plan: Decreased due to Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Priority Improvement Plan: Low Participation'),true,false)}">
+                                            <apex:image url="{!$Resource.STT}" width="60" height="40" /> &nbsp;
+                                        <apex:image url="{!$Resource.STPI}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">Do the action
+                                                steps include activities to increase parent engagement in
+                                                the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")}?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 PITA Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04PITAFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04PITAFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 PITA Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04PITARequiredChange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04PITARequiredChange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br />
+                                        <!--
+                                        <apex:outputPanel rendered="{!IF(uip.Participation_95__c =='Did not meet 95% student participation in all areas.',true,false)}">
+                                                <apex:image url="{!$Resource.SAP}" width="60" height="40" />
+                                                <p style="padding: 10px 10px 10px 10px;">If the school had less than 95% participation on the state assessment(s),
+                                                 does the plan provide potential action steps to address this issue (e.g., providing information to the community about 
+                                                 the purpose of the assessments)?  This is an ESEA requirement that applies statewide, regardless of Title I status.</p>
+                                                <table width="100%"
+                                                    style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 Participation Feedback</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec04SAPFeedback__c}" /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec04SAPFeedback__c}"
+                                                                styleClass="ckeditor-" style="width:90%;"
+                                                                richText="true"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="5%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec04 Participation Required Change</b></td>
+                                                        <td width="25%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec04SAPReqchange__c = true, 'Yes', 'No' )}"
+                                                                /></td>
+                                                        <td width="60%"
+                                                            style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                            <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec04SAPReqchange__c}"
+                                                                disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                                <apex:actionSupport event="onchange"
+                                                                    rerender="RequiredChanges" />
+                                                            </apex:inputCheckbox>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </apex:outputPanel><br /> -->
+                                        
+                                        
+                                        </td>
+                                </tr>
+                            </table>
+
+
+                            <div style="width: 100%; text-align: right; padding: 30px;">
+                                <apex:commandButton styleClass="btn btn-primary"
+                                    value="Save" action="{!saveCurrentFeedback}"
+                                    status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <br />
+                        <apex:outputPanel >
+                        <table width="100%"
+                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                        
+                        <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #5C8EF5;"><b>5. As written, does the plan Include elements that effectively
+                                         monitor the impact and progress of the action plan?</b><br /> <apex:outputPanel id="fbq5">
+                                            <apex:inputCheckBox value="{!fbq5True}"
+                                                styleclass="section2-element-col"
+                                                disabled="{!feedbackOfCurrentYear.Feedback_Question5__c}">
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!popuateSummaryFeedbackTable}"
+                                                    rerender="SRFeedback,fbq5" status="loadingStatus" />
+                                            </apex:inputCheckBox>&nbsp;<font color='white'><i>Yes</i></font>&nbsp;&nbsp;
+                                            <apex:inputCheckBox value="{!fbq5False}"
+                                                styleclass="section2-element-col"
+                                                disabled="{!NOT(feedbackOfCurrentYear.Feedback_Question5__c)}">
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!popuateSummaryFeedbackTable}"
+                                                    rerender="SRFeedback,fbq5" status="loadingStatus" />
+                                            </apex:inputCheckBox>&nbsp;<font color='white'><i>No</i></font>
+                                        </apex:outputPanel></td>
+                                </tr>
+                                <tr>
+                                        <td width="1000%"
+                                            style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #F0F0F0;"><b>Feedback in this section addresses the Quality Criteria related to Performance Targets, Interim Measures, and Implementation Benchmarks.</b></td>
+                                    </tr>
+                                <br/>
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><br /> <br /> <b><i>Guiding Questions: Performance Targets</i></b><br />
+                                        Does the plan:<br />
+                                        <ul>
+                                        <li> Include targets that are specific, ambitious, yet attainable?</li>
+                                        <li>Include targets that address the articulated priority performance challenge(s)?</li>
+                                        <li>Include performance targets related to each of the listed priority performance challenges? </li>
+                                        <li>Articulate performance targets that specify the measure (assessment method) and metric (standard of measurement)?</li><br/>
+                                        </ul>
+                                         <b><i>Guiding Questions: Interim Measures</i></b><br/>
+                                          Does the plan:<br />
+                                         <ul>
+                                         <li>List interim measures that describe how the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} will approach target-specific progress monitoring?  </li>
+                                         <li>Include interim measures that give the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} the ability to assess progress more than once per school year? </li>
+                                         <li>Include interim measures that specify the metric (standard of measurement) used? </li><br/>
+                                         </ul>
+                                         <b><i>Guiding Questions: Implementation Benchmarks</i></b><br/>
+                                       Does the plan:<br />
+                                         <ul>
+                                         <li>Include implementation benchmarks that allow staff to monitor the effectiveness of their efforts and make mid-course adjustments?  </li>
+                                         <li>Identify the measures to be used, the type of data to be collected, when, by whom, and how often data will be collected and evaluated? </li>
+                                         <li>Identify funding sources or other resources necessary to implement the implementation benchmarks? </li><br/>
+                                         </ul>
+                                        
+                                        
+                                        <table width="100%"
+                                            style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf"></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE
+                                                                    Feedback - Winter 2015-16 (if applicable)</b></font>&nbsp;&nbsp;&nbsp;</td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE Feedback - Winter 2016-17</b></font>&nbsp;&nbsp;&nbsp;</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Section 5 Feedback</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec05Feedback__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec05Feedback__c}"
+                                                        styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Required Change</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec05Reqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec05Reqchange__c}"
+                                                        disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Addressed in Previous Feedback?</b></td>
+                                                <td width="25%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec05LastYearAddressed__c}" /></td>
+                                                <td width="60%"
+                                                    style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputField value="{!feedbackOfCurrentYear.Sec05LastYearAddressed__c}"
+                                                        StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                        <apex:outputField value="{!feedbackOfCurrentYear.Sec05LastYearAddressed__c}"
+                                                        StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                                        </td>
+                                            </tr>
+                                        </table> <br />
+                                        
+                                        <apex:outputPanel rendered="{!IF(uip.usip_READ_type__c=='Currently serving grades K-3',true,false)}">
+                                            <apex:image url="{!$Resource.Read}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">For schools that
+                                                serve grade(s) K-3, does the plan specify target(s) for
+                                                reducing the number of students who have significant reading
+                                                deficiencies?  For schools that serve grade(s) K-3, does
+                                                the plan specify target(s) to ensure that each student
+                                                achieves grade level expectations in reading by the end of
+                                                grade 3?  Does the plan reference interim assessments
+                                                aligned with the K-3 literacy targets?</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec05 READ Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec05READFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec05READFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec05 READ Required Change</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec05READReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec05READReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br /> 
+                                        
+                                        </td>
+                                        </tr>
+                                        </table>
+                                        
+                                         <div style="width: 100%; text-align: right; padding: 30px;">
+                            <apex:commandButton styleClass="btn btn-primary"
+                                value="Save" action="{!saveCurrentFeedback}"
+                                status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                        </div>
+                                </apex:outputPanel>
+                                     
+                        
+                        <apex:outputPanel >
+                            <table width="100%"
+                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #5C8EF5;"><b>Additional
+                                            Documentation: Required addenda based on specific programs.</b></td>
+                                </tr>
+                                <tr>
+                                    <td width="100%"
+                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:outputPanel rendered="{!IF(uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='AEC: Turnaround Plan'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Decreased due to Participation'||uip.A_TTL_RATING_OFFICIAL__c=='Turnaround Plan: Low Participation',true,false)}">
+                                            <p style="padding: 10px 10px 10px 10px;">Turnaround
+                                                {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "districts", "schools")}: Turnaround Addendum</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf"></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE
+                                                                    Feedback - Winter 2015-16 (if applicable)</b></font>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color: #f5eedf;"><font><b>CDE Feedback - Winter 2016-17</b></font>&nbsp;&nbsp;&nbsp;</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Secion 6 Turnaround Feedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec06TurnaroundFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec06TurnaroundFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec06 Turnaround Reqchange</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec06TurnaroundReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec06TurnaroundReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" /></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec06 Turn LastYear Addressed</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec06TurnLastYearAddressed__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;"><apex:inputField value="{!feedbackOfCurrentYear.Sec06TurnLastYearAddressed__c}"   StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px"  rendered="{!IF((!(feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag)),true,false)}" />
+                                                        <apex:outputField value="{!feedbackOfCurrentYear.Sec06TurnLastYearAddressed__c}"   StyleClass="btn btn-primary dropdown-toggle"
+                                                        style="vertical-align:top; float: center; width:150px" rendered="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}" />
+                                                        </td>
+
+                                                </tr>
+
+                                            </table>
+                                        </apex:outputPanel><br /> <apex:outputPanel rendered="{!IF(uip.TIG_TYPE__c=='Awarded a TIG Grant',true,false)}">
+                                            <apex:image url="{!$Resource.TIG}" width="60" height="40" />
+                                            <p style="padding: 10px 10px 10px 10px;">Tiered
+                                                Intervention Grant (TIG) Schools: TIG Schools must complete
+                                                the addendum that corresponds to the model the school has
+                                                selected (Turnaround, Transformation, or Closure).</p>
+                                            <table width="100%"
+                                                style="margin-left: auto; margin-right: auto; padding: 10px 10px 10px 10px;">
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec06TIGFeedback</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!feedbackOfLastYear.Sec06TIGFeedback__c}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:inputtextarea value="{!feedbackOfCurrentYear.Sec06TIGFeedback__c}"
+                                                            styleClass="ckeditor-" style="width:90%;" richText="true" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td width="5%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid;"><b>Sec06TIGReqchange</b></td>
+                                                    <td width="25%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; background-color:#faf6ee;"><apex:outputtext value="{!IF(feedbackOfLastYear.Sec06TIGReqchange__c = true, 'Yes', 'No' )}" /></td>
+                                                    <td width="60%"
+                                                        style="padding: 10px 10px 10px 10px; border: 1px solid; text-align: center;">
+                                                        <apex:inputCheckbox value="{!feedbackOfCurrentYear.Sec06TIGReqchange__c}"
+                                                            disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}">
+                                                            <apex:actionSupport event="onchange"
+                                                                rerender="RequiredChanges" />
+                                                        </apex:inputCheckbox>
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+                                        </apex:outputPanel><br /></td>
+                                </tr>
+                            </table>
+
+                            <div style="width: 100%; text-align: right; padding: 30px;">
+                                <apex:commandButton styleClass="btn btn-primary"
+                                    value="Save" action="{!saveCurrentFeedback}"
+                                    status="loadingStatus" disabled="{!IF((feedbackOfCurrentYear.SubmitFlag__c&&!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')&&!currentuserflag),true,false)}"/>
+                                 
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+
+                    <div style="width: 100%; text-align: Center; padding: 30px;">
+                        <apex:outputPanel id="popup">
+                            <apex:outputPanel rendered="{!IF(!($Profile.Name='CDE Admin'),true,false)}">
+                                <apex:commandButton styleClass="{!IF(feedbackOfCurrentYear.SubmitFlag__c,'btn btn-primary disabled','btn btn-primary active')}"
+                                    value="Submit" action="{!submit}" status="loadingStatus" />
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(($Profile.Name='CDE Admin'||$Profile.Name='System Administrator'),true,false)}">
+                                <button type="button"
+                                    class="{!IF((submitForApproval&&feedbackOfCurrentYear.SubmitFlag__c),'btn btn-primary active','btn btn-primary disabled')}"
+                                    data-toggle="modal" data-target=".bs-example-modal-lg">CDE
+                                    Feedback Review</button>
+                            </apex:outputPanel>
+                             <apex:outputPanel rendered="{!IF(currentuserflag,true,false)}">
+                                        <apex:commandButton styleClass="btn btn-primary"
+                                        value="Approve" action="{!approveReq}"
+                                        status="loadingStatus" rendered="{!IF(currentuserflag,true,false)}"/>
+                                        <apex:commandButton styleClass="btn btn-primary"
+                                        value="Reject" action="{!rejectReq}"
+                                        status="loadingStatus" rendered="{!IF(currentuserflag,true,false)}"/>
+                              </apex:outputPanel>
+                        </apex:outputPanel>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1"
+                            role="dialog" aria-labelledby="myLargeModalLabel">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="gridSystemModalLabel">CDE
+                                            Approval</h4>
+                                    </div>
+
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="20%">Level 1 Approver:</td>
+                                            <td width="60%"><apex:inputfield value="{!feedbackOfCurrentYear.Level1_Approver__c}" /></td>
+                                            <td width="20%"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">Level 2 Approver:</td>
+                                            <td width="60%"><apex:inputfield value="{!feedbackOfCurrentYear.Level2_Approver__c}" /></td>
+                                            <td width="20%"></td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <br />
+                                    <div class="modal-footer">
+                                        <apex:commandButton value="CDE Feedback Review"
+                                            action="{!submitReq}" styleClass="btn btn-primary" />
+                                        <button type="button" class="btn btn-primary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
+            </apex:outputPanel>
+            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(((recordUnderApproval&&!currentuserflag)||(!($Profile.Name='CDE Reviewer'||$Profile.Name='CDE Lead Reviewer'||$Profile.Name='System Administrator' ||$Profile.Name='CDE Admin')&&!approvedFlag)),true,false)}" >
+                    <apex:outputPanel rendered="{!IF((!($Profile.Name='System Administrator'|| $Profile.Name='CDE Admin')),true,false)}" >
+                        <div class="emptySection">Feedback has not been populated!</div>
+                    </apex:outputPanel>
+                </apex:outputPanel> 
+            </div>
+            <br/>
+        </apex:define>
+    </apex:composition>
+
+    <style type="text/css">
+.lookupInput {
+    display: inline;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.lookupInput img {
+    background-repeat: no-repeat;
+    margin-right: .25em;
+    vertical-align: middle;
+}
+
+.lookupInput .disabled {
+    background-color: #ccc;
+}
+
+.lookupInput .emptyDependentLookup {
+    font-style: italic;
+}
+
+.lookupInput input[readonly] {
+    background-color: #e6e6e6;
+    border: 2px solid #e6e6e6;
+    color: #333;
+    cursor: default;
+}
+
+.lookupInput a.readOnly {
+    float: right;
+}
+
+.lookupInput span.readOnly {
+    display: block;
+    white-space: normal;
+}
+
+.lookupInput span.totalSummary {
+    font-weight: bold;
+}
+
+.inlineEditRequiredDiv .lookupInput img, .inlineEditDiv .lookupInput img
+    {
+    vertical-align: middle;
+}
+
+.quickCreateModule .lookupInput input {
+    max-width: 155px
+}
+
+.lookupIcon {
+    background-image: url(/img/func_icons/util/lookup20.gif);
+    background-position: 0 0;
+    width: 20px;
+    height: 20px;
+    background-position: top left
+}
+
+.lookupIconOn {
+    background-image: url(/img/func_icons/util/lookup20.gif);
+    background-position: 0 0;
+    width: 20px;
+    height: 20px;
+    background-position: top right
+}
+
+.wrapWithWordBreak {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+</style>
+
+</apex:page>

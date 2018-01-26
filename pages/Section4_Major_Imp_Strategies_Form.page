@@ -1,0 +1,615 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <style>
+        .col-md-3 {
+        background-color: #ffffff !important;
+        }
+        
+        .left-col {
+        padding: 5px;
+        font-weight: bold;
+        }
+        
+        .div-header {
+        background-color: #ececec;
+        font-weight: bold;
+        }
+        
+        .column {
+        float: left;
+        overflow: hidden;
+        margin: 0;
+        padding: 10px;
+        }
+    </style>
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <div class="thetabcontent">
+                <apex:outputPanel rendered="{!NOT(uip.Section_4__c != 'No' && uip.Section_4__c != null)}">
+                    <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!uip.Section_4__c != 'No' && uip.Section_4__c != null}">
+                    <div width="100%" style="background-color: #d3ccbc;">
+                        <table width="100%">
+                            <tr>
+                                <td width="60%">
+                                    <h1
+                                        style="font-size: 150%; padding-left: 5px; font-weight: bold; color: #5c666f;">Section
+                                        IV: Action Plans - Major Improvement Strategies</h1>
+                                </td>
+                                <td width="40%" style="text-align: right; padding-right: 50px;">
+                                    <apex:inputField value="{!uip.Section_IV_Major_Imp_Strategies_Complete__c}">
+                                        <apex:actionSupport event="onchange" rerender="empty"
+                                                            action="{!updateUIP}" status="loadingStatus" />
+                                    </apex:inputField> <b>Complete &amp; Ready to submit</b>
+                                </td>
+                                <td width="60%" style="text-align: right; padding-right: 10px;">
+                                    <apex:commandLink StyleClass="btn btn-custom"
+                                                      action="{!DownloadExcel_S4_PlanningForm}">
+                                        <span class="glyphicon glyphicon glyphicon-download"></span>&nbsp;Download
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <p>
+                        <b>Directions:</b> Identify the major improvement strategy(s) for
+                        2016-2017 and 2017-2018 that will address the root causes
+                        determined in the data narrative. For each major improvement
+                        strategy, identify the root cause(s) that the action steps will
+                        help to dissolve. Then, indicate which accountability provision or
+                        grant opportunity it will address.
+                    </p>                    
+                    <HR Style="border: 1px outset #5c666f" />
+                    <b>Root Cause(s): </b> <br/><br/>
+                    <apex:repeat value="{!rcList}" var="rc">
+                        <apex:outputPanel rendered="{!NOT(isEditElem)}">
+                            <div style="padding: 5px; margin:0px 0px 5px 20px;background-color: #ebf4f4;" class="bg-warning">
+                                <p style="margin:0px;padding:0px;">
+                                    <apex:outputText value="{!rc.elemName}" /><br/>
+                                </p>
+                            </div>
+                        </apex:outputPanel>                                             
+                    </apex:repeat>
+                    <HR Style="border: 1px outset #5c666f" />                
+                    <!-- <p><b>Major Improvement Strategies</b></p> -->
+                    <apex:outputPanel id="misSection">
+                        <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                            <apex:outputPanel id="viewMis">
+                                <apex:outputPanel rendered="{!NOT(isEditElem)}">
+                                    <div class="table-header-target2" style="width: 100%; overflow: hidden; padding: 10px;">
+                                        <div class="table-header-target2" style="float: left;">Major
+                                            Improvement Strategy:&nbsp;&nbsp;{!misWrapper.mis.Name}</div>
+                                        <div class="row table-header-target2" style="float: right;">
+                                            <div class="col-md-12" style="text-align: left;">
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                  action="{!EditElem}"
+                                                                  rerender="script, viewMis, editMis, errorSection"
+                                                                  status="loadingStatus">
+                                                    <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp; Edit Improvement Strategy
+                                                </apex:commandLink>
+                                                &nbsp;&nbsp;
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                  action="{!DeleteElem}"
+                                                                  rerender="script, misSection, errorSection"
+                                                                  status="loadingStatus"
+                                                                  onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                    <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Delete Improvement Strategy
+                                                    <apex:param name="elemId" value="{!misWrapper.mis.Id}" />
+                                                </apex:commandLink>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <blockquote>
+                                        <div style="background-color: #ffffff; padding: 10px;">
+                                            <div class="row">
+                                                <div class="col-md-3 left-col" style="width: 20%;">
+                                                    <apex:outputText rendered="{!misWrapper.mis.Description__c!=null}">Describe what success will look like: </apex:outputText></div>
+                                                <apex:outputText rendered="{!misWrapper.mis.Description__c!=null}">
+                                                    <div class="col-md-9" style="width: 80%; padding-right: 0px;">
+                                                        <div style="background-color: #ececec; padding: 10px; min-height: 40px;">
+                                                            {!misWrapper.mis.Description__c}
+                                                        </div>
+                                                    </div>
+                                                </apex:outputText>
+                                            </div>
+                                            <p></p>
+                                            <div class="row">
+                                                <div class="col-md-3 left-col" style="width: 20%;">
+                                                    <apex:outputText rendered="{!misWrapper.mis.Evidence_Based_Interventions__c!=null}">Describe the research supporting the strategy: </apex:outputText></div>
+                                                <apex:outputText rendered="{!misWrapper.mis.Evidence_Based_Interventions__c!=null}">
+                                                    <div class="col-md-9" style="width: 80%; padding-right: 0px;">
+                                                        <div style="background-color: #ececec; padding: 10px; min-height: 40px;">
+                                                            {!misWrapper.mis.Evidence_Based_Interventions__c}
+                                                        </div>
+                                                    </div>
+                                                </apex:outputText>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3 left-col" style="width: 20%;">
+                                                    Root Cause<br />
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!associateElem}" rerender="script, newElemSection" status="loadingStatus">
+                                                        <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp; Add Root Cause
+                                                        <apex:param name="elemValue" value="Root Cause" />
+                                                    </apex:commandLink>
+                                                </div>
+                                                <div class="col-md-9"
+                                                     style="width: 80%; padding-right: 0px;">
+                                                    <div
+                                                         style="background-color: #ececec; padding: 10px; min-height: 40px;">
+                                                        <apex:outputPanel id="elementsSection">
+                                                            <apex:repeat value="{!misWrapper.rcForMisList}" var="rc">
+                                                                <apex:outputPanel id="ViewSection">
+                                                                    <apex:outputPanel rendered="{!NOT(isEditElemx)}">
+                                                                        <blockquote style="margin: 1px;">
+                                                                            
+                                                                            <div
+                                                                                 style="background-color: #ffffff; padding: 10px;">
+                                                                                <p>
+                                                                                    <b>{!rc.elem.Name}:</b> {!rc.elem.Description__c}
+                                                                                </p>
+                                                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                                                  action="{!EditElemx}"
+                                                                                                  rerender="script, editSection, ViewSection, errorSection"
+                                                                                                  status="loadingStatus">
+                                                                                    <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;Edit
+                                                                                </apex:commandLink>
+                                                                                &nbsp;&nbsp;
+                                                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                                                  action="{!DeleteRcForMis}"
+                                                                                                  rerender="script, elementsSection, errorSection"
+                                                                                                  status="loadingStatus"
+                                                                                                  onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                                                    <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Delete
+                                                                                    <apex:param name="elemId" value="{!rc.elem.Id}" />
+                                                                                    <apex:param name="misId"
+                                                                                                value="{!misWrapper.mis.Id}" />
+                                                                                </apex:commandLink>
+                                                                            </div>
+                                                                        </blockquote>
+                                                                    </apex:outputPanel>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel id="editSection">
+                                                                    <apex:outputPanel rendered="{!isEditElemx}">
+                                                                        <div style="background-color: #ffffff; padding: 10px;">
+                                                                            <table width="100%">
+                                                                                <tr>
+                                                                                    <td style="text-align: left;"><b>Name</b></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="height: 10px;"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="text-align: left;"><apex:inputField value="{!rc.dummyElem.Name}" style="width: 60%;" /></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="height: 10px;"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="text-align: left;"><b>Description:</b>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="height: 10px;"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><apex:inputField style="width: 90%; height:50px;"
+                                                                                                         value="{!rc.dummyElem.Description__c}" /></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="height: 10px;"></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <br />
+                                                                            <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                                              action="{!CancelEditElemx}"
+                                                                                              rerender="script, elementsSection, errorSection"
+                                                                                              status="loadingStatus">
+                                                                                <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                                                            </apex:commandLink>
+                                                                            &nbsp;&nbsp;
+                                                                            <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                                              action="{!SaveEditMisElem}"
+                                                                                              rerender="script, misSection, errorSection"
+                                                                                              status="loadingStatus">
+                                                                                <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                                                                                <apex:param name="elemId" value="{!rc.elem.Id}" />
+                                                                                <apex:param name="misId"
+                                                                                            value="{!misWrapper.mis.Id}" />
+                                                                                <apex:param name="rcDesc"
+                                                                                            value="{!rc.dummyElem.Name}" />
+                                                                            </apex:commandLink>
+                                                                        </div>
+                                                                    </apex:outputPanel>
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                            <apex:outputPanel id="newElemSection">
+                                                                <apex:outputPanel rendered="{!elementValue == 'Root Cause'}">
+                                                                    <blockquote>
+                                                                        <div style="background-color: #ffffff; padding: 10px;">
+                                                                            <apex:outputPanel rendered="{!isExistingRC}">
+                                                                                Select existing Root Cause&nbsp;&nbsp;
+                                                                                <apex:selectList value="{!misWrapper.choosedRC}" size="1">
+                                                                                    <apex:selectOptions value="{!misWrapper.rcForMisOptionList}" />
+                                                                                </apex:selectList>
+                                                                                <br />
+                                                                                <br />
+                                                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                                                  action="{!CancelNewElem}"
+                                                                                                  rerender="script, elementsSection, newElemSection, errorSection"
+                                                                                                  status="loadingStatus">
+                                                                                    <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+                                                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                                                                  action="{!SaveRcForMis}"
+                                                                                                  rerender="script, elementsSection, newElemSection, errorSection"
+                                                                                                  status="loadingStatus">
+                                                                                    <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp;Associate Root Cause
+                                                                                    <apex:param name="misId" value="{!misWrapper.mis.Id}" />
+                                                                                </apex:commandLink>&nbsp;&nbsp;
+                                                                            </apex:outputPanel>
+                                                                        </div>
+                                                                        <br />
+                                                                    </blockquote>
+                                                                </apex:outputPanel>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p></p>
+                                            <div class="row">
+                                                <div class="col-md-3 left-col" style="width: 20%;">
+                                                    Accountability Provisions</div>
+                                                <div class="col-md-9"
+                                                     style="width: 80%; padding-right: 0px;">
+                                                    <div
+                                                         style="background-color: #ececec; padding: 10px; min-height: 40px;">
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.State_Accreditation__c}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;State Accreditation
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Title_I_Focus_School__c && (uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Title I Focus School
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Tiered_Intervention_Grant_TIG__c && (uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Tiered Intervention Grant (TIG)
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Student_Graduation_and_Completion_Plan__c && (misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Student Graduation and Completion Plan
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Colorado_Graduation_Pathways_Program__c && (uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015'|| uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Colorado Graduation Pathways Program (CGP)
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Title_IA__c && (misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Title IA
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Title_IIA__c && (misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Title IIA
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Title_III__c && (misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Title III
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Gifted_Program__c && (misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;Gifted Education
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.Other__c && misWrapper.mis.Other_Description__c != null && misWrapper.mis.Other_Description__c != ''}">
+                                                            &nbsp;&nbsp;-&nbsp;&nbsp;{!misWrapper.mis.Other_Description__c}
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p></p>
+                                        </div>
+                                    </blockquote>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel id="editMis">
+                                <apex:outputPanel rendered="{!isEditElem}">
+                                    <blockquote>
+                                        <div style="background-color: #ececec; padding: 10px;">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td style="text-align: left;"><b>Name</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;"><apex:inputField value="{!misWrapper.mis.Name}" style="width: 60%;" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;"><b>Describe what success will look like:</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><apex:inputField style="width: 90%; height:50px;" value="{!misWrapper.mis.Description__c}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left;"><b>Describe the research supporting the strategy:</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><apex:inputField style="width: 90%; height:50px;" value="{!misWrapper.mis.Evidence_Based_Interventions__c}" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px;"></td>
+                                                </tr>
+                                            </table>
+                                            <br />
+                                            <table width="100%" align="center">
+                                                <tr>
+                                                    <td colspan="8" style="padding-bottom: 10px;"><b>Accountability Provisions or Grant Opportunities Addressed by this Major Improvement Strategy</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="3%" align="center"><apex:inputField value="{!misWrapper.mis.State_Accreditation__c}" /></td>
+                                                    <td width="16%">State Accreditation</td>
+                                                    <td width="3%" align="center">
+                                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">
+                                                            <apex:inputField value="{!misWrapper.mis.Title_I_Focus_School__c}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td width="16%">
+                                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016'|| uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">Title I Focus School</apex:outputPanel>
+                                                    </td> 
+                                                    <td width="3%" align="center">
+                                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">
+                                                            <apex:inputField value="{!misWrapper.mis.Tiered_Intervention_Grant_TIG__c}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td width="16%">
+                                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">Tiered Intervention Grant (TIG)</apex:outputPanel>                                                        
+                                                    </td>
+                                                    <td width="3%" align="center">
+                                                        <apex:outputPanel rendered="{!(misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">
+                                                            <apex:inputField value="{!misWrapper.mis.Student_Graduation_and_Completion_Plan__c}" />
+                                                        </apex:outputPanel>
+                                                    </td>                                                    
+                                                    <td width="26%">
+                                                        <apex:outputPanel rendered="{!(misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017')}">Student Graduation and Completion Plan</apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="3%" align="center">
+                                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">
+                                                            <apex:inputField value="{!misWrapper.mis.Colorado_Graduation_Pathways_Program__c}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td width="26%">
+                                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'District UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">Colorado Graduation Pathways Program (CGP)</apex:outputPanel>                                                       
+                                                    </td>   
+                                                    <td width="3%" align="center">
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}">
+                                                            <apex:inputField value="{!misWrapper.mis.Title_IA__c}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td width="26%">                                                        
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}">Title IA</apex:outputPanel>
+                                                    </td>
+                                                    <td width="3%" align="center">
+                                                        <apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}">
+                                                            <apex:inputField value="{!misWrapper.mis.Title_IIA__c}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td width="16%"><apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}">Title IIA</apex:outputPanel></td>
+                                                    <td width="3%" align="center"><apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}"><apex:inputField value="{!misWrapper.mis.Title_III__c}" /></apex:outputPanel></td>
+                                                    <td width="26%"><apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}">Title III</apex:outputPanel></td>
+                                                </tr>                                     
+                                                <tr>
+                                                    <td width="3%" align="center"><apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015'|| misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}"><apex:inputField value="{!misWrapper.mis.Gifted_Program__c}" /></apex:outputPanel></td>
+                                                    <td width="26%"><apex:outputPanel rendered="{!misWrapper.mis.UIP__r.RecordType.Name == 'District UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2015' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2016' || misWrapper.mis.UIP__r.RecordType.Name == 'District UIP 2017'}">Gifted Education</apex:outputPanel></td>
+                                                </tr>                                                
+                                                <tr>
+                                                    <td width="3%" align="center">
+                                                        <apex:inputCheckBox value="{!misWrapper.mis.Other__c}" id="OtherCbx" onclick="showOther();"/>
+                                                    </td>
+                                                    <td width="22%" >Other</td>
+                                                    <td colspan="6">
+                                                        <apex:inputTextarea value="{!misWrapper.mis.Other_Description__c}" id="otherTxt" style=" visibility:hidden; width: 95%; padding-top:5px;"/>
+                                                        <script type="text/javascript">
+                                                        function showOther() {
+                                                            ckb = document.getElementById("{!$Component.OtherCbx}").checked;
+                                                            txt = document.getElementById("{!$Component.otherTxt}");
+                                                            if (ckb) {
+                                                                txt.style.visibility = "Visible";
+                                                            } else {
+                                                                txt.style.visibility = "Hidden";
+                                                            }
+                                                        }
+                                                        showOther();
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br />
+                                            <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelEditElem}" rerender="script, misSection, errorSection" status="loadingStatus">
+                                                <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                            </apex:commandLink>
+                                            &nbsp;&nbsp;
+                                            <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveEditElem}" rerender="script, misSection, errorSection" status="loadingStatus">
+                                                <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                                                <apex:param name="elemId" value="{!misWrapper.mis.Id}" />
+                                            </apex:commandLink>
+                                        </div>
+                                    </blockquote>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                        <p>
+                            <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!addElem}" rerender="script, newMisSection, errorSection" status="loadingStatus">
+                                <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp; Add Major Improvement Strategy
+                                <apex:param name="elemValue" value="Mis" />
+                            </apex:commandLink> &nbsp;&nbsp;<br /> <br />
+                        </p>
+                        <apex:outputPanel id="newMisSection">
+                            <apex:outputPanel rendered="{!elementValue == 'Mis'}">
+                                <blockquote>
+                                    <div style="background-color: #ececec; padding: 10px;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td style="text-align: left;"><b>Name</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left;"><apex:inputField value="{!dummyUipe.Name}" style="width: 60%;" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left;"><b>Describe what success will look like:</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><apex:inputField style="width: 90%; height:50px;" value="{!dummyUipe.Description__c}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left;"><b>Describe the research supporting the strategy:</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><apex:inputField style="width: 90%; height:50px;" value="{!dummyUipe.Evidence_Based_Interventions__c}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 10px;"></td>
+                                            </tr>
+                                        </table>
+                                        <br />                                       
+                                        <table width="100%" align="center">
+                                            <tr>
+                                                <td colspan="8" style="padding-bottom: 10px;"><b>Accountability
+                                                    Provisions or Grant Opportunities Addressed by this Major
+                                                    Improvement Strategy</b></td>
+                                            </tr>
+                                            <tr>                                            
+                                                <td width="3%" align="center"><apex:inputField value="{!dummyUipe.State_Accreditation__c}" /></td>
+                                                <td width="16%">State Accreditation</td>
+                                                <td width="3%" align="center"><apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'AEC UIP 2016' || uip.RecordType.Name == 'School UIP 2017' || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Title_I_Focus_School__c}" />
+                                                    </apex:outputPanel></td>
+                                                <td width="16%"><apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'AEC UIP 2016' || uip.RecordType.Name == 'School UIP 2017' || uip.RecordType.Name == 'AEC UIP 2017'}">Title I Focus School</apex:outputPanel>
+                                                </td>
+                                                
+                                                <td width="3%" align="center"><apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'AEC UIP 2016' || uip.RecordType.Name == 'School UIP 2017' || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Tiered_Intervention_Grant_TIG__c}" />
+                                                    </apex:outputPanel> <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Student_Graduation_and_Completion_Plan__c}" />
+                                                    </apex:outputPanel></td>
+                                                <td width="26%"><apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'AEC UIP 2016'  || uip.RecordType.Name == 'School UIP 2017' || uip.RecordType.Name == 'AEC UIP 2017'}">Tiered Intervention Grant (TIG)</apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'}">Student Graduation and Completion Plan</apex:outputPanel>
+                                                </td>
+                                                <td width="3%" align="center"><apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'AEC UIP 2016' || uip.RecordType.Name == 'School UIP 2017' || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Colorado_Graduation_Pathways_Program__c}" />
+                                                    </apex:outputPanel> <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'  || uip.RecordType.Name == 'District UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Title_IA__c}" />
+                                                    </apex:outputPanel></td>
+                                                <td width="26%"><apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'AEC UIP 2016'  || uip.RecordType.Name == 'School UIP 2017' || uip.RecordType.Name == 'AEC UIP 2017'}">Colorado Graduation Pathways Program (CGP)</apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">Title IA</apex:outputPanel>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="3%" align="center"><apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Title_IIA__c}" />
+                                                    </apex:outputPanel></td>
+                                                <td width="16%"><apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'  || uip.RecordType.Name == 'District UIP 2017'}">Title IIA</apex:outputPanel></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td width="3%" align="center"><apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Title_III__c}" />
+                                                    </apex:outputPanel></td>
+                                                <td width="26%"><apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">Title III</apex:outputPanel></td>
+                                                <td width="3%" align="center"><apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                                                    <apex:inputField value="{!dummyUipe.Gifted_Program__c}" />
+                                                    </apex:outputPanel></td>
+                                                <td width="26%"><apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">Gifted Education</apex:outputPanel></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="3%" align="center"><apex:inputCheckBox value="{!dummyUipe.Other__c}" id="OtherCbxNew"
+                                                                                                  onclick="showOther();" /></td>
+                                                <td width="22%">Other</td>
+                                                <td colspan="6"><apex:inputTextarea value="{!dummyUipe.Other_Description__c}" id="otherTxtNew"
+                                                                                    style=" visibility:hidden; width: 95%; padding-top:5px;" />
+                                                    <script type="text/javascript">
+                                                    function showOther() {
+                                                        ckb = document.getElementById("{!$Component.OtherCbxNew}").checked;
+                                                        txt = document.getElementById("{!$Component.otherTxtNew}");
+                                                        if (ckb) {
+                                                            txt.style.visibility = "Visible";
+                                                        } else {
+                                                            txt.style.visibility = "Hidden";
+                                                        }
+                                                    }
+                                                    showOther();
+                                                    </script></td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                        <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                          action="{!CancelNewElem}"
+                                                          rerender="script, misSection, errorSection"
+                                                          status="loadingStatus">
+                                            <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                        </apex:commandLink>
+                                        &nbsp;&nbsp;
+                                        <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                          action="{!SaveNewElem}"
+                                                          rerender="script, misSection, errorSection"
+                                                          status="loadingStatus">
+                                            <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                                        </apex:commandLink>
+                                    </div>
+                                </blockquote>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <div style="width: 100%; text-align: left;">
+                        <apex:commandLink StyleClass="btn btn-custom"
+                                          action="{!BackSchoolTargetSetting}" rerender="errorSection"
+                                          status="loadingStatus" onclick="if(!goNext()) {return};">
+                            <span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink>
+                        &nbsp;&nbsp;
+                        <apex:commandLink StyleClass="btn btn-custom"
+                                          action="{!NextPlanningForm}" rerender="errorSection"
+                                          status="loadingStatus" onclick="if(!goNext()) {return};">Next&nbsp;<span
+                                                                                                                   class="glyphicon glyphicon-chevron-right"></span>
+                        </apex:commandLink>
+                        <br />
+                        <br />
+                    </div>
+                </apex:outputPanel>
+            </div>            
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                var isPageChanged = false;
+                var isNewContact = false;
+                var isEditContact = false;
+                var isEditRTF = '{!isEditRTF}';
+                var isEditPit = '{!isEditPit}';
+                var isEditPint = '{!isEditPint}';
+                var elementValue = '{!elementValue}';
+                var isEditElem = '{!isEditElem}';
+                var isEditElemx = '{!isEditElemx}';
+                var isTextChanged = '{!isTextChanged}';
+                var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

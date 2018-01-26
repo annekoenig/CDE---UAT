@@ -1,0 +1,3 @@
+<apex:page standardController="ZPIF_UIP__c" extensions="UIPPublicFacingController" showHeader="false" standardStylesheets="false" docType="HTML-5.0" >
+    I am testing.
+</apex:page>

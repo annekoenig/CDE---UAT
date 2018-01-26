@@ -1,0 +1,26 @@
+<apex:component controller="Section3">
+    <!-- Adding Benchmark action steps -->
+    <apex:outputpanel id="benchmarkactionstep">
+        <div style="float:left;">
+            <b>Choose Improvement Action Step:</b> &nbsp;
+            <apex:selectList value="{!chooseniasValue}" multiselect="false" size="1" style="width:300px" >
+                <apex:selectOption itemValue="" />
+                <apex:selectOptions value="{!chooseIas}" />
+            </apex:selectList>
+        </div>
+        <div style="float: right;">
+            <b>Choose Implementation Benchmark:</b> &nbsp;
+            <apex:selectList value="{!choosenibValue}" multiselect="false" size="1" style="width:300px" >
+                <apex:selectOption itemValue="" />
+                <apex:selectOptions value="{!chooseIb}" />
+            </apex:selectList>
+        </div>
+        <br/><br/>
+        <div style=" margin-left:auto; width:30%; margin-right:auto;">
+            <apex:commandLink style="font-size:17px; padding:5px;" StyleClass="btn btn-custom btn-xs" status="loadingStatus" action="{!benchmark}">
+                <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;Create BenchMark ActionSteps
+            </apex:commandLink>    
+        </div>
+    </apex:outputpanel>
+    <!-- Adding Benchmark action steps -->
+</apex:component>

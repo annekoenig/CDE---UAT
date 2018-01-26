@@ -1,0 +1,103 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <!-- <apex:includescript value="{!URLFOR($Resource.CKEditor, 'ckeditor/ckeditor.js')}" /> -->
+    <apex:includeScript value="/ckeditor/ckeditor-4.x/rel/ckeditor.js?t=4.4.4.5"/>
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <div class="thetabcontent">
+                <apex:outputPanel rendered="{!NOT(uip.Section_3__c != 'No' && uip.Section_3__c != null)}">
+                    <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+                    <div id="empty"></div>
+                    <div width="100%" style="background-color: #d3ccbc;">
+                        <table width="100%">
+                            <tr>
+                                <td width="60%">
+                                    <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section III: Step Three - Current Performance</h1>
+                                </td>
+                                <td width="40%" style="text-align: right; padding-right: 50px;">
+                                <apex:inputField value="{!uip.Section_III_Current_Performance_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b></td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                    <p><b>Directions:</b> Review the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017', "DPF", "SPF")} and local data. Document any areas where the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017', "district", "school")} did not at least meet state/ federal expectations.At a minimum:</p>
+                    
+                    <ul>
+                        <li>
+                            <span style="padding: 10px 10px 10px 10px;">Address areas where expectations were not met or areas where you would like to improve</span>
+                        </li>
+                        <li>
+                            <span style="padding: 10px 10px 10px 10px;">Provide a description of the magnitude of challenges</span>
+                        </li>
+                    </ul>
+                    <p>Some additional resources that may be helpful include: the pre-populated report (Section I), the <a href="http://www.cde.state.co.us/schoolview/performance" target="_blank">Performance Frameworks</a>, the <a href="http://www.schoolview.org/dish/dashboard.asp" target="_blank">DISH</a> and the <a href="http://www.schoolview.org/dish/schooldashboard.asp" target="_blank">School Dashboard</a>. Consulting local data is also very important to this section.  </p>
+                    <HR Style="border: 1px outset #5c666f" />
+                    <!-- // renders pdf in an iframe -->
+                    <apex:outputPanel >
+                        <div>
+						<apex:composition template="CurrentPerformanceAttachment">
+                        <apex:define name="body" ></apex:define>> 
+                            </apex:composition></div>
+                    </apex:outputPanel>
+                    <div width="100%" style="text-align: right; padding-left:50px;"><u><apex:commandlink value="Clear formatting" onclick="clearText();" rerender="empty"/></u></div>
+                    <apex:inputTextarea id="myEditor" value="{!uip.Target_Reflection__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;"></apex:inputTextarea><br/><br/>
+                    <apex:outputPanel layout="none" id="theCode">
+                        <div id="hideMe" style="display:none">
+                            <apex:inputTextarea id="hideTheCode" value="{!uip.Target_Reflection__c}"/>
+                        </div>
+                    </apex:outputPanel>
+                    <!--     <div>
+                                <apex:page id="AttachmentPage"></apex:page>
+                    </div>-->
+                    <script type="text/javascript">
+                        function refreshText() {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].getData();
+                            x=jQuery("*[id$=hideTheCode]").attr("id");
+                            document.getElementById(x).value = newContent;
+                        }
+                        function clearText() {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].getData();
+                            //newContent=newContent.replace(/<[^>]+>/gm, '');
+                            newContent=newContent.replace(/<(?!(img|\/img))[^>]+>/gm, '');
+                            CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].setData(newContent);
+                            console.log('newContent:::' + newContent);
+                        }
+                    </script>
+                     <p style="width:100%; text-align: center;">
+                    <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText();" rerender="script, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+                    <br/>
+                    </p>
+                    <div style="width:100%; text-align: left; padding: 10px;">
+                        <!-- <p><apex:inputField value="{!uip.Section_III_Current_Performance_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b></p>-->
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!BackPriorYearTargets}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};"><span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink>&nbsp;&nbsp;
+                        
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!NextTrendAnalysis}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></apex:commandLink><br/><br/>
+                    </div>
+                    <c:RichTextEditorJS myEditor="{!$Component.myEditor}"/>
+                </apex:outputPanel>
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

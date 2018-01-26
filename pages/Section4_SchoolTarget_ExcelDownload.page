@@ -1,0 +1,83 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" contenttype="application/vnd.ms-excel#Section4_SchoolTargetSetting_Export.xls" cache="true">
+	<apex:outputPanel rendered="{!NOT(uip.Section_4__c != 'No' && uip.Section_4__c != null)}">
+		<div class="emptySection">School is not required to fill this section of the UIP out!</div>
+	</apex:outputPanel>
+	<apex:outputPanel rendered="{!uip.Section_4__c != 'No' && uip.Section_4__c != null}">
+		<div width="100%" style="background-color: #d3ccbc;">
+			<table width="100%">
+				<tr>
+					<td width="60%">
+						<h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section IV: Action Plans - School Target Setting</h1>
+					</td>
+					<td width="40%" style="text-align: right; padding-right: 50px;">
+					</td>
+					</tr>
+			</table>
+		</div><br/>
+		<p>Schools are expected to set their own annual targets for academic achievement, academic growth, academic growth gaps, 
+                    and postsecondary and workforce readiness. At a minimum, schools should set targets for each of the performance indicators 
+                    where state expectations are not met; targets should also be connected to prioritized performance challenges. 
+                    Consider last year's targets (see Prior Year's Targets tab) and whether adjustments need to be made. For each annual performance target, 
+                    identify interim measures that will be used to monitor progress toward the annual targets at least quarterly during the school year.</p>
+                    
+                    <p> <em> Implications of Colorado Measures of Academic Success (CMAS) on Target Setting:  During the 2014-15 school year, Colorado is transitioning 
+                    from reading, writing and math TCAP assessments to CMAS PARCC English language arts and math assessments. These assessments measure related, but different 
+                    content standards and are expected to have different proficiency levels. As a result, setting targets based on the percent of students 
+                    scoring proficient and advanced may not be appropriate. Furthermore, CDE does not yet know if student growth percentiles and median student growth percentiles 
+                    will be available for accountability, planning or reporting use. It is known that adequate growth percentiles will not be available next year for 2014-15 results. Target setting 
+                    is still expected to occur in the UIP process during this transition period.  However, some modifications in typical practice may be needed.  Refer to the <a href="http://www.cde.state.co.us/uip/20142015uiphandbook" target="_blank">UIP Handbook</a> and <a href="http://www.cde.state.co.us/uip/assessmenttransitionimplicationsforuip2014" target="_blank">guidance documents</a>  
+                    on the <a href="http://www.cde.state.co.us/uip/uip_trainingandsupport_resources" target="_blank">UIP website</a> for options and considerations. </em> </p>
+		
+		<apex:outputPanel id="SchoolTargetSection">
+			<apex:repeat value="{!piSchoolTargetsMap}" var="st">
+				<br/><p class="table-header-target2">{!st}</p>
+				<apex:repeat value="{!piSchoolTargetsMap[st]}" var="pitWrapper">
+					<apex:outputPanel id="viewSchoolTarget">
+						<apex:outputPanel rendered="{!NOT(isEditElem)}">
+							<div style="background-color:#ececec; padding : 10px;">
+								<table width="100%" style="border:2px solid #ffffff;">
+									<tbody>
+										<tr>
+											<td colspan="2" style="font-weight:bold;padding:5px;border:2px solid #ffffff;background-color:#e0e0e0;text-align:right;">
+												Measures / Metrics:</td>
+											<td style="padding:5px;background-color:#ffffff;">
+												{!pitWrapper.thisYearST.Measures_Metrics2__c}</td>
+										</tr>
+										<tr>
+											<td colspan="2" valign="top" style="font-weight:bold;padding:5px;border:2px solid #ffffff;;background-color:#e0e0e0;text-align:right;">
+												Priority Performance Challenge:</td>
+											<td colspan="2" style="padding:5px;background-color:#ffffff;">
+												<b>{!pitWrapper.thisYearST.Priority_Performance_Challenge_1__r.Name}</b><br/>
+												{!pitWrapper.thisYearST.Priority_Performance_Challenge_1__r.Description__c}
+											</td>
+										</tr>
+										<tr>
+											<td rowspan="2" width="130" style="font-weight:bold;padding:5px;border:2px solid #ffffff;;background-color:#e0e0e0;text-align:right;">
+												Annual<br/>Performance<br/>Targets</td>
+											<td valign="top" style="width:150px;font-weight:bold;padding:5px;border:2px solid #ffffff;;background-color:#e0e0e0;text-align:right;">
+												{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c}: </td>
+											<td valign="top" style="padding:5px;background-color:#ffffff;">
+												<apex:outputText value="{!pitWrapper.thisYearST.This_Year_Target_1__c}" escape="false" /></td>
+										</tr>
+										<tr>
+											<td valign="top" style="font-weight:bold;padding:5px;border:2px solid #ffffff;;background-color:#e0e0e0;text-align:right;">
+												{!uip.UIP_Annual_CDE_Plan__r.Next_School_Year__c}: </td>
+											<td valign="top" style="padding:5px;background-color:#ffffff;">
+												<apex:outputText value="{!pitWrapper.nextYearST.Next_Year_Target_1__c}" escape="false" /></td>
+										</tr>
+										<tr>
+											<td valign="top" colspan="2" style="font-weight:bold;padding:5px;border:2px solid #ffffff;;background-color:#e0e0e0;text-align:right;">
+												Interim Measures for {!uip.UIP_Annual_CDE_Plan__r.Next_School_Year__c}:</td>
+											<td valign="top" style="padding:5px;background-color:#ffffff;">
+												<apex:outputText value="{!pitWrapper.nextYearST.Interim_Measures_1__c}" escape="false" /></td>
+										</tr>
+									</tbody>
+								</table><br/>
+							</div><br/>
+						</apex:outputPanel>
+					</apex:outputPanel>
+				</apex:repeat>
+			</apex:repeat>
+		</apex:outputPanel><br/><br/>
+	</apex:outputPanel>
+</apex:page>

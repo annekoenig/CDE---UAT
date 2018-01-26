@@ -1,0 +1,309 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <style type="text/css">
+        .custPopup{
+        background-color: white;
+        border-width: 2px;
+        border-style: solid;
+        z-index: 9999;
+        left: 50%;
+        padding:10px;
+        position: absolute;
+        width: 500px;
+        margin-left: -250px;
+        top:100px;
+        }
+        .popupBackground{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        }
+        
+    </style>    
+    <apex:outputPanel id="ckEditorScript">
+        <apex:includescript value="{!URLFOR($Resource.CKEditor, 'ckeditor/ckeditor.js')}" />
+    </apex:outputPanel>
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <apex:actionFunction name="rerenderRTFSection" reRender="script, elementsSection, rtfSection" action="{!rerenderForRTF}" status="loadingStatus" /> 
+            <div class="thetabcontent">
+                <apex:outputPanel rendered="{!NOT(uip.Section_3__c != 'No' && uip.Section_3__c != null)}">
+                    <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+                    <div id="empty"></div>
+                    <div width="100%" style="background-color: #d3ccbc;">
+                        <table width="100%">
+                            <tr>
+                                <td width="60%">
+                                    <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section III: Step Two - Prior Year Targets</h1>
+                                </td>
+                                <td width="40%" style="text-align: right; padding-right: 50px;">
+                                    <apex:inputField value="{!uip.Section_III_Worksheet_2_Complete__c}" >
+                                        <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                                    </apex:inputField>
+                                    <b>Complete &amp; Ready to submit</b></td>
+                            </tr>
+                        </table>
+                    </div><br/>                    
+                    <p><b>Directions:</b> Consider the previous year’s progress toward the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")}'s targets. Identify the overall magnitude of the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")}'s performance challenges.</p>
+                    <p>Note:  The first year in using the online UIP, the {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016', "district", "school")} must copy and paste the previous years’ targets into the system.  In subsequent years, the online system will copy over the previous year’s targets automatically. </p> 
+                    <!-- created by khyati -->
+                    <br/><br/>
+                    <div style="margin-left:auto; margin-right:auto; width:17%;">
+                        <apex:commandLink style="font-size:17px;  padding:5px;" StyleClass="btn btn-custom btn-xs" status="loadingStatus" action="{!showmodalPopup}" rerender="popup">
+                            <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;<b>Add Prior Year Target</b>
+                        </apex:commandLink>
+                    </div>                    
+                    <apex:outputPanel id="popup">                        
+                        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displaymodalPopUp}"/>
+                        <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displaymodalPopUp}">
+                            <b>Performance Indicator:</b>
+                            <apex:selectList value="{!picklistvalue}" multiselect="false" size="1" style="width:300px" >
+                                <apex:selectOptions value="{!performanceIndicator}" />
+                            </apex:selectList>
+                            <apex:commandButton value="Choose" action="{!closemodalPopup}"/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>                    
+                    <apex:outputPanel style="{!IF(picklistvalue=='None','display:none','display:block')}" id="newtarget">
+                        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displaymodalPopUp}"/>
+                        <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displaymodalPopUp}">
+                            <p style="padding: 5px; margin:0px 0px 5px ;background-color: #d2dfdf;"> 
+                                <b>Performance Indicator:&nbsp;&nbsp;{!picklistvalue}</b>
+                            </p>                            
+                            <blockquote>
+                                <div style="background-color:#ececec; padding : 10px;">
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="text-align: left;"><b>Last Year's Target</b> &nbsp;&nbsp;</td>
+                                            <td style="text-align: right;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 70%;" colspan="2">
+                                                <apex:inputTextarea value="{!lastyeartarget}" style="width: 90%; height:50px;"/>
+                                            </td>
+                                        </tr>
+                                        <tr><td style="height:10px;"></td></tr>
+                                        <tr>
+                                            <td style="text-align: left;"><b>Performance on Target</b></td>
+                                            <td style="text-align: right;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 70%;" colspan="2">
+                                                <apex:inputTextarea value="{!performanceontarget}" style="width: 90%; height:50px;"/>
+                                            </td>
+                                        </tr>
+                                        <tr><td style="height:10px;"></td></tr>
+                                    </table>
+                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!closetarget}">
+                                        <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                    </apex:commandLink>&nbsp;&nbsp;
+                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!savetarget}" onclick="window.location.reload()">
+                                        <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save {!picklistvalue}
+                                    </apex:commandLink>
+                                </div>
+                            </blockquote>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <!-- created by khyati -->                   
+                    <p style="padding: 0px 10px 0px 50px;">
+                        <span style="font-size:130%; color:#6d3a5d;"><b> {!uip.network__c } </b></span><br/><br/>
+                    </p>
+                    <HR Style="border: 1px outset #5c666f" />          
+                    <apex:outputPanel id="elementsSection">
+                        <apex:repeat value="{!pitKeys}" var="target"> 
+                            <p style="padding: 5px; margin:0px 0px 5px ;background-color: #d2dfdf;"> <b>Performance Indicator:&nbsp;&nbsp;{!target}</b></p>
+                            <apex:repeat value="{!pitTargetsMap[target]}" var="pit">
+                                <div style="{!IF(pit.Last_Year_Target_1__c == null && pit.Performance_against_Target_1__c == null, 'display:none','display:block')}">                                    
+                                    <apex:outputPanel id="ViewSection">
+                                        <apex:outputPanel rendered="{!NOT(isEditPit)}"> 
+                                            <!-- <blockquote> -->
+                                            <div style="background-color:#ececec; padding : 10px; margin : 10px;">
+                                                <p>
+                                                    <apex:outputPanel style="{!IF(pit.Priority_Performance_Challenge_1__c == null,'display:none','display:block')}" id="newtarget">
+                                                        <em><strong>Challenge: </strong></em>
+                                                        <apex:outputText value="{!pit.Priority_Performance_Challenge_1__r.Name}" escape="false" />
+                                                    </apex:outputPanel>
+                                                    <em><strong>Prior Year Target: </strong></em>
+                                                    <apex:outputText value="{!pit.Last_Year_Target_1__c}" escape="false" />
+                                                    <br/>
+                                                    <em><strong>Performance: </strong></em>
+                                                    <apex:outputText value="{!pit.Performance_against_Target_1__c}" escape="false" />
+                                                </p>
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!EditPit}" rerender="script, editSection, ViewSection, errorSection" status="loadingStatus">
+                                                    <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;Edit
+                                                </apex:commandLink>&nbsp;&nbsp;
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!DeletePit}" rerender="script, elementsSection, errorSection" status="loadingStatus" onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                    <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Delete
+                                                    <apex:param name="pitId" value="{!pit.Id}"/>
+                                                </apex:commandLink>
+                                            </div>
+                                            <!--  </blockquote> -->
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="editSection">
+                                        <apex:outputPanel rendered="{!isEditPit}">
+                                            <blockquote>
+                                                <div style="background-color:#ececec; padding : 10px;">
+                                                    <table width="100%">
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Last Year's Target</b> &nbsp;&nbsp;</td>
+                                                            <td style="text-align: right;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 70%;" colspan="2">
+                                                                <apex:inputField style="width: 90%; height:50px;" value="{!pit.Last_Year_Target_1__c}" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr><td style="height:10px;"></td></tr>
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Performance on Target</b></td>
+                                                            <td style="text-align: right;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 70%;" colspan="2">
+                                                                <apex:inputField style="width: 90%; height:50px;" value="{!pit.Performance_against_Target_1__c}" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr><td style="height:10px;"></td></tr>
+                                                    </table><br/>
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelEditPit}" rerender="script, elementsSection, errorSection" status="loadingStatus">
+                                                        <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                                    </apex:commandLink>&nbsp;&nbsp;
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveEditPit}" rerender="script, elementsSection, errorSection" status="loadingStatus">
+                                                        <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save {!target}
+                                                        <apex:param name="pitId" value="{!pit.Id}"/>
+                                                        <apex:param name="target" value="{!target}"/>
+                                                    </apex:commandLink>
+                                                </div>
+                                            </blockquote>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>    
+                                    <hr/>                                    
+                                </div>
+                            </apex:repeat>
+                            <p>[ 
+                                <apex:commandLink action="{!addPit}" rerender="script, ckEditorScript, elementsSection"><em>Add Additional Prior Year Target for {!target} </em>
+                                    <apex:param value="{!target}" name="target" />
+                                </apex:commandLink>
+                                ] </p>                                                               
+                            <apex:outputPanel rendered="{!elementValue == target}">
+                                <div style="margin-left: 50px; margin-right: 10px;">
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="text-align: left;"><b>Last Year's Target</b> &nbsp;&nbsp;</td>
+                                            <td style="text-align: right;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 70%;" colspan="2">
+                                                <apex:inputField style="width: 90%; height:50px;" value="{!dummyPit.Last_Year_Target_1__c}" />
+                                            </td>
+                                        </tr>
+                                        <tr><td style="height:10px;"></td></tr>
+                                        <tr>
+                                            <td style="text-align: left;"><b>Performance on Target</b></td>
+                                            <td style="text-align: right;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 70%;" colspan="2">
+                                                <apex:inputField style="width: 90%; height:50px;" value="{!dummyPit.Performance_against_Target_1__c}" />
+                                            </td>
+                                        </tr>
+                                        <tr><td style="height:10px;"></td></tr>
+                                    </table><br/>
+                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelNewPit}" rerender="script, elementsSection, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveNewPit}" rerender="script, elementsSection, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp;Save {!target}</apex:commandLink>&nbsp;&nbsp;
+                                </div>
+                            </apex:outputPanel>
+                            <p><i>Provide Overall Reflection on Targets for {!target}:</i></p>
+                            <div style="background-color:#ececec; padding : 10px; margin-right: 10px;"> 
+                                <apex:outputPanel id="rtfSection">
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Academic Achievement (Status)'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Academic_Achievement_Targets__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Academic Growth'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Academic_Growth_Targets__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Disaggregated Growth'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Academic_Growth_Gaps_Target__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Postsecondary & Workforce Readiness'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Postsecondary_Workforce_Target__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'English Language Development and Attainment'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_English_Lang_Dev_Attain_Target__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Student Engagement'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Student_Engagement_Target__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Disaggregated Achievement'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Disaggregated_Achievement__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Student Behavior'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Student_Behavior__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF) && target == 'Other'}">
+                                        <blockquote>
+                                            <apex:outputText value="{!uip.Narrative_Other__c}" escape="false"/>
+                                        </blockquote>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!isEditRTF}">
+                                        <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/RTF?id={!uip.Id}&target={!HTMLENCODE(target)}" scrolling="true" id="theIframe" height="650px;"/>
+                                    </apex:outputPanel>                            
+                                    <apex:outputPanel rendered="{!NOT(isEditRTF)}">
+                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!EditRTF}" rerender="script, rtfSection" status="loadingStatus">
+                                            <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;{!IF(uip[pitNarrativeMap[target]] == null, 'Write', 'Edit')} Reflection on Targets for {!target}
+                                            <apex:param name="target" value="{!target}"/>
+                                        </apex:commandLink>&nbsp;&nbsp;
+                                    </apex:outputPanel>
+                                </apex:outputPanel>                            
+                            </div>
+                            <HR Style="border: 2px outset #5c666f" />
+                        </apex:repeat>
+                    </apex:outputPanel>
+                    <br/><br/>
+                    <div style="width:100%; text-align: left; padding: 10px;">                        
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!BackBriefDescription}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};"><span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink>&nbsp;&nbsp;
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!NextCurrentPerformance}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></apex:commandLink><br/><br/>
+                    </div>
+                </apex:outputPanel>
+            </div>        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                var isPageChanged = false;
+                var isNewContact = false;
+                var isEditContact = false;
+                var isEditRTF = '{!isEditRTF}';
+                var isEditPit = '{!isEditPit}';
+                var isEditPint = '{!isEditPint}';
+                var elementValue = '{!elementValue}';
+                var isEditElem = '{!isEditElem}';
+                var isEditElemx = '{!isEditElemx}';
+                var isTextChanged = '{!isTextChanged}';
+                var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

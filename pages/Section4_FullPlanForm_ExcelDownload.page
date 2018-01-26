@@ -1,0 +1,61 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" contenttype="application/vnd.ms-excel#Section4_FullPlanForm_Export.xls" cache="true">  
+            <div class="thetabcontent"> 
+                <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />
+                <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+                <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>  
+                
+                <apex:outputPanel >                    
+                    <table border="1px solid gray">
+                            <tr>
+                                <td> <b> MIS Title </b> </td>
+                                <td> <b> AS/IB </b> </td>
+                                <td> <b> AS/IB Name </b> </td>
+                                <td> <b> AS/IB Description </b> </td>
+                                <td> <b> Start </b> </td>
+                                <td> <b> End </b> </td>
+                                <td> <b> Key Personnel </b> </td>
+                                <td> <b> Resource </b></td>
+                                <td> <b> Status </b></td>
+                                <td> <b> AS/IB Association </b></td>
+                            </tr>
+                        
+                            <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                                <apex:repeat value="{!misWrapper.iasList}" var="iasWrapper">
+                                    <tr class="tablerows">
+                                        <td>{!misWrapper.mis.Name}</td>
+                                        <td>Action Step</td>
+                                        <td>{!iasWrapper.ias.Name}</td>                                         
+                                        <td>{!iasWrapper.ias.Description_of_Action_Step__c}</td>
+                                        <td align="left">{!iasWrapper.Start_Date}</td>
+                                        <td align="left">{!iasWrapper.Target_Date}</td>
+                                        <td>{!iasWrapper.ias.Key_Personnel__c}</td>
+                                        <td>{!iasWrapper.ias.Resources__c}</td>
+                                        <td>{!iasWrapper.ias.Status_of_Action_Step__c}</td>
+                                        <td><apex:repeat value="{!iasWrapper.ias.BenchMar_ActiontSteps__r}" var="u">                                        
+                                            <apex:outputText rendered="{!IF(u.Implementation_Benchmark__r.Name='',false,true)}">{!u.Implementation_Benchmark__r.Name},</apex:outputText>  
+                                            </apex:repeat></td>                                        
+                                    </tr>
+                                </apex:repeat>
+                            </apex:repeat>
+                            <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                                <apex:repeat value="{!misWrapper.ibList}" var="ibWrapper">
+                                    <tr class="tablerows">
+                                        <td>{!misWrapper.mis.Name}</td>
+                                        <td>IB</td>
+                                        <td>{!ibWrapper.ib.Name}</td>
+                                        <td>{!ibWrapper.ib.Description__c}</td>
+                                        <td align="left">{!ibWrapper.Start_Date}</td>
+                                        <td align="left">{!ibWrapper.End_Date}</td>
+                                        <td>{!ibWrapper.ib.Key_Personel__c}</td>
+                                        <td>N/A</td>
+                                        <td>{!ibWrapper.ib.Status__c}</td>
+                                        <td><apex:repeat value="{!ibWrapper.ib.BenchMar_ActiontSteps__r}" var="v">
+                                            <apex:outputText rendered="{!IF(v.Improvement_Action_Step__r.name='',false,true)}">{!v.Improvement_Action_Step__r.name},</apex:outputText>     
+                                            </apex:repeat></td>
+                                    </tr>
+                                </apex:repeat>
+                            </apex:repeat>
+                    </table>
+                </apex:outputPanel>  
+            </div>    
+</apex:page>

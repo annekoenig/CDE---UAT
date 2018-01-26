@@ -1,0 +1,30 @@
+<apex:component >
+    <apex:attribute name="myEditor" description="This is the editor id." type="String" required="true"/>
+    <script>
+        var protocolAndHost = window.location.protocol + '//' + window.location.host;
+        //CKEDITOR.plugins.addExternal( 'tableresize', '{!URLFOR($Resource.TableResizeCKEPlugin, 'tableresize/plugin.js')}');
+        //CKEDITOR.plugins.addExternal( 'tabletools', '{!URLFOR($Resource.TableToolsCKEPlugin, 'tabletools/plugin.js')}');
+        CKEDITOR.plugins.addExternal( 'dragresize', '{!URLFOR($Resource.PictureResizeCKEPlugin)}');
+        CKEDITOR.replace( 
+            //'{!$Component.myEditor}', {removePlugins : 'elementspath,maximize,image,tabletools,liststyle,contextmenu,resize',
+            '{!myEditor}', {removePlugins : 'elementspath,maximize,image,liststyle, tabletools, contextmenu',
+            //extraPlugins : 'tableresize',
+            //extraPlugins : 'SfdcTable',
+            extraPlugins : 'sfdcImage,dragresize',
+            baseHref : protocolAndHost + '/ckeditor/ckeditor-4.x/rel/',
+            customConfig : '/ckeditor/ckeditor-4.x/rel/sfdc-config.js',
+            height : '500',
+            //bodyId : 'j_id0:SectionHeaderTemplate:j_id3:fullPage:myEditor_rta_body',
+            //toolbar : 'Visualforce',
+            toolbar: [['Undo','Redo','Paste','PasteText','PasteFromWord'],['Bold','Italic','Underline','Strike','Subscript','Superscript'],['JustifyLeft','JustifyCenter','JustifyRight'],['BulletedList','NumberedList','Indent','Outdent'],['Format','TextColor','BGColor','RemoveFormat'],['Link','Unlink','Table','HorizontalRule','SpecialChar'],['document','sfdcImage','SfdcImage','Image']],
+            sfdcLabels :{CkeMediaEmbed : { title : 'Embed Multimedia Content', description : 'Use &lt;iframe&gt; code from DailyMotion, Vimeo, and Youtube.', subtitle : 'Paste &amp;lt;iframe&amp;gt; code here:', exampleTitle : 'Example:', example : '\n            \n              &lt;iframe width=\&quot;560\&quot; height=\&quot;315\&quot; src=\&quot;https://www.youtube.com/embed/KcOm0TNvKBA\&quot; frameborder=\&quot;0\&quot; allowfullscreen&gt;&lt;/iframe&gt;\n            \n      ', iframeMissing : 'Invalid &lt;iframe&gt; element. Please use valid code from the approved sites.'}, sfdcSwitchToText : { sfdcSwitchToTextAlt : 'Use plain text'}, CkeImageDialog : { uploadTab : 'Upload Image', infoTab_url : 'URL', error : 'Error:', uploadTab_desc_info : 'Enter a description of the image for visually impaired users', uploadTab_desc : 'Description', infoTab_url_info : 'Example: http://www.mysite.com/myimage.jpg', btn_insert : 'Insert', defaultImageDescription : 'User-added image', missingUrlError : 'You must enter a URL', uploadTab_file : 'Select Image', infoTab_desc : 'Description', btn_upadte : 'Update', wrongFileTypeError : 'You can insert only .gif .jpeg and .png files.', btn_update_tooltip : 'Update Image', infoTab : 'Web Address', btn_insert_tooltip : 'Insert Image', title : 'Insert Image', infoTab_desc_info : 'Enter a description of the image for visually impaired users', imageUploadLimit_info : 'Max number of upload images exceeded', uploadTab_file_info : 'Maximum size 1 MB. Only png, gif or jpeg', btn_update : 'Update'}, CkeImagePaste : { CkeImagePasteWarning : 'Pasting an image is not working properly with Firefox, please use [Copy Image location] instead.'}},
+            contentsCss: ['/ckeditor/ckeditor-4.x/rel/contents.css', '/sCSS/35.0/sprites/1413820402000/Theme3/default/base/CKEditor.css', '/sCSS/35.0/sprites/1413820402000/Theme3/default/base/HtmlDetailElem.css'],
+            disableNativeSpellChecker : false,
+            language : 'en-us',
+            allowIframe : false,
+            sharedSpaces : { top : 'cke_topSpace', bottom : ' cke_bottomSpace' },
+            filebrowserImageUploadUrl : '/_ui/common/request/servlet/RtaImageUploadServlet'}
+        );
+        
+    </script>
+</apex:component>

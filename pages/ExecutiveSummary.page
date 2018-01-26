@@ -1,0 +1,205 @@
+<apex:page standardController="UIP__c" extensions="Section1,UIPHomeController,Section3" showHeader="false" applyBodyTag="false" applyHtmlTag="false" renderAs="PDF">
+    <head>
+        <style>
+            @page { size: A4; margin: 8mm; }
+            .PDFpagebreak {page-break-before: always;}
+            body {
+            font-family: Helvetica, sans-serif;
+            margin:0;
+            padding:0;
+            font-size:14px;
+            color:#5c666f;
+            line-height:1.6;
+            }
+            .spacing {
+            height:30px;
+            }
+            .spacing-half {
+            height:15px;
+            }
+            .section {
+            padding:0 0 20px 0;
+            border-bottom: 1px solid #e7e8ea;
+            }
+            h1 {font-size:26px;}
+            h2 {font-size:20px;}
+            h3 {font-size:16px; color:#488bc9;margin-top:20px;}
+            h4 {font-size:15px; text-transform:uppercase;color:#5c666f;margin-bottom:8px;}
+            h5 {font-size:14px; font-weight:bold;margin-bottom:1mm;}
+            .executive-summary h2, .executive-summary h3 {color:#498bc9;}
+            .improvement-plan h2, .improvement-plan h3 {color:#ee7622;}
+            .narrative h2, .narrative h3 {color:#6ec4e7;}
+            .action-plans h2, .action-plans h3 {color:#6d3b5d;}
+            .addenda h2, .addenda h3 {color:#467a7c;}
+            .list-unstyled {
+            margin-left:0;
+            list-style-type:none;
+            }
+            .list-unstyled li {
+            margin:1mm 0;
+            }
+            table {border-collapse:collapse;width:100%;}
+            table tr td,
+            table tr th {
+            padding:5px;
+            }
+            table.table tr th,
+            table.table tr td {
+            padding:5px;
+            border-bottom: 1px solid #e7e8ea;
+            }
+            table.custom tr th,
+            table.custom tr td {
+            padding:5px;
+            }
+            .panel {
+            background-color: #ebf4f4;
+            padding: 10px;
+            margin: 10px 0;
+            }
+            .img-sm img {
+            width:40px;
+            }
+            .text-right {
+            text-align:right;
+            }
+            
+        </style>
+    </head>
+    
+    <body>
+        <!-- Header -->
+        <table width="100%" >
+            <tr>
+                <td>
+                    <img src="{!$Resource.CDELogo}" width="250"/>
+                </td>
+                <td style="text-align:right;">
+                    <img height="100%" src="{!$Resource.OFP_UIP}" width="120"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    <h1 style="margin-bottom:0;">Colorado's Unified Improvement Plan
+                        for {!IF(uip.RecordType.Name == 'District UIP' ||
+                        uip.RecordType.Name == 'District UIP 2015' ||
+                        uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017', "District",
+                        "School")} </h1><br/>
+                    
+                    <b>{!uip.Name}</b> &nbsp; | &nbsp;
+                    <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                        <b>District:</b> {!uip.DISTRICT_NAME__r.Name} &nbsp; | &nbsp;
+                        <b>Org ID:</b> {!uip.DIST_NUMBER__c} &nbsp; | &nbsp;
+                        <b>Framework:</b> {!uip.A_TTL_RATING_OFFICIAL__c} &nbsp; | &nbsp;
+                        <b>Draft UIP</b>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016' || uip.RecordType.Name == 'School UIP 2016'|| uip.RecordType.Name == 'AEC UIP 2017' || uip.RecordType.Name == 'School UIP 2017'}">
+                        <b>District:</b> {!uip.DISTRICT_NAME__r.Name} &nbsp; | &nbsp;
+                        <b>Org ID:</b> {!uip.DIST_NUMBER__c} &nbsp; | &nbsp;
+                        <b>School ID:</b> {!uip.SCHOOL_NUMBER__c} &nbsp; | &nbsp;
+                        <b>Framework:</b> {!uip.A_TTL_RATING_OFFICIAL__c} &nbsp; | &nbsp;
+                        <b>Draft UIP</b>
+                    </apex:outputPanel>  
+                </td>
+            </tr>
+        </table>
+        <!-- / Header -->
+        <br/>
+        
+        
+        <div class="executive-summary">
+            <h2>Executive Summary </h2>
+            <h3>
+                {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'|| uip.RecordType.Name == 'District UIP 2017', "District", "School")} Context
+            </h3>
+            <apex:outputText value="{!uip.Context__c}" />
+            
+            
+            <h3>
+                If we...
+            </h3>
+            <p>
+               Major Improvement Strategy:  An overall approach to improvement that will reduce or resolve the identified root causes.
+            </p>
+        </div>
+        <apex:repeat value="{!misWrapperList}" var="misWrapper">        
+            <div class="panel">
+                
+                <h4>
+                    <apex:outputText value="{!misWrapper.mis.Name}" /> 
+                </h4>
+                <table>
+                    <tr>
+                        <td>
+                            <p>
+                                <apex:outputText value="{!misWrapper.mis.Description__c}" /> 
+                            </p>
+                        </td>
+                        <td style="text-align:right;">
+                            <img src="/resource/1503663840000/UIP_assets/img/MajorImprovementStrategy.png" width="75"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:repeat>
+        
+        <h3>
+            Then we will address...
+        </h3>
+        <p>
+            Root Cause: Statements describing the deepest underlying causes within control of the school that if dissolved would result in elimination of the performance challenge. 
+        </p>
+        
+        <apex:repeat value="{!challengeMap}" var="challenge">
+            <apex:repeat value="{!rcForChallengeMapForPdf[challenge]}" var="rc">
+                <div class="panel">
+                    <h4>
+                        <apex:outputText value="{!rc.Name}" />
+                    </h4>
+                    <table>
+                        <tr>
+                            <td>
+                                <p>
+                                    <apex:outputText value="{!rc.Description__c}" /> 
+                                </p>
+                            </td>
+                            <td style="text-align:right;">
+                                <img src="/resource/1503663840000/UIP_assets/img/RootCause.png" width="75"/>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+                <br />
+            </apex:repeat>
+        </apex:repeat>
+        
+        <h3>
+            Then we will address...
+        </h3>
+        <p>
+            Priority Performance Challenge: Specific problem statements about student performance that provide the strategic focus for improvement efforts. 
+        </p>
+        
+        <apex:repeat value="{!challengeMap}" var="challenge">
+            <div class="panel">
+                <h4><apex:outputText value="{!challengeMap[challenge].Name}" /></h4>
+                <table>
+                    <tr>
+                        <td>
+                            <p>
+                                <apex:outputText value="{!challengeMap[challenge].Description__c}" />  
+                            </p>
+                        </td>
+                        <td style="text-align:right;">
+                            <img src="/resource/1503663840000/UIP_assets/img/PriorityPerformanceChallenge.png" width="75"/>
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+            <br />
+        </apex:repeat>
+    </body>
+</apex:page>

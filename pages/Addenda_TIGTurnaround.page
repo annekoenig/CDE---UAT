@@ -1,0 +1,166 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+<apex:composition template="SectionHeader">
+
+        <apex:define name="body">
+            <table width="100%">
+                <tr>
+                <td width="60%">
+                    <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                        <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                    </apex:outputPanel>
+                </td>
+                   <!-- <td width="40%" style="text-align: center;">
+                            <div width="100%" style="padding-top: 8px;">
+                                Page {!addendumPositionMap['TIG_Turnaround__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                                <apex:outputPanel rendered="{!addendumPositionMap['TIG_Turnaround__c'] <= countAddendum && addendumPositionMap['TIG_Turnaround__c'] != 1}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['TIG_Turnaround__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!addendumPositionMap['TIG_Turnaround__c'] < countAddendum}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['TIG_Turnaround__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!(addendumPositionMap['TIG_Turnaround__c'] <= countAddendum && addendumPositionMap['TIG_Turnaround__c'] != 1) || addendumPositionMap['TIG_Turnaround__c'] < countAddendum}">
+                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                   
+                                </div>
+                            </apex:outputPanel>
+                        </td> -->
+                        <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+            <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="70%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                        </td>
+                        <td width="30%">
+                        <apex:inputField value="{!uip.TIG_Turnaround_Complete__c}" >
+                        <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                        </apex:inputField>
+                        <b>Complete &amp; Ready to submit</b>
+                        </td>
+                    </tr>
+                </table></div>
+                    
+            
+             <p style="padding:  10px 10px 50px;">
+                <span style="font-size:130%; color:#101e8e;"><b>Required For Schools with a Tiered Intervention Grant (TIG) that Selected a Turnaround Model</b></span><br/><br/>
+          
+            <span style="padding: 10px;">
+            Schools that participate in the Tiered Intervention Grant and selected the Turnaround Model must use this form to document grant requirements. As a part of the improvement planning process, schools are strongly encouraged to weave appropriate requirements into earlier sections of the UIP. This form provides a way to ensure all components of the program are met through descriptions of the requirements or a cross-walk of the grant program elements in the UIP.
+            </span></p>
+           <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+           <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                <table width="100%" style = "border: 1px solid;display: grid">
+                    <tr>
+                        <td width="30%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Description of TIG (Turnaround Model) Program Requirements</h1></td>
+                        <td width="20%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Recommended Location in UIP</h1></td>
+                        <td width="50%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of Requirement or Crosswalk of Description in UIP Data Narrative 
+                        or Action Plan (include section)</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe how the LEA has granted the principal sufficient operational flexibility in the following areas: Staffing, Calendars/Time, and budgeting.</td>
+                        <td class="addendum-table-row">Required TIG Addendum</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.LEA_Support__c}" styleClass="ckeditor" style="width:90%;"/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe the new governance structure that was adopted. This structure may include, but is 
+not limited to, requiring the school to report to a turnaround office in the LEA, hiring a turnaround leader who reports directly to the Superintenden or Chief Academic Officer, or entering into a multi-year contract with the LEA to obtain added
+flexibility in exchange for greater accountability.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan or Required TIG Addendum</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Adopted_Governance_Structure__c}" styleClass="ckeditor" style="width:90%;"/> </td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe the process for replacing the principal who led the school prior to commencement of the 
+turnaround model (e.g., use of competencies to hire new principal).</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Principal_Replacement_Process__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe how locally adopted competencies are used to measure the effectiveness of staff who can work within the turnaround environment to 
+meet the needs of students. Include (a) how all existing staff were screened and not more than 50 percent rehired and (b) how new staff are selected.</td>
+                        <td style = "padding-left: 10px; padding-righ00t: 10px; border-bottom:1px solid;">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Locally_Adopted_Competencies__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                 </tr>
+                    <tr>
+                       <td class="addendum-table-row">Implement such strategies as financial incentives, increased opportunities for promotion and career growth, and more flexible work conditions that are designed to recruit, place, and retain staff with the skills necessary to meet the needs of the students in the turnaround school.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Strategies__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Provide staff ongoing, high-quality job-embedded professional development that is aligned with the school’s comprehensive instructional program and designed with school staff to ensure that they are equipped to facilitate effective teaching and learning and have the capacity to successfully implement school reform strategies.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Professional_Development__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr><td class="addendum-table-row">Use data to identify and implement an instructional program that is research-based and vertically aligned from one grade to the next as well as aligned with State academic standards;</td>
+                        <td class="addendum-table-row">Section III: Data Narrative and Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Instructional_Program__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr><td class="addendum-table-row">Describe the continuous use of student data(such as from formative, interim, and summative assessments) to inform and differentiate instruction in order to meet the academic needs of individual students.</td>
+                        <td class="addendum-table-row">Section IV: Interim Measures on Target Setting Form and Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Student_Data_Use__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr><td class="addendum-table-row">Establish schedules and implement strategies that provide increased learning time.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Schedules_and_Strategies__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr><td class="addendum-table-row">Provide appropriate social-emotional and community-oriented services and supports for students.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Student_Services_and_Support__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+            </div><br/><br/>
+            <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+</apex:Composition>
+
+</apex:page>

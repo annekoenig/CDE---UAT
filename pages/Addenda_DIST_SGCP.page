@@ -1,0 +1,152 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+<apex:composition template="SectionHeader">
+
+        <apex:define name="body">
+        <table width="100%">
+            <tr>
+                    <td width="60%">
+                        <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                            <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                        </apex:outputPanel>
+                    </td>
+                    <!-- <td width="40%" style="text-align: center;">
+                            <div width="100%" style="padding-top: 8px;">
+                                Page {!addendumPositionMap['Student_Grad_Completion_Plan__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                                <apex:outputPanel rendered="{!addendumPositionMap['Student_Grad_Completion_Plan__c'] <= countAddendum && addendumPositionMap['Student_Grad_Completion_Plan__c'] != 1}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Student_Grad_Completion_Plan__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!addendumPositionMap['Student_Grad_Completion_Plan__c'] < countAddendum}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Student_Grad_Completion_Plan__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!(addendumPositionMap['Student_Grad_Completion_Plan__c'] <= countAddendum && addendumPositionMap['Student_Grad_Completion_Plan__c'] != 1) || addendumPositionMap['Student_Grad_Completion_Plan__c'] < countAddendum}">
+                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                    
+                                </div>
+                            </apex:outputPanel>
+                        </td> -->
+                        <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+            <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="70%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                        </td>
+                        <td width="30%">
+                            <apex:inputField value="{!uip.Student_Grad_Completion_Plan_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b>
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+             <p style="padding: 10px 10px 50px;">
+                <span style="font-size:130%; color:#101e8e;"><b>Required For Districts Identified to Create a Student Graduation and Completion Plan</b></span><br/><br/>
+          
+            <span style="padding: 10px;">
+            Districts that are required by the state to create a Student Graduation and Completion Plan must use this format to ensure that all improvement planning requirements are met. As a part of this process, some districts may meet some of the requirements in earlier sections of the UIP and may just reference the section in this form.
+            </span></p>
+           <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+           <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                <table width="100%" style = "border: 1px solid;display: grid">
+                    <tr>
+                        <td width="30%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Description of Plan Requirements</h1></td>
+                        <td width="20%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Recommended Location in UIP</h1></td>
+                        <td width="50%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of How Requirement is Met. 
+                        Provide a description of how requirement is being met below OR provide a page number in the UIP</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Analysis of data. The Plan includes description and analysis of the following data: Dropout rate, graduation rate, completion rate, truancy rate, suspension rate, expulsion rate, mobility rate, and number of habitually truant students.</td>
+                        <td class="addendum-table-row">Section III: Narrative on Data Analysis and Root Cause Identification</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Analysis_of_Data__c}" styleClass="ckeditor" style="width:90%;"/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Target Setting. Includes targets for each of the following:
+                        • Reducing student truancy rate
+                        • Reducing dropout rate
+                        • Increasing student attendance rate
+                        • Increasing graduation rate
+                        • Increasing completion rate</td>
+                        <td class="addendum-table-row">Section IV: District Target Setting Form </td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Target_Setting__c}" styleClass="ckeditor" style="width:90%;"/> </td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Improvement Strategy. 
+                        Identifies at least one major improvement strategy that is designed to result in (1) improved dropout prevention, including student attendance, and (2) improved student engagement and re-engagement.</td>
+                        <td class="addendum-table-row">Section IV: Action Planning Form</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Improvement_Strategy__c}" styleClass="ckeditor" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Parent Involvement and Outreach Strategies. 
+                        Identifies the manner in which the district and parents will work together to address dropout risk factors and remediation strategies.</td>
+                        <td class="addendum-table-row">Section IV: Action Planning Form</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Parent_Involvement_and_Outreach_Strategy__c}" styleClass="ckeditor" style="width:90%;"/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Practices Assessment and Additional Supports.
+                        Describes supports the district will provide to students who leave school prior to graduation and educational alternatives available to students. A description of the implementation of recommendations from Practices Assessment is included.</td>
+                        <td class="addendum-table-row">Section IV: Action Planning Form</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Practices_Assessment_Additional_Support__c}" styleClass="ckeditor" style="width:90%;"/></td>
+                       
+                    </tr>
+                    <tr>
+                    
+                    </tr>
+                </table>
+            </div><br/><br/>
+            <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+</apex:Composition>
+
+</apex:page>

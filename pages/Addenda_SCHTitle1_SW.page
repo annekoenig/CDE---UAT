@@ -1,0 +1,202 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+<apex:composition template="SectionHeader">
+
+               <apex:define name="body">
+               <table width="100%">
+                       <tr>
+                       <td width="60%">
+                            <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                                <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                            </apex:outputPanel>
+                       </td>
+                        <!-- <td width="40%" style="text-align: center;">
+                            <div width="100%" style="padding-top: 8px;">
+                                Page {!addendumPositionMap['Title_1_School_Wide__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                                <apex:outputPanel rendered="{!addendumPositionMap['Title_1_School_Wide__c'] <= countAddendum && addendumPositionMap['Title_1_School_Wide__c'] != 1}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Title_1_School_Wide__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!addendumPositionMap['Title_1_School_Wide__c'] < countAddendum}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Title_1_School_Wide__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!(addendumPositionMap['Title_1_School_Wide__c'] <= countAddendum && addendumPositionMap['Title_1_School_Wide__c'] != 1) || addendumPositionMap['Title_1_School_Wide__c'] < countAddendum}">
+                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                    
+                                </div>
+                            </apex:outputPanel>
+                        </td> -->
+                        <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+            <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="65%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                        </td>
+                        <td width="30%">
+                            <apex:inputField value="{!uip.Title_I_School_Wide_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b>
+                        </td>
+                    </tr>
+                 </table></div>
+                 
+        
+             <p style="padding: 10px 10px 50px;">
+                <span style="font-size:130%; color:#101e8e;"><b>For Schools Operating a Title I Schoolwide Program</b></span><br/><br/>
+          
+            <span style="padding: 10px;">Schools that participate in Title I may use this form to document Title I 
+            program requirements for operating a schoolwide program.  As a part of the improvement planning process, 
+            schools are strongly encouraged to weave appropriate requirements into earlier sections of the UIP.  This 
+            form provides a way to ensure all components of the program are met through (1) descriptions of the requirements
+             or (2) a cross-walk of the Title I program elements in the UIP.  The Title I schoolwide program requirements 
+             are listed in NCLB Sec. 1114(b)(1)(A-J).
+            </span></p>
+           <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+           <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                <table width="100%" style = "border: 1px solid;display: grid">
+                    <tr>
+                 <td width="30%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Description of Title I Schoolwide Program Requirements</h1></td>
+                                                <td width="15%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Recommended Location in UIP</h1></td>
+                        <td width="55%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of Requirement or 
+                        Crosswalk of Description in UIP Data Narrative 
+                        or Action Plan (include reference to section)</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Comprehensive Needs Assessment: <br/>
+                        What are the comprehensive needs that justify activities supported with Title I funds?</td>
+                        <td class="addendum-table-row">Section III: Data Narrative and Section IV: Action Plan </td>
+                        <td class="addendum-table-row"> 
+                        <h1 style="font-size:85%;"> Note:  This section should be fully described 
+                        in the UIP data narrative and aligned with Title I activities listed in the action plan.  
+                        Just provide reference to the appropriate section here. </h1>
+                        <apex:inputField value="{!Addendum.Comprehensive_Needs_Assessment__c}" style="width:90%;"/><br/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Reform Strategies: <br/>
+                        What are the major reform strategies to be implemented that 
+                        strengthen core academic programs, increase the amount and quality of learning, 
+                        and provide an enriched and accelerated curriculum?</td>
+                        <td class="addendum-table-row">Section IV: Action Plan </td>
+                        <td class="addendum-table-row"><h1 style="font-size:85%; padding-left: 10px;">
+                       Note:  This requirement should be fully described in the UIP action plan.  The school may add additional 
+                       “major improvement strategies” as needed.  Just provide reference to the appropriate section here.</h1> 
+                            <apex:inputField value="{!Addendum.Reform_Strategies__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Professional Development:  <br/>
+                        How are student and staff needs used to identify the high quality professional development?
+                        </td>
+                        <td class="addendum-table-row">Section III: Data Narrative and Section IV: Action Plan</td>
+                        <td class="addendum-table-row"> 
+                            <apex:inputField value="{!Addendum.Professional_Development_TitleI__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Community Involvement: <br/>
+                        How are staff, parents and other members of the community collaborating to influence program design?
+                        </td>
+                        <td class="addendum-table-row"> Section III: Data Narrative and Section IV: Action Plan</td>
+                        <td class="addendum-table-row">
+                        <apex:inputField value="{!Addendum.Community_Involvement__c}" style="width:90%;"/> </td>
+                    </tr>
+                    <tr>
+                       <td class="addendum-table-row">Teacher Recruitment and Retention: <br/>
+                        What process is in place to ensure that only highly qualified staff are 
+                        recruited and retained for schoolwide programs? 
+                        </td>
+                        <td class="addendum-table-row">Section III: Data Narrative and Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Teacher_Recruitment_Retention__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Data Analysis: <br/>
+                        How are teachers involved with assessment and data analysis to improve overall student achievement 
+                        and classroom instruction?</td>
+                        <td class="addendum-table-row">Section III: Data Narrative and Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Data_Analysis_TitleI__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Timely Intervention: <br/>
+                        How will students be identified for and provided early interventions in a timely manner?</td>
+                        <td class="addendum-table-row">Section IV: Action Plan </td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Timely_Intervention__c}" style="width:90%;"/> </td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Parent Involvement: <br/>
+                        How will the capacity for parent involvement be increased?  How will parent involvement allow 
+                        students served to become proficient or advanced on state assessments?</td>
+                        <td class="addendum-table-row">Section IV:  Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Parent_Involvement__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Transition Plan: <br/>
+                        How does the school assist in the transition of preschool students from early childhood programs 
+                        to elementary school programs?</td>
+                        <td class="addendum-table-row">Section IV:  Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Transition_Plan__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Coordination with Other Services:  <br/>
+                        How are Title I funds used in coordination with other ESEA, state and local funds?</td>
+                        <td class="addendum-table-row">Section IV:  Action Plan (, Resource Column</td>
+                        <td class="addendum-table-row"><h1 style="font-size:85%; padding-left: 10px;">Note:  
+                        This requirement should be fully addressed in the UIP action plan.  Provide details in the resource column.  
+                        Just provide reference to the appropriate section here.</h1>
+                            <apex:inputField value="{!Addendum.Coordination_with_Other_Services__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+            </div><br/><br/>
+            <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+</apex:Composition>
+
+</apex:page>

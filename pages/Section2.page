@@ -1,0 +1,408 @@
+<apex:page standardController="UIP__c" extensions="Section1" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <apex:actionFunction name="rerenderMainSection" action="{!initSection}" status="loadingStatus"/>
+            
+            <apex:outputPanel id="mainSection">
+            <apex:outputPanel rendered="{!NOT(uip.Section_2__c != 'No' && uip.Section_2__c != null)}">
+                <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!uip.Section_2__c != 'No' && uip.Section_2__c != null}">
+                <div width="100%" style="background-color: #d3ccbc;">
+                    <table width="100%"> 
+                        <tr>
+                            <td width="60%">
+                                <h1 style="color: #5c666f; font-size:150%; padding-left: 50px; font-weight:bold;">Section II:  Improvement Plan Information</h1>
+                            </td>
+                            <td width="40%" style="text-align: right; padding-right: 50px;">
+                                 <apex:inputField value="{!uip.Section_II_Complete__c}" >
+                                <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                                </apex:inputField>
+                                <b>Complete &amp; Ready to submit</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+         
+                
+                
+                
+                <table width="100%">
+                    <tr>
+                        <td width="60%">
+                           <!-- <p style="padding: 10px 10px 10px 50px;">
+                                <span style="font-size:130%; color:#ffc746;"><b>Student Performance Measures for State and Federal Accountability</b></span><br/>
+                            </p> -->
+                        </td>
+                        <td width="40%" style="text-align: right; padding-right: 100px;">
+                            <div width="100%" style=" text-align: right; padding-right: 100px; padding-top: 8px;">
+                                <!-- <apex:commandLink StyleClass="btn btn-custom" action="{!DownloadWord_S2}" ><span class="glyphicon glyphicon glyphicon-download"></span>&nbsp;Download</apex:commandLink> -->
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+               <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                    <table width="100%">
+                        <tr>
+                            <td colspan="3" class="uip-element-header-oran"></td>
+                        </tr>
+                        <tr>
+                            <td width="10%" class="table-row-target" style="background-color:#f5eedf;">Context</td>
+                            <td width="20%" class="section1-element-col">Provide detail about {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017', "district", "school")}
+                            context (e.g., {!IF(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'  || uip.RecordType.Name == 'District UIP 2017', "district", "school")} improvement efforts, performance, and conditions). <b> This field will only display in the Executive Summary</b> </td>
+                            <td width="70%" class="section1-element-col">
+                                <div width="100%" style="text-align: right; padding-left:50px;"><u><apex:commandlink value="Clear formatting" onclick="clearText(1);" rerender="empty" /></u></div>
+                                <apex:inputTextArea id="myEditor1" value="{!uip.Context__c}" style="width:90%;" richText="true"/>
+                            </td>
+                        </tr>
+                           
+                    </table><br/>
+                    <script>
+                        function clearText(i) {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor" + i +"]").attr("id")].getData();
+                            //newContent=newContent.replace(/<[^>]+>/gm, '');
+                            newContent=newContent.replace(/<(?!(img|\/img))[^>]+>/gm, '');
+                            CKEDITOR.instances[jQuery("*[id$=myEditor"+ i +"]").attr("id")].setData(newContent);
+                            console.log('newContent:::' + newContent);
+                        }
+                    </script>
+                    <apex:outputPanel id="errorSection2">
+                        <b><div style="color:red;"><apex:pageMessages /></div></b>
+                    </apex:outputPanel>
+                    <div style="width:100%; text-align: center;">
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!Save}" style="width:170px;" rerender="script, errorSection2" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink><br/><br/>
+                    </div><br/><br/>
+                    
+                    <table width="100%">
+                        <tr>
+                            <td colspan="2" class="uip-element-header-oran">Improvement Plan Information</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding-top:15px; padding-left:50px;">The school/district is submitting this improvement plan to satisfy requirements for (check all that apply):</td>
+                        </tr>
+                        <tr>
+                            <td width="10%" class="section2-element-col">
+                                <apex:inputCheckBox value="{!uip.State_Accreditation__c}" >
+                                    <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                </apex:inputCheckBox>
+                            </td><td>State Accreditation</td>
+                        </tr>
+                        <tr>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'School UIP 2016' || uip.RecordType.Name == 'School UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Title_I_Focus_School__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Title I Focus School</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016' || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Title_I_Focus_School__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Title I Focus School</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Student_Graduation_and_Completion_Plan__c}">
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Student Graduation and Completion Plan (Designated Graduation District)</td>
+                            </apex:outputPanel>
+                        </tr>
+                        <tr>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'School UIP 2016'  || uip.RecordType.Name == 'School UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Tiered_Intervention_Grant_TIG__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Tiered Intervention Grant (TIG)</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016'  || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Tiered_Intervention_Grant_TIG__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Tiered Intervention Grant (TIG)</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'  || uip.RecordType.Name == 'District UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Title_IA__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Title IA  </td>
+                            </apex:outputPanel>
+                        </tr>
+                        <tr>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'School UIP 2016'  || uip.RecordType.Name == 'School UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Colorado_Graduation_Pathways_Program__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Colorado Graduation Pathways Program (CGP)</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016'  || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Colorado_Graduation_Pathways_Program__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Colorado Graduation Pathways Program (CGP)</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'  || uip.RecordType.Name == 'District UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Title_IIA__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Title IIA</td>
+                            </apex:outputPanel>
+                        </tr>
+                        <tr>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'School UIP 2016'  || uip.RecordType.Name == 'School UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.School_Improvement_Support_Grant__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>School Improvement Support Grant</td>
+                            </apex:outputPanel>
+                             <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016'  || uip.RecordType.Name == 'AEC UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.School_Improvement_Support_Grant__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>School Improvement Support Grant</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'District UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Title_III_Checkbox__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Title III</td>
+                            </apex:outputPanel>
+                        </tr>
+                        <tr>
+                            <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016'  || uip.RecordType.Name == 'District UIP 2017'}">
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox value="{!uip.Gifted_Education_Checkbox__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td>Gifted Education</td>
+                            </apex:outputPanel>
+                        </tr>
+                       <tr>
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox rendered="{!uip.Biennial_Plan_Eligible__c!=false}" value="{!uip.Biennial_Plan_Eligible__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td><apex:outputText rendered="{!uip.Biennial_Plan_Eligible__c!=false}">Biennial Plan</apex:outputText></td>
+                        </tr>
+                        <tr>
+                                <td width="10%" class="section2-element-col">
+                                    <apex:inputCheckBox rendered="{!uip.Combined_Plan__c!=false}" value="{!uip.Combined_Plan__c}" >
+                                        <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                    </apex:inputCheckBox>
+                                </td><td > <apex:outputText rendered="{!uip.Combined_Plan__c!=false}">Combined Plan</apex:outputText></td>
+                        </tr>
+                        
+                        <tr>
+                            <td width="10%" class="section2-element-col">
+                                <apex:inputCheckBox value="{!uip.Other__c}" id="OtherCbx" onclick="showOther();">
+                                    <apex:actionSupport event="onchange" action="{!setPageChanged}" rerender="script" />
+                                </apex:inputCheckBox>
+                            </td>
+                            <td>
+                                <div style="display: inline-block; vertical-align: top; padding-top:5px;">Other &nbsp;&nbsp;</div>
+                                <div style="display: inline-block; vertical-align: top;"><apex:inputTextarea value="{!uip.Other_Description__c}" id="otherTxt" style=" visibility:hidden; width:400px; padding-top:5px;"/></div>
+                            </td>
+                            <script type="text/javascript">
+                                window.onload=function(){
+                                    ckb = document.getElementById("{!$Component.OtherCbx}").checked;
+                                    txt = document.getElementById("{!$Component.otherTxt}");
+                                    if (ckb) {
+                                        txt.style.visibility = "Visible";
+                                    }
+                                };
+                                
+                                function showOther() {
+                                    ckb = document.getElementById("{!$Component.OtherCbx}").checked;
+                                    txt = document.getElementById("{!$Component.otherTxt}");
+                                    if (ckb) {
+                                        txt.style.visibility = "Visible";
+                                    } else {
+                                        txt.style.visibility = "Hidden";
+                                    }
+                                }
+                            </script>
+                        </tr>
+                    </table>
+                    <div style="width:100%; text-align: center;">
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!Save}" style="width:170px;" rerender="script, errorSection2" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink><br/><br/>
+                    </div><br/><br/>
+                    
+                    <apex:outputPanel id="ContactsErrors">
+                        <b><div style="color:red; margin-left: 100px; float: left;"><apex:pageMessages /></div></b>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="contacts">
+                        <table width="100%">
+                            <tr>
+                                <td class="uip-element-header-oran">School Contact Information</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <br/>
+                                    <apex:repeat value="{!uipContactsList}" var="item">
+                                        <div style="width: 33%; float:left; padding-left: 10px; padding-bottom: 50px;">
+                                            <apex:outputPanel id="viewContact">
+                                                <apex:outputPanel rendered="{!NOT(isEditContact)}">
+                                                    <b>{!item.First_Name__c} &nbsp;{!item.Last_Name__c}</b><br/>
+                                                    {!item.Title__c}<apex:outputPanel rendered="{!item.Title__c != null}"><br/></apex:outputPanel>
+                                                    {!item.Mailing_Street__c}<apex:outputPanel rendered="{!item.Mailing_Street__c != null}"><br/></apex:outputPanel>
+                                                    {!item.Mailing_City__c} {!item.Mailing_State_Province__c} {!item.Mailing_Zip_Postal_Code__c}<apex:outputPanel rendered="{!item.Mailing_City__c != null || item.Mailing_State_Province__c != null || item.Mailing_Zip_Postal_Code__c != null}"><br/></apex:outputPanel>
+                                                    <i><apex:outputPanel rendered="{!item.Phone__c != null}">Phone:</apex:outputPanel> </i>{!item.Phone__c}<apex:outputPanel rendered="{!item.Phone__c != null}"><br/></apex:outputPanel>
+                                                    <i><apex:outputPanel rendered="{!item.Email__c != null}">Email:</apex:outputPanel> {!item.Email__c}</i><apex:outputPanel rendered="{!item.Email__c != null}"><br/></apex:outputPanel>
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!EditContact}" rerender="script, viewContact, editContact" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;Edit
+                                                        <apex:param name="editContactId" value="{!item.Id}" />
+                                                    </apex:commandLink>&nbsp;&nbsp;
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!DeleteContact}" rerender="script, contacts" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Delete
+                                                        <apex:param name="contactId" value="{!item.Id}" />
+                                                    </apex:commandLink>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                            
+                                            <apex:outputPanel id="editContact">
+                                                <apex:outputPanel rendered="{!isEditContact}">
+                                                    <div style="margin-right: 10px;">
+                                                        <div style="margin-left: 5px; font-size: 120%"><b>Edit Contact</b></div>
+                                                        <table width="100%">
+                                                            <tr>
+                                                                <td style="width: 35%; text-align: right; padding: 3px;">First Name:</td>
+                                                                <td style="width: 65%; text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].First_Name__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Last Name:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputText value="{!uipDummyContactsMap[item.Id].Last_Name__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Title:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Title__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Phone:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Phone__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Email:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Email__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Mailing Street:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Mailing_Street__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Mailing City:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Mailing_City__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Mailing State/Province:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Mailing_State_Province__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: right; padding: 3px;">Mailing Zip/Postal Code:</td>
+                                                                <td style="text-align: left; padding: 3px;"><apex:inputField value="{!uipDummyContactsMap[item.Id].Mailing_Zip_Postal_Code__c}"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td style="padding:3px; padding-top:10px;" colspan="3">
+                                                                    <div style="width: 100%; height: 50px; text-align:left;">
+                                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelEditContact}" rerender="script, viewContact, editContact" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+                                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveEditContact}" rerender="script, viewContact, editContact" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                                                                            <apex:param name="contactId" value="{!item.Id}"/>
+                                                                        </apex:commandLink>&nbsp;&nbsp;
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div><br/><br/>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table><br/>
+                    </apex:outputPanel>
+                    <div style="width:100%; text-align: center;">
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!NewContact}" style="width:170px;" rerender="script, newContact" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-user"></span> &nbsp;Add Contact</apex:commandLink><br/><br/>
+                    </div>
+                    <apex:outputPanel id="empty" />
+                    <apex:outputPanel id="newContact">
+                        <apex:outputPanel rendered="{!isNewContact}">
+                            <div style="margin-left: 50px; margin-right: 10px;">
+                                <div style="margin-left: 100px; font-size: 120%"><b>Add Contact</b></div>
+                                <b><div style="color:red; margin-left: 100px; float: left;"><apex:pageMessages /></div></b>
+                                <table width="100%">
+                                    <tr>
+                                        <td style="width: 15%; text-align: right; padding: 3px;">First Name:</td>
+                                        <td style="width: 35%; text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.First_Name__c}"/></td>
+                                        <td style="width: 15%; text-align: right; padding: 3px;">Mailing Street:</td>
+                                        <td style="width: 35%; text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Mailing_Street__c}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; padding: 3px;">Last Name:</td>
+                                        <td style="text-align: left; padding: 3px;"><apex:inputText value="{!dummyStandardContact.Last_Name__c}"/></td>
+                                        <td style="width: 15%; text-align: right; padding: 3px;">Mailing City:</td>
+                                        <td style="width: 35%; text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Mailing_City__c}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; padding: 3px;">Title:</td>
+                                        <td style="text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Title__c}"/></td>
+                                        <td style="width: 15%; text-align: right; padding: 3px;">Mailing State/Province:</td>
+                                        <td style="width: 35%; text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Mailing_State_Province__c}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; padding: 3px;">Phone:</td>
+                                        <td style="text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Phone__c}"/></td>
+                                        <td style="width: 15%; text-align: right; padding: 3px;">Mailing Zip/Postal Code:</td>
+                                        <td style="width: 35%; text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Mailing_Zip_Postal_Code__c}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; padding: 3px;">Email:</td>
+                                        <td style="text-align: left; padding: 3px;"><apex:inputField value="{!dummyStandardContact.Email__c}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td style="padding:3px; padding-top:10px;" colspan="3">
+                                            <div style="width: 100%; height: 50px; text-align:left;">
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelNewContact}" rerender="script, newContact" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!AddContact}" rerender="script, newContact, contacts" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp;Add Item</apex:commandLink>&nbsp;&nbsp;
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div><br/><br/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </div>
+                
+            </apex:outputPanel>
+            </apex:outputPanel>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = '{!isPageChanged}';
+                    var isNewContact = '{!isNewContact}';
+                    var isEditContact = '{!isEditContact}';
+                    var isEditRTF = false;
+                    var isEditPit = false;
+                    var isEditPint = false;
+                    var elementValue = '';
+                    var isEditElem = false;
+                    var isEditElemx = false;
+                    var isTextChanged = false;
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

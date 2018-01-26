@@ -1,0 +1,367 @@
+<apex:page standardController="UIP__c" extensions="Section3"
+    showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <!-- <apex:includescript value="{!URLFOR($Resource.CKEditor, 'ckeditor/ckeditor.js')}" /> -->
+    <apex:includeScript value="/ckeditor/ckeditor-4.x/rel/ckeditor.js?t=4.4.4.5" />
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <div class="thetabcontent">
+                <apex:outputPanel rendered="{!NOT(uip.Section_3__c != 'No' && uip.Section_3__c != null)}">
+                    <div class="emptySection">School is not required to fill this
+                        section of the UIP out!</div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+                    <div id="empty"></div>
+                    <div width="100%" style="background-color: #d3ccbc;">
+                        <table width="100%">
+                            <tr>
+                                <td width="60%">
+                                    <h1
+                                        style="font-size: 150%; padding-left: 50px; font-weight: bold; color: #5c666f;">Section
+                                        III: Step Four - Trend Analysis</h1>
+                                </td>
+                                <td width="40%" style="text-align: right; padding-right: 50px;">
+                                    <apex:inputField value="{!uip.Section_III_Trend_Analysis_Complete__c}">
+                                        <apex:actionSupport event="onchange" rerender="empty"
+                                            action="{!updateUIP}" status="loadingStatus" />
+                                    </apex:inputField> <b>Complete &amp; Ready to submit</b>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <br />
+
+                    <p>
+                        <b>Directions:</b> Provide a description of the trend analysis
+                        that includes at least three years of data (state and local data).
+                        Trend statements should be provided in the four performance
+                        indicator areas and by disaggregated groups. Trend statements
+                        should include the direction of the trend, the measure/metric,
+                        specific data (e.g., percentages), content area, student
+                        population and a comparison (e.g., state expectations, state
+                        average) to indicate why the trend is notable. <b> Only those trend
+                        statements that are marked as 'notable trend' will populate in the
+                        data narrative. </b> It is wise to keep track of the data source for
+                        future updates. Trend analysis resources are available at the <a
+                            href="http://www.cde.state.co.us/uip/targetsetting_tools"
+                            target="_blank">UIP Target Setting Tools page</a> and through the
+                        <a href="http://schoolview.org/dish/dashboard.asp" target="_blank">DISH</a>
+                        and the <a
+                            href="http://www.schoolview.org/dish/schooldashboard.asp"
+                            target="_blank">School Dashboard</a>.
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <p>Per Indicator:</p>
+                            <ul>
+                                <li><span style="padding: 0px 10px 0px -20px;">Trend
+                                        Statement(s), which include:</span>
+                                    <ul>
+                                        <li><span style="padding: 10px 10px 10px 10px;">Measure/metric,
+                                                content area, magnitude, student population, specific data,
+                                                data source</span></li>
+                                        <li><span style="padding: 10px 10px 10px 10px;">Trend
+                                                direction</span></li>
+                                        <li><span style="padding: 10px 10px 0px 10px;">Whether
+                                                it is a notable trend - Y/N</span></li>
+                                    </ul></li>
+
+
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div
+                                style="padding: 5px; margin: 5px 5px 5px -22px; background-color: #ebf4f4;"
+                                class="bg-warning">
+                                <p>For Example:</p>
+                                <p style="padding: 0px 10px 10px 50px;">"Middle school
+                                    students are on a slight decline in reading on CSAP/TCAP
+                                    between 2012 and 2014 (2012 = 50.4% P+A; 2013 = 49.8%; 2014 =
+                                    48.7%). This is a notable trend because it is well below the
+                                    state expectation (70.5%) by more than 20 percentage points.
+                                    (Source: SPF/DPF)"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <HR Style="border: 1px outset #5c666f" />
+
+                    <apex:outputPanel id="elementsSection">
+                            <apex:repeat value="{!pintList}" var="pint">
+                                <apex:outputPanel id="currentSection">
+                                    <apex:outputPanel id="ViewSection">
+                                        <apex:outputPanel rendered="{!NOT(isEditPint)}">
+
+                                            <!-- <blockquote> -->
+                                            <div
+                                                style="background-color: #ececec; padding: 10px; margin: 10px;">
+                                                <p>
+                                                <div style="float: left; padding: 5px;">
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_increasing.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Increasing'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_decreasing.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Decreasing'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_decreas_increasing.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Decreasing then increasing'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_decrease_stable.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Decreasing then stable'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_increas_decreasing.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Increasing then decreasing'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_increase_stable.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Increasing then stable'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_stable.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Stable'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_stable_decreasing.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Stable then decreasing'}" />
+                                                    <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_stable_increasing.jpg')}"
+                                                        rendered="{!pint.Trend_Direction__c == 'Stable then increasing'}" />
+                                                </div>
+                                                <apex:outputText value="{!pint.Notable_Trends_1__c}"
+                                                    escape="false" />
+                                                <br />
+                                                <br /> <em class="btn-xs">Trend Direction: <strong><apex:outputText value="{!pint.Trend_Direction__c}" /></strong>
+                                                 - Notable Trend: <strong><apex:outputText value="{!pint.Notable_Trend__c}" /></strong>
+                                                 - Performance Indicator Target: <strong><apex:outputText value="{!pint.Performance_Indicator__c}" /></strong></em>
+                                                </p>
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                    action="{!EditPint}"
+                                                    rerender="script, editSection, ViewSection, errorSection"
+                                                    status="loadingStatus">
+                                                    <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;Edit
+                                                    </apex:commandLink>
+                                                &nbsp;&nbsp;
+                                                <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                    action="{!DeletePint}"
+                                                    rerender="script, elementsSection, errorSection"
+                                                    status="loadingStatus"
+                                                    onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                    <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Delete
+                                                        <apex:param name="pintId" value="{!pint.Id}" />
+                                                </apex:commandLink>
+                                            </div>
+                                            <!--  </blockquote> -->
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="editSection">
+                                        <apex:outputPanel rendered="{!isEditPint}">
+                                            <blockquote>
+                                                <div style="background-color: #ececec; padding: 10px;">
+                                                    <table width="100%">
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Edit Trend
+                                                                    Statement</b> &nbsp;&nbsp;</td>
+                                                            <td style="text-align: right;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 70%;" colspan="2"><apex:inputField style="width: 90%; height:50px;"
+                                                                    value="{!pint.Notable_Trends_1__c}" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="height: 10px;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;" colspan="2">
+                                                                <div style="float: left;">
+                                                                    * Trend Direction:&nbsp;
+                                                                    <apex:inputField value="{!pint.Trend_Direction__c}" />
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Notable Trend?
+                                                                </div>
+                                                                <div width="20%"
+                                                                    style="float: left; padding-left: 10px;">
+                                                                    <apex:selectRadio value="{!pint.Notable_Trend__c}">
+                                                                        <apex:selectOptions value="{!YesNoList}" />
+                                                                    </apex:selectRadio>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+															<td style="text-align: left;" colspan="2">
+																<div style="float: left;">
+																	* Performance Indicator:&nbsp;
+															<!-- <apex:inputField value="{!dummypint.Performance_Indicator__c}" /> -->
+																	<apex:inputField value="{!pint.Performance_Indicator__c}" />
+																</div>
+															</td>
+														</tr>
+                                                        
+                                                        <tr>
+                                                            <td style="height: 10px;"></td>
+                                                        </tr>
+                                                    </table>
+                                                    <br />
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                        action="{!CancelEditPint}"
+                                                        rerender="script, currentSection, errorSection"
+                                                        status="loadingStatus">
+                                                        <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                                    </apex:commandLink>
+                                                    &nbsp;&nbsp;
+                                                    <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                        action="{!SaveEditPint}"
+                                                        rerender="script, currentSection, errorSection"
+                                                        status="loadingStatus">
+                                                        <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                                                        <apex:param name="pintId" value="{!pint.Id}" />
+                                                    </apex:commandLink>
+                                                </div>
+                                            </blockquote>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                            <p>
+                                [
+                                <apex:commandLink action="{!addPint}"
+                                    rerender="script, newTrendSection">
+                                    <em> Add Additional Trend Statement </em>
+                                    <apex:param value="Trend" name="elemValue" />
+                                </apex:commandLink>
+                                ]
+                            </p>
+                            <apex:outputPanel id="newTrendSection">
+                            <apex:outputPanel rendered="{!elementValue == 'Trend'}">
+                                <div style="margin-left: 50px; margin-right: 10px;">
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="text-align: left;"><b>Add New Trend
+                                                    Statement</b> &nbsp;&nbsp;</td>
+                                            <td style="text-align: right;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 70%;" colspan="2"><apex:inputField style="width: 95%; height:50px;"
+                                                    value="{!dummypint.Notable_Trends_1__c}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 10px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left;" colspan="2">
+                                                <div style="float: left;">
+                                                    * Trend Direction:&nbsp;
+                                                    <apex:inputField value="{!dummypint.Trend_Direction__c}" />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Notable Trend?
+                                                </div>
+                                                <div width="20%" style="float: left; padding-left: 10px;">
+                                                    <apex:selectRadio value="{!dummypint.Notable_Trend__c}">
+                                                        <apex:selectOptions value="{!YesNoList}" />
+                                                    </apex:selectRadio>
+                                                </div>
+                                            </td>
+                                        </tr>
+										<tr>
+											<td style="text-align: left;" colspan="2">
+												<div style="float: left;">
+													* Performance Indicator:&nbsp;
+													<apex:inputField value="{!dummypint.Performance_Indicator__c}" />
+												</div>
+											</td>
+										</tr>
+										<tr>
+                                            <td style="height: 10px;"></td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                        action="{!CancelNewPint}"
+                                        rerender="script, elementsSection, errorSection"
+                                        status="loadingStatus">
+                                        <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>
+                                    &nbsp;&nbsp;
+                                    <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                        action="{!SaveNewPint}"
+                                        rerender="script, elementsSection, errorSection"
+                                        status="loadingStatus">
+                                        <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp;Save {!target}</apex:commandLink>
+                                    &nbsp;&nbsp;
+                                </div>
+                                <br />
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <br />
+                    <br />
+
+                    <HR Style="border: 1px outset #5c666f" />
+                    <p>
+                        <b>Additional trend information:</b>
+                    </p>
+                    <div width="100%" style="text-align: right; padding-left: 50px;">
+                        <u><apex:commandlink value="Clear formatting"
+                                onclick="clearText();" rerender="empty" /></u>
+                    </div>
+
+                    <apex:inputTextarea id="myEditor"
+                        value="{!uip.Narrative_Additional_Trend_Information__c}"
+                        styleClass="ckeditor-" richText="false"
+                        style="width:90%; height:300px;" onchange="refreshText();"></apex:inputTextarea>
+                    <br />
+                    <br />
+
+                    <apex:outputPanel layout="none" id="theCode">
+                        <div id="hideMe" style="display: none">
+                            <apex:inputTextarea id="hideTheCode"
+                                value="{!uip.Narrative_Additional_Trend_Information__c}" />
+                        </div>
+                    </apex:outputPanel>
+
+                    <script type="text/javascript">
+                        function refreshText() {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].getData();
+                            x=jQuery("*[id$=hideTheCode]").attr("id");
+                            document.getElementById(x).value = newContent;
+                        }
+                        function clearText() {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].getData();
+                            //newContent=newContent.replace(/<[^>]+>/gm, '');
+                            newContent=newContent.replace(/<(?!(img|\/img))[^>]+>/gm, '');
+                            CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].setData(newContent);
+                            console.log('newContent:::' + newContent);
+                        }
+                    </script>
+                    <p style="width: 100%; text-align: center;">
+                        <apex:commandLink StyleClass="btn btn-custom"
+                            action="{!SaveReflexion}" onclick="refreshText();"
+                            rerender="script, errorSection" status="loadingStatus">
+                            <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>
+                        &nbsp;&nbsp; <br />
+                    </p>
+                    <c:RichTextEditorJS myEditor="{!$Component.myEditor}" />
+
+                    <div style="width: 100%; text-align: left; padding: 10px;">
+                        <apex:commandLink StyleClass="btn btn-custom"
+                            action="{!BackCurrentPerformance}" rerender="errorSection"
+                            status="loadingStatus" onclick="if(!goNext()) {return};">
+                            <span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink>
+                        &nbsp;&nbsp;
+                        <apex:commandLink StyleClass="btn btn-custom"
+                            action="{!NextPriorityPerformanceChallenges}"
+                            rerender="errorSection" status="loadingStatus"
+                            onclick="if(!goNext()) {return};">Next&nbsp;<span
+                                class="glyphicon glyphicon-chevron-right"></span>
+                        </apex:commandLink>
+                        <br />
+                        <br />
+                    </div>
+                </apex:outputPanel>
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

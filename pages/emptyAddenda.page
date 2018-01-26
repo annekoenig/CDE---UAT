@@ -1,0 +1,10 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+    <apex:composition template="SectionHeader">
+        
+        <apex:define name="body">
+            
+            This School/District is not required to complete any Addenda forms. If you would like to complete the "Title I SchoolWide Addendum" for schools or "Gifted Addendum" for districts, please contact onlineuip@cde.state.co.us. The Title I SchoolWide Addendum is one way to meet Title I SchoolWide requirements.
+       
+        </apex:define>
+    </apex:composition>
+</apex:page>

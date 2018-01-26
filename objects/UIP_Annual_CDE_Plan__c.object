@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides><fields>
+        <fullName>AEC_SPF_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>AEC SPF Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>AEC_SPF_Help_Text__c</fullName>
+        <externalId>false</externalId>
+        <label>AEC SPF Help Text</label>
+        <length>500</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Achievement_Measures_Metrics__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Achievement Measures / Metrics</label>
+        <length>1000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Growth_Gaps_Median_Growth_Perc__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Growth Gaps Median Growth %</label>
+        <length>1000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Growth_Median_Growth_Perc__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Growth Median Growth %</label>
+        <length>1000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Year</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><fields>
+        <fullName>April_Deadline__c</fullName>
+        <externalId>false</externalId>
+        <label>Final Submission</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>Average_Daily_Attendance__c</fullName>
+        <externalId>false</externalId>
+        <label>Average Daily Attendance</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Blank_Template_Released__c</fullName>
+        <externalId>false</externalId>
+        <label>Blank Template Released</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>Blank_Template_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box when this year's template is ready for publication to the Community Portal.</inlineHelpText>
+        <label>Blank Template Ready for publish?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>CGP_ID_Process__c</fullName>
+        <description>Colorado Graduation Pathways Program (CGP) Identification Process</description>
+        <externalId>false</externalId>
+        <label>CGP ID Process</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Disaggregated_Grad_Rate_Expectation__c</fullName>
+        <externalId>false</externalId>
+        <label>Disaggregated Grad Rate Expectation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields><fields>
+        <fullName>Dropout_Rate_Expectation__c</fullName>
+        <externalId>false</externalId>
+        <label>Dropout Rate Expectation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields><fields>
+        <fullName>Final_Submission_Help_Text__c</fullName>
+        <externalId>false</externalId>
+        <label>Final Submission Help Text</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Graduation_Rate_Expectation__c</fullName>
+        <externalId>false</externalId>
+        <label>Graduation Rate Expectation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields><fields>
+        <fullName>January_Deadline__c</fullName>
+        <externalId>false</externalId>
+        <label>Required Review Submission</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>Mean_CO_ACT_Composite_Score_Expecation__c</fullName>
+        <externalId>false</externalId>
+        <label>Mean CO ACT Composite Score Expecation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields><fields>
+        <fullName>Next_School_Year__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please add the values for next school year (eg 2015-2016)</inlineHelpText>
+        <label>Next School Year</label>
+        <length>9</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><fields>
+        <fullName>October_Deadline__c</fullName>
+        <externalId>false</externalId>
+        <label>Optional Review Submission</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>Optional_Review_Help_Text_TIG__c</fullName>
+        <externalId>false</externalId>
+        <label>Optional Review Help Text for TIG, PI, T</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Plan_Type_Assignment_ID_Process__c</fullName>
+        <externalId>false</externalId>
+        <label>Plan Type Assignment ID Process</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Prior_School_Year__c</fullName>
+        <description>Please add the values for the prior school year (e.g. 2015-2016).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please add the values for the prior school year (e.g. 2015-2016).</inlineHelpText>
+        <label>Prior School Year</label>
+        <length>9</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><fields>
+        <fullName>Re_Review_Help_Text__c</fullName>
+        <externalId>false</externalId>
+        <label>Re-Review Help Text</label>
+        <length>1000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Re_review_Submission__c</fullName>
+        <externalId>false</externalId>
+        <label>Re-review Submission</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>Required_Review_Help_Text__c</fullName>
+        <externalId>false</externalId>
+        <label>Jan Review Help Text for Required Review</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>School_s_on_Accountability_Clock__c</fullName>
+        <externalId>false</externalId>
+        <label>School(s) on Accountability Clock</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>8</visibleLines>
+    </fields><fields>
+        <fullName>Section_1_Data_Populated__c</fullName>
+        <externalId>false</externalId>
+        <label>Section I Data Populated</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>Section_1_Data_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box when the Section I data has been populated and is ready for District and School review.</inlineHelpText>
+        <label>Section I Data Populated?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Section_1_Update_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this box when the Section I data has been updated.</inlineHelpText>
+        <label>Section I Data Updated?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Section_1_Update__c</fullName>
+        <externalId>false</externalId>
+        <label>Section I Update</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>TIG_ID_Process__c</fullName>
+        <description>Tiered Intervention Grant Identification process</description>
+        <externalId>false</externalId>
+        <label>TIG ID Process</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>This_School_Year__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please put in the dates for this school year (eg 2014-2015)</inlineHelpText>
+        <label>This School Year</label>
+        <length>9</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><fields>
+        <fullName>Title_I_Focus_School_ID_Process__c</fullName>
+        <externalId>false</externalId>
+        <label>Title I Focus School ID Process</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Truancy_Rate__c</fullName>
+        <externalId>false</externalId>
+        <label>Truancy Rate</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>UIP_Start_Date__c</fullName>
+        <description>Date of start of timeline.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date of start of timeline.</inlineHelpText>
+        <label>UIP Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><allowInChatterGroups>false</allowInChatterGroups><compactLayoutAssignment>SYSTEM</compactLayoutAssignment><deploymentStatus>Deployed</deploymentStatus><enableActivities>true</enableActivities><enableBulkApi>true</enableBulkApi><enableFeeds>false</enableFeeds><enableHistory>true</enableHistory><enableReports>true</enableReports><enableSearch>true</enableSearch><enableSharing>true</enableSharing><enableStreamingApi>true</enableStreamingApi><label>UIP Annual CDE Plan</label><nameField>
+        <label>UIP Annual CDE Plan Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField><pluralLabel>UIP Annual CDE Plans</pluralLabel><searchLayouts /><sharingModel>ReadWrite</sharingModel><startsWith>Vowel</startsWith><listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews></CustomObject>

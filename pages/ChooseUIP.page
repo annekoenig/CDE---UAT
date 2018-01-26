@@ -1,0 +1,60 @@
+<apex:page controller="ChooseUIP" showHeader="false">
+    <style>
+        .popup-top {
+            background-image: linear-gradient(to bottom,#223a6c 0,#95B6D2 100%);
+            height: 40px;
+            width: 100%;
+            border: 1px solid;
+            color: white;
+            font-weight:bold;
+            vertical-align: center;
+        }
+    </style>
+    <apex:form >
+        <div class="popup-top">
+            <table width="100%" height="100%">
+                <tr>
+                    <td width="95%" style="text-align:center; vertical-align: center; color:white;"><b>Choose UIP</b></td>
+                </tr>
+            </table>
+        </div><br/>
+        <apex:pageMessages />
+        <apex:outputPanel id="mainSection">
+            <apex:outputPanel rendered="{!isDeleteError}">
+                <div width="100%" height="100%" style="vertical-align: center; padding-left: 50px; padding-right: 50px; text-align: center;">You are about to add all Narrative information and related records from the Selected UIP to Current UIP, are you sure you want to copy from last year's plan?</div><br/><br/>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(isDeleteError)}">
+                <table width="90%">
+                    <tr>
+                        <td style="text-align: left; padding-left:50px;"><b>Select UIP:</b></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 80%; padding-left:50px;">
+                            <apex:selectList value="{!selectedUIP}" size="1" style="width:80%;">
+                                <apex:selectOptions value="{!UIPs}" />
+                            </apex:selectList>
+                        </td>
+                    </tr>
+                    <tr><td style="height:10px;"></td></tr>
+                </table>
+            </apex:outputPanel>
+            <apex:pageMessages />
+            <apex:outputPanel rendered="{!closeWindow}">
+                <script type="text/javascript">
+                javascript:parent.window.opener.rerenderMainSection(); 
+                self.close();
+                </script>
+            </apex:outputPanel>
+            <div style="width: 100%; height: 50px; text-align:center;">
+                <apex:outputPanel rendered="{!NOT(isDeleteError)}">
+                    <apex:commandButton StyleClass="btn btn-custom" action="{!CopyQuestion}" value="OK" style="width:100px;"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!isDeleteError}">
+                    <apex:commandButton StyleClass="btn btn-custom" action="{!CopyValues}" value="OK" style="width:100px;"/>
+                </apex:outputPanel>
+                <apex:commandButton StyleClass="btn btn-custom" value="Cancel" style="width:100px;" onclick="self.close()" />&nbsp;&nbsp;
+                
+            </div>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

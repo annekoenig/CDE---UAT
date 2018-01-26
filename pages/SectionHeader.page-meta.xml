@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>26.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Row 738 contains Addendum to update for Preview.
+&lt;td class=&quot;menu-custom&quot;&gt;&lt;apex:outputLink value=&quot;/apex/Addenda_DIST_Gifted_Program?id={!currentId}&quot; target=&quot;_parent&quot; styleClass=&quot;menu-custom&quot;&gt;Addendum&lt;/apex:outputLink&gt;&lt;/td&gt;</description>
+    <label>SectionHeader</label>
+</ApexPage>

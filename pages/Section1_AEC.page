@@ -1,0 +1,1176 @@
+<apex:page standardController="UIP__c" extensions="Section1" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+	<apex:composition template="SectionHeader">
+		<apex:define name="body">
+		<apex:outputPanel rendered="{!NOT(uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null)}">
+				<div class="emptySection">Section I data has not been populated!</div>
+			</apex:outputPanel>
+			<apex:outputPanel rendered="{!uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null}">
+			 <div id="pup" class="pup" style="position:abolute; display:none; z-index:200;"></div>
+				<div width="100%" style="background-color: #d3ccbc;">
+					<table width="100%">
+						<tr>
+							<td width="60%">
+								<h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section I:  Summary Information about the School</h1>
+							</td>
+							<td width="40%" style="text-align: right; padding-right: 100px;">
+							</td>
+						</tr>
+					</table>
+				</div>
+				<table width="100%">
+					<tr>
+						<td width="60%">
+							<p style="padding: 10px 10px 10px 50px;">
+								
+							</p>
+						</td>
+						<td width="40%" style="text-align: right; padding-right: 100px; padding-top:10px;">
+							<apex:commandLink StyleClass="btn btn-custom" value="Download" action="{!DownloadExcel_S1_AEC}" style="width:170px;" />
+						</td>
+					</tr>
+				</table>
+				<p style="padding: 10px 10px 10px 10px;">
+					Directions: This section summarizes your school's performance on the federal and state accountability measures in {!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c}. For federal accountability, Alternative Education Campuses (AECs) may be accountable to certain requirements as Title I, Focus, or TIG schools. For state accountability, AECs have a modified state AEC SPF report that uses AEC norms to focus on the key performance indicators of Achievement, Growth, Student Engagement and Postsecondary and Workforce Readiness. Where there are required state measures, these are noted below, but AECs may also have optional supplemental measures. AECs will need to complete the table to reflect their results on any optional supplemental measures. This summary should accompany your improvement plan.
+				</p>
+				<p style="padding: 10px 10px 10px 10px;">
+					<span style="font-size:130%; color:#6d3a5d;"><b>Student Performance Measures for State and Federal Accountability</b></span><br/><br/>
+				</p>
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+						<span class="helpButtonOn" id="helperId">
+							Academic Achievement (Status)
+							<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Academic_Achievement_Measures_Metrics__c}" escape="false"/>
+						</span>
+					</div>
+				</div><br/>
+				<div width="90%" style="padding-left:10px; padding-right: 10px;">
+					<table width="100%">
+						<tr>
+							<td width="15%"></td>
+							<td width="32%" colspan="3" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+							<td width="2%"></td>
+							<td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td ></td>
+							<td rowspan="50" class="section1-element-col" style="text-align:center;"><b>Overall Rating for Academic Achievment:</b> <br/><br/><span style="color: blue;">{!uip.x1_3_ACHIEVE_RATING__c}</span></td>
+						</tr>
+						
+						<tr></tr>
+						<tr>
+							<td colspan="9">
+								<apex:outputPanel rendered="{!sectionsNumber_AA > 0}">
+									
+									<table width="100%">
+										<tr>
+											<td width="15%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AA}"></td>
+											<td width="2%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AA}" ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td width="15%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="UIP-element-subheader">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}">
+												<td class="UIP-element-subheader">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}">
+												<td class="UIP-element-subheader">High</td>
+											</apex:outputPanel>
+											<td></td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="UIP-element-subheader">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}">
+												<td class="UIP-element-subheader">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}">
+												<td class="UIP-element-subheader">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Reading</td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_READ__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}" >
+												<td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_READ__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Math</td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_MATH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}" >
+												<td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_MATH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Writing</td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_WRITE__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}" >
+												<td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_WRITE__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Science</td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_SCI__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}">
+												<td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_SCI__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_SCI__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA}">
+												<td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_SCI__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA}" >
+												<td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_SCI__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA}" >
+												<td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_SCI__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+									</table>
+								</apex:outputPanel>
+							</td>
+						</tr>
+						
+						<tr></tr>
+						<tr>
+							<td colspan="9">
+								<apex:outputPanel rendered="{!sectionsNumber_AA_AEC > 0}">
+									<table width = "100%">
+										<tr>
+											<br/>
+											<b>Supplemental Measure 1:</b> {!uip.Stat_AddMeas_1_Name__c}<br/>
+											<b>Description:</b> {!uip.Stat_AddMeas_1_Metric__c} <br/>
+											<b>Expectation:</b> {!uip.Stat_AddMeas_1_MeetNorm__c}<br/>
+										</tr>
+										<tr><td style="height: 10px;"></td></tr>
+									</table>
+									<table width="100%">
+										<tr>
+											<td width="15%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AA_AEC}"></td>
+											<td width="2%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AA_AEC}" ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td></td>   
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_1_subj1_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj1_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj1_MeetCut_M__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj1_MeetCut_H__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj1_Result_E__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj1_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj1_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_1_subj2_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj2_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj2_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj2_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj2ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj2_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj2ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_1_subj3_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj3_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj3_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj3_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj3_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj3_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj3_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_1_subj4_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj4_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj4_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj4_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj4_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj4_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_1_subj4_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+									</table>
+								</apex:outputPanel>
+							</td>
+							<td width="2%"></td>
+						</tr>
+						
+						<tr></tr>
+						<tr>
+							<td colspan="9">
+								<apex:outputPanel rendered="{!sectionsNumber_AA_AEC_2 > 0}">
+									<table width = "100%">
+										<tr>
+											<br/>
+											<b>Supplemental Measure 2:</b> {!uip.Stat_AddMeas_2_Name__c}<br/>
+											<b>Description:</b> {!uip.Stat_AddMeas_2_Metric__c}<br/>
+											<b>Expectation:</b> {!uip.Stat_AddMeas_2_MeetNorm__c}<br/>
+										</tr>
+										<tr><td style="height: 10px;"></td></tr>
+									</table>
+									<table width="100%">
+										<tr>
+											<td width="15%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AA_AEC_2}"></td>
+											<td width="2%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AA_AEC_2}" ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC_2}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC_2}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC_2}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC_2}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC_2}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC_2}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_2_subj1_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj1_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj1_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj1_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj1_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj1_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj1_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_2_subj2_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj2_MeetCutH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj2_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj2_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AA_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj2_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AA_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj2_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AA_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Stat_AddMeas_2_subj2_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+									</table>
+								</apex:outputPanel>
+							</td>
+							<td width="2%"></td>
+						</tr>
+						<tr></tr>
+					</table>
+				</div><br/><br/>
+				
+				
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+						<span class="helpButtonOn" id="helperId">
+							Academic Growth
+							<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Academic_Growth_Median_Growth_Perc__c}" escape="false"/>
+						</span>
+					</div>
+				</div><br/>
+				<div width="90%" style="padding-left:10px; padding-right: 10px;">
+					<table width="100%">
+						<tr>
+							<td width="15%"></td>
+							<td width="32%" colspan="3" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+							<td width="2%"></td>
+							<td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="UIP-element-subheader-aec" colspan="3">Median Adequate Growth Percentile (AGP)</td>
+							<td width="2%"></td>
+							<td class="UIP-element-subheader-aec" colspan="3">Median Growth Percentile (MGP)</td>
+							<td width="2%"></td>
+							<td rowspan="50" class="section1-element-col" style="text-align:center;"><b>Overall Rating for Academic Growth Gaps:</b> <br/><br/><br/><span style="color: blue;">{!uip.x1_3_GROWTH_RATING__c}</span></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td class="UIP-element-subheader-blank"></td>
+							<td ></td>
+						</tr>
+						
+						<tr></tr>
+						<tr>
+							<td colspan="9">
+								<apex:outputPanel rendered="{!sectionsNumber_AG > 0}">
+									
+									<table width="100%">
+										<tr>
+											<td width="15%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AG}"></td>
+											<td width="2%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AG}" ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td></td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Reading</td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="section1-element-col-blue">{!uip.E_GRO_AGP_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}">
+												<td class="section1-element-col-blue">{!uip.M_GRO_AGP_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}" >
+												<td class="section1-element-col-blue">{!uip.H_GRO_AGP_READ__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="section1-element-col-blue">{!uip.E_GRO_MGP_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}" >
+												<td class="section1-element-col-blue">{!uip.M_GRO_MGP_READ__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}" >
+												<td class="section1-element-col-blue">{!uip.H_GRO_MGP_READ__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Math</td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="section1-element-col-blue">{!uip.E_GRO_AGP_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}">
+												<td class="section1-element-col-blue">{!uip.M_GRO_AGP_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}" >
+												<td class="section1-element-col-blue">{!uip.H_GRO_AGP_MATH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="section1-element-col-blue">{!uip.E_GRO_MGP_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}" >
+												<td class="section1-element-col-blue">{!uip.M_GRO_MGP_MATH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}" >
+												<td class="section1-element-col-blue">{!uip.H_GRO_MGP_MATH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">Writing</td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="section1-element-col-blue">{!uip.E_GRO_AGP_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}">
+												<td class="section1-element-col-blue">{!uip.M_GRO_AGP_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}" >
+												<td class="section1-element-col-blue">{!uip.H_GRO_AGP_WRITE__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG}">
+												<td class="section1-element-col-blue">{!uip.E_GRO_MGP_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG}" >
+												<td class="section1-element-col-blue">{!uip.M_GRO_MGP_WRITE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG}" >
+												<td class="section1-element-col-blue">{!uip.H_GRO_MGP_WRITE__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+									</table>
+								</apex:outputPanel>
+							</td>
+						</tr>
+						
+						<tr></tr>
+						<tr>
+							<td colspan="9">
+								<apex:outputPanel rendered="{!sectionsNumber_AG_AEC > 0}">
+									<table width = "100%">
+										<tr>
+											<br/>
+											<b>Supplemental Measure 1:</b> {!uip.Grow_AddMeas_1_Name__c}<br/>
+											<b>Description:</b> {!uip.Grow_AddMeas_1_Metric__c}<br/>
+											<b>Expectation:</b> {!uip.Grow_AddMeas_1_MeetNorm__c}<br/>
+										</tr>
+										<tr><td style="height: 10px;"></td></tr>
+									</table>
+									<table width="100%" >
+										<tr>
+											<td width="15%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AG_AEC}"></td>
+											<td width="2%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AG_AEC}" ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr><td style="height: 10px;"></td></tr>
+										<tr>
+											<td width="15%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Grow_AddMeas_1_subj1_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj1_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj1_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj1_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj1_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj1_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj1_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Grow_AddMeas_1_subj2_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj2_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj2_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj2_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj2_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj2_ResultH__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj2_ResultM__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_1_subj3_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj3_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj3_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj3_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj3_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj3_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj3_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Stat_AddMeas_1_subj4_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj4_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj4_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj4_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj4_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj4_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_1_subj4_ResultH__c}</td>
+											</apex:outputPanel>
+										</tr>
+									</table>
+								</apex:outputPanel>
+							</td>
+							<td width="2%"></td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<td colspan="9">
+								<apex:outputPanel rendered="{!sectionsNumber_AG_AEC_2 > 0}">
+									<table width = "100%">
+										<tr>
+											<br/>
+											<b>Supplemental Measure 2:</b> {!uip.Grow_AddMeas_2_Name__c}<br/>
+											<b>Description:</b> {!uip.Grow_AddMeas_2_Metric__c}<br/>
+											<b>Expectation:</b> {!uip.Grow_AddMeas_2_MeetNorm__c}<br/>
+										</tr>
+										<tr><td style="height: 10px;"></td></tr>
+									</table>
+									<table width="100%">
+										<tr>
+											<td width="15%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AG_AEC_2}"></td>
+											<td width="2%"></td>
+											<td width="32%" colspan="{!sectionsNumber_AG_AEC_2}" ></td>
+											<td width="2%"></td>
+										</tr>
+										<tr><td style="height: 10px;"></td></tr>
+										<tr>
+											<td></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC_2}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC_2}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC_2}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC_2}">
+												<td class="UIP-element-subheader-aec">Elementary</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC_2}">
+												<td class="UIP-element-subheader-aec">Middle</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC_2}">
+												<td class="UIP-element-subheader-aec">High</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Grow_AddMeas_2_subj1_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj1_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj1_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj1_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj1_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj1_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj1_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+										<tr>
+											<td class="table-row-target" style="background-color:#f5eedf;">{!uip.Grow_AddMeas_2_subj2_Name__c}</td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj2_MeetCutE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj2_MeetCutM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj2_MeetCutH__c}</td>
+											</apex:outputPanel>
+												<td width="2%"></td>
+											<apex:outputPanel rendered="{!showElementary_AG_AEC_2}">
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj2_ResultE__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showMS_AG_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj2_ResultM__c}</td>
+											</apex:outputPanel>
+											<apex:outputPanel rendered="{!showHS_AG_AEC_2}" >
+												<td class="section1-element-col-blue">{!uip.Grow_AddMeas_2_subj2_ResultH__c}</td>
+											</apex:outputPanel>
+											<td width="2%"></td>
+										</tr>
+									</table>
+								</apex:outputPanel>
+							</td>
+							<td width="2%"></td>
+						</tr>
+					</table>
+				</div><br/><br/>
+				
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+						Student Engagement
+						<!-- <span class="helpButtonOn" id="helperId">
+							Student Engagement
+							<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Academic_Growth_Gaps_Median_Growth_Perc__c}" escape="false"/>
+						</span> -->
+					</div>
+				</div><br/>
+				<div width="90%" style="padding-left:10px; padding-right: 10px;">
+					<table width="100%">
+						<tr>
+							<td width="15%"></td>
+							<td width="32%" colspan="3" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+							<td width="2%"></td>
+							<td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+						</tr>
+						<tr>
+							<td></td>
+							<apex:outputPanel rendered="true">
+								<td class="section1-element-col" colspan="3">See your School Performance Framework for listing of median adequate growth expectations for your school's disaggregated groups, including free/reduced lunch eligible, minority students, students with disabilities, English Language Learners (ELLs) and students below proficient.</td>
+							</apex:outputPanel>
+								<td width="2%"></td>
+							<apex:outputPanel rendered="true">
+								<td class="section1-element-col" colspan="3">See your School Performance Framework for listing of median growth by each disaggregated group.</td>
+							</apex:outputPanel>
+							<td width="2%"></td>
+							<td class="section1-element-col" rowspan="30" style="text-align:center;"><b>Overall Rating for Academic Growth Gaps:</b> <br/><br/><span style="color: blue;">{!uip.x1_3_GRO_GAPS_RATING__c}</span></td>
+						</tr>
+						<tr>
+							<td width="15%"></td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.UAIP_STENG_ADA_TARG_RATE__c}</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.UAIP_STENG_ADA_RATE__c}</td>
+							<td width="2%"></td>
+						</tr>
+						<tr>
+							<td width="15%"></td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.UAIP_STENG_TRU_TARG_RATE__c}</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.UAIP_STENG_TRU_RATE__c}</td>
+							<td width="2%"></td>
+						</tr>
+						<tr>
+							<td colspan="8">
+							<table width = "100%">
+								<tr>
+									<br/>
+									<b>Supplemental Measure 1:</b> {!uip.STENG_AddMeas_1_Name__c}<br/>
+									<b>Description:</b> {!uip.STENG_AddMeas_1_Metric__c}<br/>
+									<b>Expectation:</b> {!uip.STENG_AddMeas_1_MeetNorm__c}<br/>
+								</tr>
+								<tr><td style="height: 10px;"></td></tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<apex:outputPanel rendered="{!uip.STENG_AddMeas_1_MeetCutE__c != null}">
+								<td class="UIP-element-subheader-aec">Elementary</td>
+							</apex:outputPanel>
+							<apex:outputPanel rendered="{!uip.STENG_AddMeas_1_ResultM__c != null}">
+								<td class="UIP-element-subheader-aec">Middle</td>
+							</apex:outputPanel>
+							<apex:outputPanel rendered="{!uip.STENG_AddMeas_1_ResultH__c != null}">
+								<td class="UIP-element-subheader-aec">High</td>
+							</apex:outputPanel>
+						</tr>
+						<tr>
+							<td>
+								
+							</td>
+							<td colspan="3" class="section1-element-col">{!uip.STENG_AddMeas_1_MeetCut__c}</td>
+							<td></td>
+							<apex:outputPanel rendered="{!uip.STENG_AddMeas_1_MeetCutE__c != null}">
+								<td class="section1-element-col">{!uip.STENG_AddMeas_1_MeetCutE__c}</td>
+							</apex:outputPanel>
+							<apex:outputPanel rendered="{!uip.STENG_AddMeas_1_ResultM__c != null}">
+								<td class="section1-element-col">{!uip.STENG_AddMeas_1_ResultM__c}</td>
+							</apex:outputPanel>
+							<apex:outputPanel rendered="{!uip.STENG_AddMeas_1_ResultH__c != null}">
+								<td class="section1-element-col">{!uip.STENG_AddMeas_1_ResultH__c}</td>
+							</apex:outputPanel>
+						</tr>
+						
+						<apex:outputPanel rendered="{!uip.STENG_AddMeas_2_Name__c != null || uip.STENG_AddMeas_2_Metric__c != null || uip.STENG_AddMeas_2_MeetNorm__c != null || uip.STENG_AddMeas_2_MeetCut__c != null || uip.STENG_Measure_2_Result__c != null}">
+						<tr></tr>
+						<tr>
+							<td colspan="8">
+							<table width = "100%">
+								<tr>
+									<br/>
+									<b>Supplemental Measure 2:</b> {!uip.STENG_AddMeas_2_Name__c}<br/>
+									<b>Description:</b> {!uip.STENG_AddMeas_2_Metric__c}<br/>
+									<b>Expectation:</b> {!uip.STENG_AddMeas_2_MeetNorm__c}<br/>
+								</tr>
+								<tr><td style="height: 10px;"></td></tr>
+							</table>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<td>
+							</td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.STENG_AddMeas_2_MeetCut__c}</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.STENG_Measure_2_Result__c}</td>
+							<td width="2%"></td>
+						</tr>
+						</apex:outputPanel>
+						
+						<apex:outputPanel rendered="{!uip.STENG_AddMeas_3_Name__c != null || uip.STENG_AddMeas_3_Metric__c != null || uip.STENG_AddMeas_3_MeetNorm__c != null || uip.STENG_AddMeas_3_MeetCut__c != null || uip.STENG_AddMeas_3_Result__c != null}">
+						<tr></tr>
+						<tr>
+							<td colspan="8">
+							<table width = "100%">
+								<tr>
+									<br/>
+									<b>Supplemental Measure 3:</b> {!uip.STENG_AddMeas_3_Name__c}<br/>
+									<b>Description:</b> {!uip.STENG_AddMeas_3_Metric__c}<br/>
+									<b>Expectation:</b> {!uip.STENG_AddMeas_3_MeetNorm__c}<br/>
+								</tr>
+								<tr><td style="height: 10px;"></td></tr>
+							</table>
+							</td>
+						</tr>
+						<tr></tr>
+						<tr>
+							<td>
+							</td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.STENG_AddMeas_3_MeetCut__c}</td>
+							<td width="2%"></td>
+							<td width="32%" colspan="3" class="section1-element-col">{!uip.STENG_AddMeas_3_Result__c}</td>
+							<td width="2%"></td>
+						</tr>
+						</apex:outputPanel>
+					</table>
+				</div><br/><br/>
+				
+				<apex:outputPanel rendered="{!showPostsecondary_AEC}">
+					<div width="100%" style="height:50px; background-color: #d3ccbc;">
+						<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+							<span class="helpButtonOn" id="helperId">
+								Postsecondary &amp; Workforce Readiness
+								<img src="/s.gif" alt="" class="helpOrb" title="This section only appears for schools with high school metrics" escape="false"/>
+							</span>
+						</div>
+					</div><br/>
+					<div width="90%" style="padding-left:10px; padding-right: 10px;">
+						<table width="100%">
+							<tr>
+								<td width="15%"></td>
+								<td width="32%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+								<td width="2%"></td>
+								<td width="32%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+								<td width="2%"></td>
+								<td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Graduation Rate
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Graduation_Rate_Expectation__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col-blue">{!uip.UAIP_TARG_PS_COMP_BEST_CR__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue">{!uip.UAIP_PS_COMP_BEST_CR__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_GRAD_RATING__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Dropout Rate
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Dropout_Rate_Expectation__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col-blue">{!uip.TARG_PS_DROP_RATE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue">{!uip.PS_DROP_RATE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_DROP_RATING__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Mean Colorado ACT Composite Score
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Mean_CO_ACT_Composite_Score_Expecation__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col-blue">{!uip.TARG_PS_ACT_SCORE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue">{!uip.PS_ACT_SCORE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_ACT_RATING__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<!-- <span class="helpButtonOn" id="helperId">
+										Mean Colorado ACT Composite Score
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Mean_CO_ACT_Composite_Score_Expecation__c}" escape="false"/>
+									</span> -->
+								</td>
+								<td class="section1-element-col-blue">{!uip.PWR_AddMeas_1_MeetCut__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue">{!uip.PWR_AddMeas_1_Result__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PWR_AddMeas_1_Rating__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<!-- <span class="helpButtonOn" id="helperId">
+										Mean Colorado ACT Composite Score
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Mean_CO_ACT_Composite_Score_Expecation__c}" escape="false"/>
+									</span> -->
+								</td>
+								<td class="section1-element-col-blue">{!uip.PWR_AddMeas_2_MeetCut__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue">{!uip.PWR_AddMeas_2_Result__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PWR_AddMeas_2_Rating__c}</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td style="text-align: right;"><b>Overall Rating for Postsecondary &amp; Workforce Readiness:</b></td>
+								<td width="2%"></td>
+								<td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.x1_3_POST_SEC_RATING__c}</td>
+							</tr>
+						</table>
+					</div><br/><br/>
+				</apex:outputPanel>
+				
+				<apex:outputPanel rendered="{!showStateAccountability}">
+					<div width="100%" style="height:50px; background-color: #d3ccbc;">
+						<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+							State Accountability
+						</div>
+					</div><br/>
+					<div width="90%" style="padding-left:10px; padding-right: 10px;">
+						<table width="100%">
+							<tr>
+								<td width="15%"></td>
+								<td width="32%" class="uip-element-header-purp">Identification for School</td>
+								<td width="2%"></td>
+								<td width="49%" class="uip-element-header-purp">Directions for Completing Improvement Plan</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Plan Type Assignment
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Plan_Type_Assignment_ID_Process__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col">{!uip.A_TTL_RATING_OFFICIAL__c} {!IF(uip.A_TTL_RATING_OFFICIAL__c == 'Priority Improvement' || uip.A_TTL_RATING_OFFICIAL__c == 'Turnaround',' - July 1,' +  uip.YEAR_ENTERING_PI_TA__c, '')}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col">{!uip.RATING_DIRECTIONS__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Title I Focus School
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Title_I_Focus_School_ID_Process__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col">{!uip.FOCUS_TYPE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col">{!uip.FOCUS_DIRECTIONS__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Tiered Intervention Grant (TIG)
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.TIG_ID_Process__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col">{!uip.TIG_TYPE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col">{!uip.TIG_DIRECTIONS__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">Diagnostic Review Grant
+									<!-- <span class="helpButtonOn" id="helperId">
+										Diagnostic Review Grant
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.TIG_ID_Process__c}" escape="false"/>
+									</span> -->
+								</td>
+								<td class="section1-element-col">{!uip.Diagnostic_Review_Grant_Type__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col">{!uip.Diagnostic_Review_Grant_Instructions__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">School Improvement Support (SIS) Grant
+									<!-- <span class="helpButtonOn" id="helperId">
+										School Improvement Support (SIS) Grant
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.TIG_ID_Process__c}" escape="false"/>
+									</span> -->
+								</td>
+								<td class="section1-element-col">{!uip.SIS_Grant__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col">{!uip.SIS_Grant_Instructions__c}</td>
+							</tr>
+							<tr>
+								<td class="table-row-target" style="background-color:#f5eedf;">
+									<span class="helpButtonOn" id="helperId">
+										Colorado Graduation Pathways Program (CGP)
+										<img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.CGP_ID_Process__c}" escape="false"/>
+									</span>
+								</td>
+								<td class="section1-element-col">{!uip.CGP_PLAN_TYPE__c}</td>
+								<td width="2%"></td>
+								<td class="section1-element-col">{!uip.CGP_PLAN_DIRECTIONS__c}</td>
+							</tr>
+						</table>
+					</div><br/><br/>
+				</apex:outputPanel>
+			</apex:outputPanel>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = '{!isPageChanged}';
+                    var isNewContact = '{!isNewContact}';
+                    var isEditContact = '{!isEditContact}';
+                    var isEditRTF = false;
+                    var isEditPit = false;
+                    var isEditPint = false;
+                    var elementValue = '';
+                    var isEditElem = false;
+                    var isEditElemx = false;
+                    var isTextChanged = false;
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+		</apex:define>
+	</apex:composition>
+</apex:page>

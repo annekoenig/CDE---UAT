@@ -1,0 +1,166 @@
+<apex:page standardController="UIP__c" extensions="Section1" showHeader="false" standardStylesheets="false" contentType="application/msword#Section2.doc" cache="true">
+    
+            <apex:outputPanel rendered="{!NOT(uip.Section_2__c != 'No' && uip.Section_2__c != null)}">
+                <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!uip.Section_2__c != 'No' && uip.Section_2__c != null}">
+                <div width="100%" style="background-color: #d3ccbc;">
+                    <table width="100%">
+                        <tr>
+                            <td width="60%">
+                                <h1 style="color: #5c666f; font-size:150%; padding-left: 50px; font-weight:bold;">Section II:  Improvement Plan Information</h1>
+                            </td>
+                            <td width="40%" style="text-align: right; padding-right: 100px;">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="padding: 10px 10px 10px 50px;">
+                    <span style="font-size:130%; color:#ffc746;"><b>Student Performance Measures for State and Federal Accountability</b></span><br/>
+                </p>
+                <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                    <table width="100%">
+                        <tr>
+                            <td colspan="3" width="100%" style="height: 50px;text-align: center;font-weight: bold;background-color: #ffc746;color: #5c666f;">Comprehensive Review and Selected Grant History</td>
+                        </tr>
+                        <tr>
+                            <td width="20%" class="table-row-target" style="background-color:#f5eedf;">Related Grant Awards</td>
+                            <td width="30%" class="section1-element-col">Has the school received a grant that supports the school's improvement efforts? When was the grant awarded?</td>
+                            <td width="50%" class="section1-element-col">
+                                <!-- <apex:outputField id="instanceReady" value="{!uip.Related_Grant_Awards__c}"  richText="false"/> -->
+                                <apex:outputField value="{!uip.Related_Grant_Awards__c}" style="width:90%;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%" class="table-row-target" style="background-color:#f5eedf;">School Support Team or Expedited Review</td>
+                            <td width="30%" class="section1-element-col">Has (or will) the school participated in an SST or Expedited Review? If so, when?</td>
+                            <td width="50%" class="section1-element-col">
+                                <!-- <apex:outputField value="{!uip.Related_Grant_Awards__c}" /> -->
+                                <apex:outputField value="{!uip.SST_Expedited_Review__c}" style="width:90%;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="20%" class="table-row-target" style="background-color:#f5eedf;">External Evaluator</td>
+                            <td width="30%" class="section1-element-col">Has the school partnered with an external evaluator to provide comprehensive evaluation? Indicate the year and the name of the provider/tool used.</td>
+                            <td width="50%" class="section1-element-col">
+                                <!-- <apex:outputField value="{!uip.Related_Grant_Awards__c}" /> -->
+                                <apex:outputField value="{!uip.External_Evaluator__c}" style="width:90%;"/>
+                            </td>
+                        </tr>
+                    </table><br/>
+                    
+                    
+                    <table width="100%">
+                        <tr>
+                            <td colspan="3" style="height: 50px;text-align: center;font-weight: bold;background-color: #ffc746;color: #5c666f;">Improvement Plan Information</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="padding-top:15px; padding-left:50px;">The school is submitting this improvement plan to satisfy requirements for:</td>
+                        </tr>
+                        <tr>
+                            <td width="40%">State Accreditation</td>
+                            <td width="10%" class="section2-element-col">
+                                <apex:outputPanel rendered="{!IF(uip.State_Accreditation__c ==  true, true, false)}">
+                                    Yes
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(uip.State_Accreditation__c == false, true, false)}">
+                                    No
+                                </apex:outputPanel>
+                            </td> 
+                            <td width="50%"></td>
+                        </tr>
+                        <tr>
+                            <td>Title I Focus School</td>
+                            <td class="section2-element-col">
+                                <apex:outputPanel rendered="{!IF(uip.Title_I_Focus_School__c ==  true, true, false)}">
+                                    Yes
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(uip.Title_I_Focus_School__c == false, true, false)}">
+                                    No
+                                </apex:outputPanel>
+                            </td>
+                            <td width="50%"></td> 
+                        </tr>
+                        <tr>
+                            <td>Tiered Intervention Grant (TIG)</td>
+                            <td class="section2-element-col">
+                                <apex:outputPanel rendered="{!IF(uip.Tiered_Intervention_Grant_TIG__c ==  true, true, false)}">
+                                    Yes
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(uip.Tiered_Intervention_Grant_TIG__c == false, true, false)}">
+                                    No
+                                </apex:outputPanel>
+                            </td> 
+                            <td width="50%"></td>
+                        </tr>
+                        <tr>
+                            <td>Colorado Graduation Pathways Program (CGP)</td>
+                            <td class="section2-element-col">
+                                <apex:outputPanel rendered="{!IF(uip.Colorado_Graduation_Pathways_Program__c==  true, true, false)}">
+                                    Yes
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(uip.Colorado_Graduation_Pathways_Program__c == false, true, false)}">
+                                    No
+                                </apex:outputPanel>
+                            </td>
+                            <td width="50%"></td> 
+                        </tr>
+                        <tr>
+                            <td>School Improvement Support Grant</td>
+                            <td class="section2-element-col">
+                                <apex:outputPanel rendered="{!IF(uip.School_Improvement_Support_Grant__c ==  true, true, false)}">
+                                    Yes
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(uip.School_Improvement_Support_Grant__c == false, true, false)}">
+                                    No
+                                </apex:outputPanel>
+                            </td> 
+                            <td width="50%"></td>
+                        </tr>
+                        <tr>
+                            <td>Other</td>
+                            <td>
+                                <apex:outputPanel rendered="{!IF(uip.Other__c ==  true, true, false)}">
+                                    Yes
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!IF(uip.Other__c == false, true, false)}">
+                                    No
+                                </apex:outputPanel>
+                            </td>
+                            <td width="50%"><apex:outputText value="{!uip.Other_Description__c}" id="otherTxt" style=" visibility:hidden; width:300px; padding-top:5px;"/></td>
+                        </tr>
+                        
+                    </table>
+                    <apex:outputPanel id="contacts">
+                        <table width="100%">
+                            <tr>
+                                <td colspan="5" style="height: 50px;text-align: center;font-weight: bold;background-color: #ffc746;color: #5c666f;">School Contact Information</td>
+                            </tr>
+                            <tr>
+                                <td class="UIP-element-subheader">Name</td>
+                                <td class="UIP-element-subheader">Title</td>
+                                <td class="UIP-element-subheader">Email</td>
+                                <td class="UIP-element-subheader">Phone</td>
+                                <td class="UIP-element-subheader">Mailing Address</td>
+                            </tr>
+                            <!-- <apex:repeat value="{!uipContactsList}" var="item">
+                                <tr>
+                                    <td class="section1-element-col">{!item.Contact__r.Name}</td>
+                                    <td class="section1-element-col">{!item.Contact__r.Title}</td>
+                                    <td class="section1-element-col">{!item.Contact__r.Email}</td>
+                                    <td class="section1-element-col">{!item.Contact__r.Phone}</td>
+                                    <td class="section1-element-col">
+                                        {!item.Contact__r.MailingStreet}
+                                        <br/>
+                                        {!item.Contact__r.MailingCity} {!item.Contact__r.MailingState} {!item.Contact__r.MailingPostalCode}
+                                        <br/>
+                                        {!item.Contact__r.MailingCountry}
+                                    </td>
+                                </tr>
+                            </apex:repeat> -->
+                            
+                        </table><br/>
+                    </apex:outputPanel>
+                </div>
+            </apex:outputPanel>
+</apex:page>

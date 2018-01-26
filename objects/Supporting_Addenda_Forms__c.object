@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides><fields>
+        <fullName>Addendum__c</fullName>
+        <externalId>false</externalId>
+        <label>Addendum</label>
+        <referenceTo>Addendum__c</referenceTo>
+        <relationshipName>Supporting_Addenda_Forms</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields><fields>
+        <fullName>Crosswalk_of_Description_in_Action_Plan__c</fullName>
+        <externalId>false</externalId>
+        <label>Crosswalk of Description in Action Plan</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Description_of_Proposed_Activity__c</fullName>
+        <externalId>false</externalId>
+        <label>Description of Proposed Activity</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields><fields>
+        <fullName>Public_Facing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Public Facing</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Title_IA_PPC_Proposed_Amount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Must be 10% of projected total district allocation</inlineHelpText>
+        <label>Title IA PPC Proposed Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields><fields>
+        <fullName>Title_IIA_Proposed_Amount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Must reflect entire projected allocation</inlineHelpText>
+        <label>Title IIA Proposed Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields><fields>
+        <fullName>Title_III_Proposed_Amount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Must reflect the entire projected allocation</inlineHelpText>
+        <label>Title III Proposed Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields><fields>
+        <fullName>ZPIF_UIP_Identidier__c</fullName>
+        <externalId>false</externalId>
+        <label>ZPIF UIP Identidier</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><allowInChatterGroups>false</allowInChatterGroups><compactLayoutAssignment>SYSTEM</compactLayoutAssignment><deploymentStatus>Deployed</deploymentStatus><description>Required ESEA Proposed Budget: 2015-16 Title Funds
+This chart must be completed for any district that is accredited with a Priority Improvement or Turnaround plan and accepts ESEA Title funds (i.e., Titles I, IIA, III). The chart must be completed for each applicable Title program.  This includes:
+(1)	Title IA Priority Performance Challenge (PPC) activities (10% of district allocation)
+(2)	Title IIA activities (entire allocation)
+(3)	Title III activities, if the district is a Title III grantee lead (entire allocation)</description><enableActivities>false</enableActivities><enableBulkApi>true</enableBulkApi><enableFeeds>false</enableFeeds><enableHistory>false</enableHistory><enableReports>true</enableReports><enableSearch>true</enableSearch><enableSharing>true</enableSharing><enableStreamingApi>true</enableStreamingApi><label>ESEA Supporting Addenda Form</label><nameField>
+        <displayFormat>{0000}</displayFormat>
+        <label>Supporting Addenda Forms Name</label>
+        <type>AutoNumber</type>
+    </nameField><pluralLabel>ESEA_Supporting Addenda Forms</pluralLabel><searchLayouts /><sharingModel>ControlledByParent</sharingModel></CustomObject>

@@ -1,0 +1,424 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0" id="pg">
+    
+    <script>
+    function testMe() { cancel(); }
+    
+    $.removeCookie("sortOrder1");
+    $(function() {
+        $("#sortable1").sortable({                                                
+            update: function(event, ui){
+                saveOrd1 = $('#sortable1').sortable('toArray');
+                $.cookie('sortOrder1',saveOrd1);
+            }
+        } );
+        $("#sortable1").disableSelection();
+    });
+    
+    function test2()
+    {        
+        var mis='{!genericList[0].mis.id}';
+        savedOrd1 = $.cookie('sortOrder1');
+        echo1(savedOrd1,mis);
+    }
+    
+    $.removeCookie("sortOrder");
+    $(function() {
+        $("#sortable").sortable({
+            update: function(event, ui){
+                saveOrd = $('#sortable').sortable('toArray');
+                $.cookie('sortOrder', saveOrd);
+            }
+        } );
+        $("#sortable")
+        .disableSelection();
+    });
+    
+    function test1()
+    {
+        var mis='{!genericList[0].mis.id}';
+        savedOrd1 = $.cookie('sortOrder');
+        echo(savedOrd1,mis);
+    }
+    </script>
+    
+    <apex:pageMessages />
+    
+    <style>
+        .custPopup {
+        background-color: white;
+        border-width: 2px;
+        border-style: solid;
+        z-index: 9999;
+        left: 50%;
+        padding: 10px;
+        position: absolute;
+        /* These are the 3 css properties you will need to change so the popup 
+        displays in the center of the screen. First set the width. Then set 
+        margin-left to negative half of what the width is. You can add 
+        the height property for a fixed size pop up if you want.*/
+        width: 500px;
+        margin-left: -250px;
+        top: 600px;
+        }
+        
+        .popupBackground {
+        background-color: black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 1000%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        }
+        
+        .col-md-3 {
+        background-color: #ffffff !important;
+        }
+        
+        .left-col {
+        padding: 5px;
+        font-weight: bold;
+        }
+        
+        .div-header {
+        background-color: #ececec;
+        form font-weight: bold;
+        }
+        
+        .column {
+        float: left;
+        overflow: hidden;
+        margin: 0;
+        padding: 10px;
+        }
+        
+        .wrapWithWordBreak {
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+        }
+        
+        .wrappable {
+        overflow: hidden;
+        max-width: 400px;
+        word-wrap: break-word;
+        }
+        
+        .btn-full {
+        width: 96%;
+        margin: 5px auto;
+        }
+        
+        #sortable1 {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        }
+        
+        #sortable1 li {
+        margin: 0 3px 3px 3px;
+        font-size: 1em;
+        width: 100%;
+        }
+        
+        #sortable1 li span {
+        position: absolute;
+        margin-left: -1.3em;
+        }
+        
+        .default-label {
+        background: #E0FFFF;
+        border: 1px solid #DDDDDD;
+        color: #333333;
+        }
+        
+        .default {
+        background: #FFFFFF;
+        color: #333333;
+        }
+        
+        #sortable {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        }
+        
+        #sortable li {
+        margin: 0 3px 3px 3px;
+        font-size: 1em;
+        }
+        
+        #sortable li span {
+        position: absolute;
+        margin-left: -1.3em;
+        }
+        
+        .default-label {
+        background: #E0FFFF;
+        border: 1px solid #DDDDDD;
+        color: #333333;
+        }
+        
+        .default {
+        background: #FFFFFF;
+        color: #333333;
+        }
+        
+        li {
+        cursor: pointer;
+        cursor: grab;
+        }
+        
+        .MISDisc {
+        width: 100%;
+        background-color: #FFFFFF;
+        border: 1px solid #DDDDDD;
+        padding: 10px;
+        }
+        
+        .MISHeader {
+        height: 40px; 
+        line-height: 40px; 
+        padding-left: 10px; 
+        border: 1px solid #DDDDDD;
+        font-size: 14px;
+        margin-bottom : 0px;
+        font-weight: 700;
+        width: 100%; 
+        }
+        
+        .MISActionStepSectionStyle {
+        background-color: #ECF8E0; 
+        }
+        
+        .MISBenchmarkSectionStyle {
+        background-color: #F0E8D0; 
+        }
+        
+        .MISTable {
+        width: 100%; 
+        display: grid;
+        border: 1px solid #DDDDDD;
+        }
+        
+        .MISTable td {
+        font-size: 100%; 
+        padding-left: 10px; 
+        font-weight: bold;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    
+    <apex:pageBlock id="newPlanningForm">
+        <apex:composition template="SectionHeader">
+            <apex:define name="body">
+                <div class="thetabcontent" id="test">
+                    <div class="section4planningform">
+                        <blockquote>
+                            <apex:outputPanel rendered="{!IF(genericList.size==0,true,false)}">
+                                <div class="emptySection">MIS has not been populated!</div>
+                            </apex:outputPanel>
+                        </blockquote>
+                        <apex:outputpanel rendered="{!IF(genericList.size>0,true,false)}">
+                            <script>    
+                            function setFocus(eleID) 
+                            {
+                                var compLineSize;
+                                compLineSize = '{!genericList[0].iasList.size}';
+                                console.log(compLineSize);
+                                if(compLineSize!=0)
+                                {
+                                    for(var i=0;i<compLineSize;i++) 
+                                    {
+                                        if(document.getElementById('pg:newPlanningForm:SectionHeaderTemplate:j_id28:fullPage:j_id187:0:j_id189:' + i + ':' + eleID) !=null)
+                                            document.getElementById('pg:newPlanningForm:SectionHeaderTemplate:j_id28:fullPage:j_id187:0:j_id189:' + i + ':' + eleID).focus(); 
+                                    }
+                                }
+                            }                            
+                            </script>
+                            
+                            <div class="header">
+                                <apex:outputPanel rendered="{!uip.Section_4__c != 'No' && uip.Section_4__c != null}" id="refresh1">
+                                    <div width="100%" style="background-color: #d3ccbc;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="60%">
+                                                    <h1 style="font-size: 150%; padding-left: 10px; font-weight: bold; color: #5c666f;">Section IV: Action Plans - Planning Form</h1>
+                                                </td>
+                                                <td width="32%" style="text-align: right; padding-right: 50px;">
+                                                    <apex:inputField value="{!uip.Section_IV_Action_Planning_Complete__c}">
+                                                        <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus" />
+                                                    </apex:inputField> <b>Complete &amp; Ready to submit</b>
+                                                </td>
+                                                <td width="8%">
+                                                    <apex:commandLink StyleClass="btn btn-custom" action="{!DownloadExcel_S4_PlanningForm}">
+                                                        <span class="glyphicon glyphicon glyphicon-download"></span>&nbsp;Download
+                                                    </apex:commandLink>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <br />
+                                    <p>
+                                        <b>Directions:</b> For each identified Major Improvement Strategy, develop an action and progress monitoring plan. <strong>First,</strong> develop a progress monitoring plan by identifying practical benchmarks that will allow staff to monitor the implementation and effectiveness of the Major Improvement Strategy. For each Implementation Benchmark, determine the system and/or adult measures, the type of data (perception, survey, evaluation), when, by whom, and frequency. <strong>Second,</strong> detail attainable action steps that demonstrate how the Major Improvement Strategy will be implemented. This includes identifying the appropriate personnel, resources, and an achievable timeframe (within two academic years). The status of each Implementation Benchmark and Action Step can be monitored on the Full Plan tab. 
+                                                                           </p>
+                                    <br />
+                                    <div class="MISDisc">
+                                        <div style="width: 100%; text-align: right; padding: 18px;">
+                                            <apex:outputPanel rendered="{!AND(IF(paginater.isAll, false, true), IF(genericList.size>0,true,false))}" id="pag">
+                                                <div id="footer">
+                                                    <apex:outputText >
+                                                        <apex:commandButton StyleClass="btn btn-custom" action="{!previousPage}" style="vertical-align:top; float: center;" rendered="{!IF(paginater.totalPage > 1, true, false)}" value="Previous Major Imp Strategy" rerender="test,refresh1,pag,bmark,refresh,iasPanel,iasInternalPanel,gantt" disabled="{!IF(paginater.showPrevious!=true,true,false)}" />
+                                                    </apex:outputText>
+                                                    <apex:outputlabel StyleClass="btn btn-custom"> {!paginater.Pagenum} of  {!paginater.totalPage}</apex:outputlabel>
+                                                    <apex:outputText >
+                                                        <apex:commandbutton StyleClass="btn btn-custom" value="Next Major Imp Strategy" style="vertical-align:top; float: center;" rendered="{!IF(paginater.totalPage > 1, true, false)}" action="{!nextPage}" rerender="test,refresh1,pag,bmark,refresh,iasPanel,iasInternalPanel,gantt" disabled="{!IF(paginater.showNext!=true,true,false)}" />
+                                                    </apex:outputText>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p><strong>Major Improvement Strategy Name:</strong></p>
+                                            </div>
+                                            <div class="col-md-8"><b>
+                                                {!IF(genericList.size > 0,
+                                                genericList[0].mis.Name, '')}
+                                                </b>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p><strong>Describe what success will look like:</strong></p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                {!IF(genericList.size > 0,
+                                                genericList[0].mis.Description__c, '')}
+                                            </div>
+                                        </div>   
+                                        <div class="row">
+                                            <apex:outputPanel > 
+                                                <apex:iframe src="https://co-uip--cdeuat--vipform.cs63.visual.force.com/apex/VIP_FormWizard?id={!IF(genericList.size > 0, genericList[0].mis.Id, '')}" height="1000px" scrolling="true" id="vipformtool"/>
+                                            </apex:outputPanel>
+                                         </div>                                        
+                                    </div>                                    
+                                </apex:outputPanel>                             
+                                <br /> <br />                                 
+                                <br /> <br />
+                                <!-- new section -->
+                                <apex:outputpanel id="actionsteps">
+                                    <div style="float: right;">
+                                        <apex:image width="20" height="20" value="{!$Resource.calender}" />&nbsp; School Years: &nbsp;
+                                        <apex:selectList value="{!selectedYear}" size="1" StyleClass="btn btn-custom" style="vertical-align:top; float: center; width:150px">
+                                            <apex:actionSupport event="onchange" action="{!callIbIasRefresh}" reRender="gantt" />
+                                            <apex:selectOptions value="{!yearsOption}"></apex:selectOptions>
+                                        </apex:selectList>
+                                    </div>
+                                    <br /><br />
+                                </apex:outputpanel>
+                                <!-- new section ends here -->
+                                <apex:outputpanel id="gantt">
+                                    <div style="width: 100%;">
+                                        <table style="border: 1px solid #DDDDDD; text-align: center; vertical-align: middle; background-color: #B0C4DE; display: grid">
+                                            <tr>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> August</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> September</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> October</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> November</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> December</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> January</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> February</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> March</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> April</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> May</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> June</h4></td>
+                                                <td style="width:8.5%; border: 1px solid #DDDDDD;"><h4 style="padding: 10px; font-weight: bold;"> July</h4></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <br /><br />
+                                    <apex:repeat value="{!filterIbList}" var="ibWrapper">
+                                        <div class="wrapWithWordBreak">
+                                            <div class="{!ibWrapper.finalIbDivClass}" style="background-color: #F0E8D0; text-align: center; border: 1px solid #DDDDDD;">
+                                                <i style="color: blue;"></i>
+                                                <apex:outputText value="{!ibWrapper.ib.Name}" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <br />
+                                    </apex:repeat>
+                                    <apex:repeat value="{!filterIasList}" var="iasWrapper">
+                                        <div class="wrapWithWordBreak">
+                                            <div class="{!iasWrapper.finalDivClass}" style="background-color: #ECF8E0; text-align: center; border: 1px solid #DDDDDD;">
+                                                <i style="color: blue;"></i>
+                                                <apex:outputText value="{!iasWrapper.ias.Name}" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <br />
+                                    </apex:repeat>
+                                </apex:outputpanel>
+                            </div>
+                            <div style="width: 100%; text-align: left; padding: 5px;">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!NextMajorImpStrategyForm}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink> &nbsp;&nbsp;
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!NextFullPlanForm}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};">Next&nbsp;
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </apex:commandLink>
+                                <br /> <br />
+                            </div>
+                        </apex:outputpanel>
+                    </div>
+                </div>
+                <apex:outputPanel id="script">
+                    <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                    </script>
+                </apex:outputPanel>
+            </apex:define>
+        </apex:composition>
+    </apex:pageBlock>
+    
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+</apex:page>

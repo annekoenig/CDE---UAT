@@ -1,0 +1,35 @@
+<apex:page controller="DownloadAttachment" showHeader="false">
+    <div style="padding: 50px;"><h3>Please close this window after your download is complete.</h3></div>
+    <script> window.location.href = "data:application/octet-stream#{!name};base64,{!cnt}"; </script>
+    <!-- <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"/>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    </head>
+    <script>
+        var j$ = jQuery.noConflict();
+        var downloadDataURI = function(j$, options) {
+            if(!options)
+                return;
+            j$.isPlainObject(options) || (options = {data: options});
+            if(!j$.support) 
+                window.location = options.data;
+            options.filename || (options.filename = "download." + options.data.split(",")[0].split(";")[0].substring(5).split("/")[1]);
+            options.url || (options.url = "http://download-data-uri.appspot.com/");
+            j$('<form method="post" action="'+options.url+'" style="display:none"><input type="hidden" name="filename" value="'+options.filename+'"/><input type="hidden" name="data" value="'+options.data+'"/></form>').submit().remove();
+        }
+        downloadDataURI($, {filename: "{!name}",data:"data:application/octet-stream;base64,{!cnt}"});
+    
+    
+        //var dataUri = "data:application/pdf;base64,{!cnt}"
+        //var filename = "somedata.pdf"
+        //j$("<a download='" + filename + "' href='" + dataUri + "'></a>")[0].click();
+    </script> -->
+</apex:page>

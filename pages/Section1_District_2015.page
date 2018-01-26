@@ -1,0 +1,221 @@
+<apex:page standardController="UIP__c" extensions="Section1" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+        
+        <apex:outputPanel rendered="{!NOT(uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null)}">
+                <div class="emptySection">Section I data has not been populated!</div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null}">
+               <div id="pup" class="pup" style="position:abolute; display:none; z-index:200;"></div>
+                <div width="100%" style="background-color: #d3ccbc;">
+                    <table width="100%">
+                        <tr>
+                            <td width="60%">
+                                <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section I:  Summary Information about the District</h1>
+                            </td>
+                            <td width="40%" style="text-align: right; padding-right: 100px;">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <table width="100%">
+                    <tr>
+                        <td width="60%">
+                            <p style="padding: 10px 10px 10px 50px;">
+                                
+                            </p>
+                        </td>
+                        <td width="40%" style="text-align: right; padding-right: 100px; padding-top:10px;">
+                            <apex:commandLink StyleClass="btn btn-custom" value="Download" action="{!DownloadExcel_S1_District}" style="width:170px;" />
+                        </td>
+                    </tr>
+                </table>
+                <p style="padding: 10px 10px 10px 10px;">
+                    Directions:  This section summarizes program accountability requirements unique to the district/consortium based upon federal and state accountability measures.    In the tables below, CDE has pre-populated the district/consortium’s data in blue text.  This data shows the district/consortium’s performance in meeting minimum federal and state accountability program expectations.   
+                </p>
+              
+                
+              <!--  <p style="padding: 10px 10px 10px 50px;">
+                    <span style="font-size:130%; color:#6d3a5d;"><b>Accountability Status and Requirements for Improvement Plan</b></span><br/><br/>
+                </p>-->
+                
+                <!-- <apex:outputPanel rendered="{!showStateAccountability_District}"> -->
+                    <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                        <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">State Accountability and Grant Programs</div>
+                    </div><br/>
+                    <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="15%" class="uip-element-header-purp">Program</td>
+                                <td width="23%" class="uip-element-header-purp">Identification Process</td>
+                                <td width="22%" class="uip-element-header-purp">Identification for District</td>
+                                <td width="40%" class="uip-element-header-purp">Directions for Completing Improvement Plan</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" class="table-row-target" style="background-color:#f5eedf;">
+                                    Plan Type for State Accreditation
+                                </td>
+                                <td class="section1-element-col">Plan type is assigned based on the districts overall District Performance Framework score (achievement, growth, postsecondary and workforce readiness) and meeting requirements for finance, safety, participation and test administration.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.A_TTL_RATING_OFFICIAL__c} {!uip.YEAR_ENTERING_PI_TA__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.RATING_DIRECTIONS__c}</td>
+                            </tr>
+                            <tr>
+                              
+                                <td class="section1-element-col">Achievement Performance Indicator on District Performance Framework</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.x1_3_ACHIEVE_RATING__c} -------- {!uip.x1_3_DISAG_ACHIEVEMENT__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.Disag_Ach_Directions__c}</td>
+                            </tr>
+                              <tr>
+                              
+                                <td class="section1-element-col">Academic Growth Indicator on District Performance Framework</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.x1_3_GROWTH_RATING__c}-------- {!uip.x1_3_DISAG_GROWTH__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.Disag_Growth_Directions__c}</td>
+                            </tr>
+                              <tr>
+                              
+                                <td class="section1-element-col">Postsecondary and Workforce Readiness Indicator on District Performance Framework</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.x1_3_POST_SEC_RATING__c}-------- {!uip.x1_3_SUB_IND_PWR__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.Sub_Ind_PWR_Directions__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    School(s) on Accountability Clock
+                                </td>
+                                <td class="section1-element-col">At least one school in the district has a Priority Improvement or Turnaround plan type – meaning that the school is on the accountability clock.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Number of Schools on Clock: {!uip.SCHLS_ON_CLOCK_NUM__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.UIP_Annual_CDE_Plan__r.School_s_on_Accountability_Clock__c}</td>
+                            </tr>
+                               <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Biennial UIP Submission Flexibility (District)
+                                </td>
+                                <td class="section1-element-col">Districts that received an Accredited or Accredited with Distinction plan type on the District Performance Framework.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.Biennial_Flex__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.Biennial_Flex_Instructions__c}</td>
+                            </tr>
+                               <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Biennial UIP Submission Flexibility (Schools)
+                                </td>
+                                <td class="section1-element-col">School(s) assigned a Performance plan type on the School Performance Framework</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Number of schools eligible for biennial flexibility: {!uip.SCHLS_BIENNIAL_FLEX__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">This is informational to help the district manage school level plans that may or may not be eligible for biennial UIP.  Once accreditation ratings are finalized, a listing of the eligible schools may be found at:   http://www.cde.state.co.us/uip/uip_trainingandsupport_resources</td>
+                            </tr>
+                            <!--<tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Student Graduation and Completion Plan (Designated Graduation District)
+                                </td>
+                                <td class="section1-element-col">In one or more of the four prior school years, the district (1) had an overall Postsecondary and Workforce Readiness rating of “Does Not Meet” or “Approaching” on the District Performance Framework and (2) had an on-time graduation rate below 59.5% or an annual dropout rate at least two times greater than the statewide dropout rate for that year</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GRAD_PLAN_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GRAD_PLAN_DIRECTIONS__c}</td>
+                            </tr> -->
+                             <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                   READ Act
+                                </td>
+                                <td class="section1-element-col">All districts that serve students in grades Kindergarten through 3rd Grade.  </td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Currently serving grades K-3</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">districts serving grades K-3 must include targets and strategies that address the needs of K-3 students identified as having significant reading deficiencies (e.g., instructional strategies, parent involvement strategies).  Schools and districts looking for the CDE approved scientifically or evidence based instructional programs and professional development to support identified strategies may access the advisory lists at http://www.cde.state.co.us/coloradoliteracy/readact/programming. </td>
+                            </tr> 
+                             <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Student Course Taking Analysis
+                                </td>
+                                <td class="section1-element-col">All Schools and Districts must complete this analysis.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Yes</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Districts must review and reflect on disparities of disaggregated groups within the school course offerings Schools may use the CDE Course Taking Report or analyze their own course participation data.</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Gifted Education
+                                </td>
+                                <td class="section1-element-col">All Administrative Units (AUs) that are the lead agency for the Gifted Program.  Multiple district AUs (including BOCES) may incorporate the Gifted Program requirements into each individual district level UIP.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GIFTED_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GIFTED_DIRECTIONS__c}</td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                <!-- </apex:outputPanel> -->
+                
+                <!-- <apex:outputPanel rendered="{!showESEAccountability_District}"> -->
+                    <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                        <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">ESEA and Grant Accountability</div>
+                    </div><br/>
+                    <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="15%" class="uip-element-header-purp">Program</td>
+                                <td width="23%" class="uip-element-header-purp">Identification Process</td>
+                                <td width="22%" class="uip-element-header-purp">Identification for District</td>
+                                <td width="40%" class="uip-element-header-purp">Directions for Completing Improvement Plan</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    ESSA – Title I Equitable Distribution of Teachers
+                                </td>
+                                <td class="section1-element-col">Title IA funded Districts with a Priority Improvement or Turnaround plan type assignment.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Identification will be shared by Federal Programs Office by Dec 1, 2017.  This report will be updated.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Requirements will be updated in this report after district is notified in December 2017.</td>
+                            </tr>
+                                                       
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                   ESSA – School Improvement  
+                                </td>
+                                <td class="section1-element-col">ESSA identification of Comprehensive Schools (lowest performing, low graduation rate) and Targeted Schools (low performing disaggregated groups).</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Identification will be shared by Federal Programs Office by Sept 15, 2017.  This report will be updated.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;"> Requirements will be updated in this report after district is notified in September 2017.</td>
+                            </tr>
+                             <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                     Early Pathways Grant
+                                                                            </span>
+                                </td>
+                                <td class="section1-element-col">Title I competitive grant that includes funding and support for accountability clock pathway exploration and planning.</td>
+                                <td class="section1-element-col-blue" style="text-align: left;">{!uip.Early_Pathways_Grant__c}</td>
+                                <td class="section1-element-col-blue" style="text-align: left;">{!uip.Early_Pathways_Grant_Text__c}</td>
+                            </tr>
+                             <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                     Pathways Implementation Grant
+                                    </span>
+                                </td>
+                                <td class="section1-element-col">Title I competitive grant that provides funding and support for schools and districts at the end of the accountability to implement a rigorous pathway.</td>
+                                <td class="section1-element-col-blue" style="text-align: left;">{!uip.Pathways_Implementation_Grant__c}</td>
+                                <td class="section1-element-col-blue" style="text-align: left;">{!uip.Pathways_Implementation_Instructions__c}</td>
+                            </tr>
+                                <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                     21st Century Learning Center Grant
+                                    </span>
+                                </td>
+                                <td class="section1-element-col">Competitive grant program authorized under Title IV, Part B of ESEA used to establish or expand community learning centers that provide students with academic enrichment opportunities.</td>
+                                <td class="section1-element-col-blue" style="text-align: left;">{!uip.X21st_Century__c}</td>
+                                <td class="section1-element-col-blue" style="text-align: left;">{!uip.X21st_Century_Instructions__c}</td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                <!-- </apex:outputPanel> -->
+            </apex:outputPanel>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = '{!isPageChanged}';
+                    var isNewContact = '{!isNewContact}';
+                    var isEditContact = '{!isEditContact}';
+                    var isEditRTF = false;
+                    var isEditPit = false;
+                    var isEditPint = false;
+                    var elementValue = '';
+                    var isEditElem = false;
+                    var isEditElemx = false;
+                    var isTextChanged = false;
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

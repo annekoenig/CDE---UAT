@@ -1,0 +1,413 @@
+<apex:page controller="UIPHomeController" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <!-- //////////////////////////////////////////////////////////////////// Timeline ////////////////////////////////////////////////////////////////////////////////// -->
+              <apex:actionFunction name="rerenderMainSection" action="{!populatePPCTable}" status="loadingStatus"/>
+                
+                <apex:outputPanel id="MainSection">
+                    <div style="width:100%; font-size:18px; font-weight:bold; text-align:center; font-size:140%;">UIP Timeline</div><br/>
+                    <table width="95%">
+                        <tr>
+                            <td style="text-align:right; width: 10%; font-weight:bold; font-size:120%; padding-right: 20px; vertical-align:bottom;">Date</td>
+                            <td>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="{!tableTimeline.zeroColWidth}%" class="timelineDate">
+                                            
+                                        </td> 
+                                           <td width="{!tableTimeline.firstColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                        <apex:outputPanel rendered="{!uip.UIP_Annual_CDE_Plan__r.Blank_Template_Status__c}" >
+                                                <img src="{!$Resource.green_check_circle}" alt="Checked" class="checkImg" title="Checked" />
+                                            </apex:outputPanel> 
+                                            <apex:outputText value="{0,date, MM'/'dd'/'yy}">
+                                                <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.Blank_Template_Released__c}" /> 
+                                            </apex:outputText>
+                                            
+                                        </td> 
+                                        <td width="{!tableTimeline.secondColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                            <apex:outputPanel rendered="{!uip.UIP_Annual_CDE_Plan__r.Section_1_Data_Status__c}" >
+                                                <img src="{!$Resource.green_check_circle}" alt="Checked" class="checkImg" title="Checked" />
+                                            </apex:outputPanel> 
+                                            <apex:outputText value="{0,date, MM'/'dd'/'yy}">
+                                                <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.Section_1_Data_Populated__c}" /> 
+                                            </apex:outputText>
+                                            
+                                        </td>
+                                        <apex:outputPanel rendered="{!uip.Optional_October_Review__c}" >
+                                            <td width="{!tableTimeline.thirdColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                                <apex:outputText value="{0,date,MM'/'dd'/'yy}">
+                                                    <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.October_Deadline__c}" /> 
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016'}">
+                                            <td width="{!tableTimeline.fourthColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                            <apex:outputPanel rendered="{!uip.UIP_Annual_CDE_Plan__r.Section_1_Update_Status__c}" >
+                                                    <img src="{!$Resource.green_check_circle}" alt="Checked" class="checkImg" title="Checked" style= "align:center;" />
+                                                </apex:outputPanel> 
+                                                <apex:outputText value="{0,date, MM'/'dd'/'yy}">
+                                                    <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.Section_1_Update__c}" /> 
+                                                </apex:outputText>
+                                                
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016'}">
+                                            <td width="{!tableTimeline.fifthColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                               <apex:outputPanel rendered="{!uip.UIP_Annual_CDE_Plan__r.Section_1_Update_Status__c}" >
+                                                    <img src="{!$Resource.green_check_circle}" alt="Checked" class="checkImg" title="Checked" />
+                                                </apex:outputPanel> 
+                                                <apex:outputText value="{0,date, MM'/'dd'/'yy}">
+                                                    <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.AEC_SPF_Date__c}" /> 
+                                                </apex:outputText>
+                                                
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.Review_Required__c}">
+                                            <td width="{!tableTimeline.sixthColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                                <apex:outputText value="{0,date,MM'/'dd'/'yy}">
+                                                    <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.January_Deadline__c}" /> 
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.Re_Review_Required__c}">
+                                            <td width="{!tableTimeline.seventhColWidth}%" class="timelineDate" style="font-size:90%; vertical-align:bottom;">
+                                                <apex:outputText value="{0,date,MM'/'dd'/'yy}">
+                                                    <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.Re_review_Submission__c}" /> 
+                                                </apex:outputText>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <td width="{!tableTimeline.eightColWidth}%" style="text-align:right; padding-right: 15px; font-size:90%; vertical-align:bottom;">
+                                            <apex:outputText value="{0,date,MM'/'dd'/'yy}">
+                                                <apex:param value="{!uip.UIP_Annual_CDE_Plan__r.April_Deadline__c}" /> 
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                             <td>&nbsp;</td>  <!-- and arrow column  -->
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; width: 10%; font-weight:bold; font-size:120%; padding-right: 20px;">Progress</td>
+                            <td>
+                                <div class="progress-custom" style="margin: 0 auto; width:100%">
+                                    <div class="progress-bar-custom" role="progressbar" aria-valuenow="{!tableTimeline.currentDatePercent}" aria-valuemin="0" aria-valuemax="100" style="width: {!tableTimeline.currentDatePercent}%;">
+                                        <!-- <apex:outputField value="{!uip.TIG_Restart_Percent_Complete__c}"/> -->
+                                    </div>
+                                </div>
+                               
+                            </td>
+                            <!-- adding padding
+                            <td><div class="progress-custom" style="width:100%; vertical-align:top;"></div></td> -->
+                            <td><img src="{!$Resource.green_progress_arrow_lg}"/></td> 
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; width: 10%; font-weight:bold; font-size:120%; padding-right: 20px; vertical-align:top;">Milestone</td>
+                            <td>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="{!tableTimeline.zeroColWidth}%" class="timelineDate">
+                                            
+                                        </td> 
+                                        <td width="{!tableTimeline.firstColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top;">
+                                        UIP Available</td>
+                                        
+                                        <td width="{!tableTimeline.secondColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top;">
+                                        Sec I Populated
+                                        </td>
+                                        <apex:outputPanel rendered="{!uip.Optional_October_Review__c}">
+                                            <td width="{!tableTimeline.thirdColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top;">
+                                                <span title="{!uip.PLAN_TIMELINE_OCT__c}" class="helpButtonOn" id="helperId">
+                                                    Optional Review
+                                                    <img src="/s.gif" alt="" class="helpOrb" title="{!uip.PLAN_TIMELINE_OCT__c}" escape="false"/>
+                                                </span>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'School UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'School UIP 2015' || uip.RecordType.Name == 'District UIP 2016' || uip.RecordType.Name == 'School UIP 2016'}">
+                                         
+                                            <td width="{!tableTimeline.fourthColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top; align:center;">
+                                            Sec I Update</td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.RecordType.Name == 'AEC UIP 2017' || uip.RecordType.Name == 'AEC UIP 2015' || uip.RecordType.Name == 'AEC UIP 2016'}">
+                                            <td width="{!tableTimeline.fifthColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top;">
+                                                <span title="{!uip.December_Timeline__c}" class="helpButtonOn" id="helperId"> 
+                                                AEC SPF Updated 
+                                                <img src="/s.gif" alt="" class="helpOrb" title="{!uip.December_Timeline__c}" escape="false"/></span>
+                                             </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.Review_Required__c}">
+                                            <td width="{!tableTimeline.sixthColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top;">
+                                                <span title="{!uip.PLAN_TIMELINE_JAN__c}" class="helpButtonOn" id="helperId">Due for Review
+                                                 <img src="/s.gif" alt="" class="helpOrb" title="{!uip.PLAN_TIMELINE_JAN__c}" escape="false"/></span>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!uip.Re_Review_Required__c}">
+                                            <td width="{!tableTimeline.seventhColWidth}%" class="timelineDate" style= "font-size:85%; vertical-align:top;">
+                                                <span title="{!uip.UIP_Annual_CDE_Plan__r.Re_Review_Help_Text__c}">Due for Re-Review</span>
+                                            </td>
+                                        </apex:outputPanel>
+                                        <td width="{!tableTimeline.eightColWidth}%" style="text-align:right; font-size:85%; vertical-align:top;">
+                                            <span title="{!uip.April_Timeline__c}" class="helpButtonOn" id="helperId">
+                                            SchoolView Submit
+                                            <apex:outputPanel rendered="{!uip.April_Timeline__c != null}">
+                                                <img src="/s.gif" alt="" class="helpOrb" title="{!uip.April_Timeline__c}" escape="false"/>
+                                            </apex:outputPanel>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                           
+                            <!-- <td>&nbsp;</td>adding padding -->
+                            <td>&nbsp;</td>  <!-- and arrow column  -->
+                        </tr>
+                    </table>
+                    <br/>
+                      <h4 style="color:red"> Alert: Image upload currently unavailable. To upload images, contact uiphelp@cde.state.co.us with image and intended section </h4>
+                    <apex:outputPanel id="successfulyMsg">
+                        <apex:outputPanel rendered="{!isSuccessfullyMsg}">
+                            <div width="100%" style="text-align:center; font-size:18px; color:red; font-weight: bold;"><i>Successfully Submitted!</i></div><br/>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!NOT(isSuccessfullyMsg)}">
+                            <div width="100%" style="text-align:center; font-size:18px; color:red; font-weight: bold;"><i>{!ErrorMessage}</i></div><br/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <table width="100%" border="1px solid">
+                        <tr>
+                            <td style="width:30%; padding: 10px 10px 10px 10px; vertical-align:top; border-bottom: none;">
+                                <div style="width:100%; font-size:18px; font-weight:bold; text-align:center; font-size:140%;">UIP Progress</div><br/>
+           
+            <!-- //////////////////////////////////////////////////////////////////// UIP Progress ////////////////////////////////////////////////////////////////////////////////// -->
+            
+                                <table class="UIPProgressTable" width="100%">
+                                    <tr>
+                                        <td style="width:45%; font-size:16px; font-weight:bold; text-align:center; font-size:120%; padding-bottom: 20px;">UIP Component</td>
+                                        <td style="width: 10%;"></td>
+                                        <td style="width:45%; font-size:16px; font-weight:bold; text-align:left; font-size:120%; padding-bottom: 20px; padding-left: 10px;">Status</td>
+                                    </tr>
+                                    <apex:outputPanel rendered="{!uip.Section_1__c != 'No' && uip.Section_1__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Section1{!IF(uip.RecordType.Name = 'AEC UIP', '_AEC',IF(uip.RecordType.Name = 'District UIP', '_District',IF(uip.RecordType.Name = 'District UIP 2015', '_District_2015',IF(uip.RecordType.Name = 'District UIP 2016', '_District_2015',IF(uip.RecordType.Name = 'School UIP 2015', '_2015',IF(uip.RecordType.Name = 'School UIP 2016', '_2015',IF(uip.RecordType.Name = 'AEC UIP 2015', '_AEC_2015',IF(uip.RecordType.Name = 'AEC UIP 2015', '_AEC_2015',''))))))))}?id={!currentId}" style="color:#333;">{!$ObjectType.UIP__c.Fields.Section_1__c.Label}</apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Section_I_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Section_I_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Section_I_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Section_2__c != 'No' && uip.Section_2__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Section2?id={!currentId}" style="color:#333;">{!$ObjectType.UIP__c.Fields.Section_2__c.Label}</apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Section_II_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Section_II_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Section_II_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Section3_UIP_Narrative?id={!currentId}" style="color:#333;">{!$ObjectType.UIP__c.Fields.Section_3__c.Label}</apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Section_III_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Section_III_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Section_III_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Section_4__c != 'No' && uip.Section_4__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Section4_School_Target?id={!currentId}" style="color:#333;">{!$ObjectType.UIP__c.Fields.Section_4__c.Label}</apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Section_IV_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Section_IV_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Section_IV_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>                                    
+                                    <apex:outputPanel rendered="{!uip.Turnaround__c != 'No' && uip.Turnaround__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_DistSch_Turnaround?id={!currentId}&rt=Addenda_DistSch_Turnaround" style="color:#333;">{!$ObjectType.UIP__c.Fields.Turnaround__c.Label}
+                                                <apex:outputPanel rendered="{!uip.Turnaround__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Turnaround_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Turnaround_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Turnaround_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.TIG_Transformation__c != 'No' && uip.TIG_Transformation__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_TIGTransformation?id={!currentId}&rt=Addenda_TIGTransformation" style="color:#333;">{!$ObjectType.UIP__c.Fields.TIG_Transformation__c.Label}
+                                                <apex:outputPanel rendered="{!uip.TIG_Transformation__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.TIG_Transformation_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.TIG_Transformation_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.TIG_Transformation_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.TIG_Turnaround__c != 'No' && uip.TIG_Turnaround__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_TIGTurnaround?id={!currentId}&rt=Addenda_TIGTurnaround" style="color:#333;">{!$ObjectType.UIP__c.Fields.TIG_Turnaround__c.Label}
+                                                <apex:outputPanel rendered="{!uip.TIG_Turnaround__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.TIG_Turnaround_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.TIG_Turnaround_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.TIG_Turnaround_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.TIG_Closure__c != 'No' && uip.TIG_Closure__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_TIGClosure?id={!currentId}&rt=Addenda_TIGClosure" style="color:#333;">{!$ObjectType.UIP__c.Fields.TIG_Closure__c.Label}
+                                                <apex:outputPanel rendered="{!uip.TIG_Closure__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.TIG_Closure_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.TIG_Closure_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.TIG_Closure_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <!-- <apex:outputPanel rendered="{!uip.TIG_Restart__c != 'No' && uip.TIG_Restart__c != null}">
+                                        <tr>
+                                            <td id="firstCol">{!$ObjectType.UIP__c.Fields.TIG_Restart__c.Label}</td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.TIG_Restart_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.TIG_Restart_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.TIG_Restart_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel> -->
+                                    <apex:outputPanel rendered="{!uip.Title_1_School_Wide__c != 'No' && uip.Title_1_School_Wide__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_SCHTitle1_SW?id={!currentId}&rt=Addenda_SCHTitle1_SW" style="color:#333;">{!$ObjectType.UIP__c.Fields.Title_1_School_Wide__c.Label}
+                                                <apex:outputPanel rendered="{!uip.Title_1_School_Wide__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Title_I_School_Wide_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Title_I_School_Wide_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Title_I_School_Wide_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.ESEA__c != 'No' && uip.ESEA__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_DIST_ESEA_Supporting?id={!currentId}&rt=Addenda_DIST_ESEA_Supporting" style="color:#333;">{!$ObjectType.UIP__c.Fields.ESEA__c.Label}
+                                                <apex:outputPanel rendered="{!uip.ESEA__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.ESEA_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.ESEA_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.ESEA_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Gifted_Education__c != 'No' && uip.Gifted_Education__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_DIST_Gifted_Program?id={!currentId}&rt=Addenda_DIST_Gifted_Program" style="color:#333;">{!$ObjectType.UIP__c.Fields.Gifted_Education__c.Label}
+                                                <apex:outputPanel rendered="{!uip.Gifted_Education__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Gifted_Education_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Gifted_Education_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Gifted_Education_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Student_Grad_Completion_Plan__c != 'No' && uip.Student_Grad_Completion_Plan__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_DIST_SGCP?id={!currentId}&rt=Addenda_DIST_SGCP" style="color:#333;">{!$ObjectType.UIP__c.Fields.Student_Grad_Completion_Plan__c.Label}
+                                                <apex:outputPanel rendered="{!uip.Student_Grad_Com_Plan_Progress_Status__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Student_Grad_Com_Plan_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Student_Grad_Com_Plan_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Student_Grad_Com_Plan_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Title_III__c != 'No' && uip.Title_III__c != null}">
+                                        <tr>
+                                            <td id="firstCol"><apex:outputLink value="/apex/Addenda_DIST_Title_III_Improvement?id={!currentId}&rt=Addenda_DIST_Title_III_Improvement" style="color:#333;">{!$ObjectType.UIP__c.Fields.Title_III__c.Label}
+                                                <apex:outputPanel rendered="{!uip.Title_III__c == 'Recommended'}">*</apex:outputPanel>
+                                            </apex:outputLink></td>
+                                            <td id="coloredCol" style="background-color:{!IF(uip.Title_III_Progress_Status__c != 'Ready to Submit', '#fadd8f', '#82bc00')};"></td>
+                                            <td id="secondCol" style="color:{!IF(uip.Title_III_Progress_Status__c != 'Ready to Submit', '#f5b523', '#82bc00')};">{!uip.Title_III_Progress_Status__c}</td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!uip.Turnaround__c == 'Recommended' || uip.TIG_Transformation__c == 'Recommended' || uip.TIG_Turnaround__c == 'Recommended' || uip.TIG_Closure__c == 'Recommended' || uip.Title_1_School_Wide__c == 'Recommended' || uip.ESEA__c == 'Recommended' || uip.Gifted_Education__c == 'Recommended' || uip.Student_Grad_Com_Plan_Progress_Status__c == 'Recommended' || uip.Title_III__c == 'Recommended'}">
+                                        <tr>
+                                            <td style="text-align:right; padding-right:15px; padding-top:15px;"><i>* Recommended</i></td>
+                                        </tr>
+                                    </apex:outputPanel>
+                                    <tr><td style="height:20px;"></td></tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <div style="width:100%; text-align:center; vertical-align:bottom;">
+                                              <apex:outputPanel rendered="{!NOT(isSchoolUser) && NOT(isDistrictUser)}">
+                                                    <apex:commandLink StyleClass="btn btn-custom" action="{!submitForReview}" style="width:230px;" rerender="successfulyMsg" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-inbox"></span>&nbsp;Ready for Review</apex:commandLink>
+                                                </apex:outputPanel>  
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr><td style="height:20px;"></td></tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <div style="width:100%; text-align:center; vertical-align:bottom;">
+                                            <apex:outputPanel rendered="{!NOT(isSchoolUser) && NOT(isDistrictUser) && NOT(isSchoolAdmin)}">
+                                                    <apex:commandLink StyleClass="btn btn-custom" action="{!submitForSchoolReview}" style="width:230px;" rerender="successfulyMsg" status="loadingStatus" ><span class="glyphicon glyphicon glyphicon-ok"></span>&nbsp;Ready for SchoolView</apex:commandLink>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table><br/><br/>
+                                
+                            </td>
+                            <td style="width:70%; padding: 10px 10px 10px 10px; vertical-align:top; border-bottom: none;">
+                                <!-- <div style="width:100%; font-size:18px; font-weight:bold; text-align:center; font-size:140%;">Relationship of UIP Elements</div><br/> -->
+                                <div style="width:100%; font-size:18px; font-weight:bold; text-align:center; font-size:140%; ">
+                                    Relationship of UIP Elements
+                                </div><br/>
+                                <div style=" width:100%; text-align: right; right: 10px; ">
+                                    <apex:commandLink StyleClass="btn btn-custom" oncomplete="window.open('/{!IF(isCommunityUser,'UIP','apex')}/ChooseUIP?id={!uip.Id}','_blank','width=810,height=310,top=150,left=200,directories=0,titlebar=0,toolbar=0,location=0,status=0,scrollbars=yes,resizable=yes',!1);" rerender="empty" style="width:170px;" ><span class="glyphicon glyphicon glyphicon-import"></span>&nbsp;Copy from last year</apex:commandLink>
+                                </div><br/>
+            
+            <!-- //////////////////////////////////////////////////////////////////// Priority Performance Challenge Mapping ////////////////////////////////////////////////////////////////////////////////// -->
+                            <apex:outputPanel id="ppcTable">
+                                <table class="PPCMappingTable" width="100%">
+                                    <tr>
+                                        <td style="font-size:16px; font-weight:bold; text-align:center; font-size:120%; padding-bottom: 20px;">Priority Performance Challenges</td>
+                                        <td id="blankCol"></td>
+                                        <td style="font-size:16px; font-weight:bold; text-align:center; font-size:120%; padding-bottom: 20px; padding-left: 10px;">Root Cause</td>
+                                        <td id="blankCol"></td>
+                                        <td style="font-size:16px; font-weight:bold; text-align:center; font-size:120%; padding-bottom: 20px; padding-left: 10px;">Major Improvement Strategies</td>
+                                    </tr>
+                                    <apex:repeat value="{!ppcmWrapperList}" var="item">
+                                        <tr>
+                                            <td id="firstCol" class="column"><li> {!item.ppc}</li></td>
+                                            <!-- HH adding new arrow subcolumn light teal to med teal  --> 
+                                            <td id="sub-blankCol-light"><div style="min-height: 70px;"></div></td>
+                                            <!-- old blank column - <td id="blankCol"><div style="min-height: 70px;"></div></td>  -->
+                                            <td id="secondCol" class="column">
+                                                <apex:repeat value="{!item.rcList}" var="rc">
+                                                   <li> {!rc}</li>
+                                                </apex:repeat>
+                                            </td>
+                                            <!-- HH adding new arrow subcolumn  --> 
+                                            <td id="sub-blankCol"></td>
+                                            <!-- old column  <td id="blankCol"></td>-->
+                                            <td id="thirdCol" class="column">
+                                                <apex:repeat value="{!item.misList}" var="mis">
+                                                  <li>  {!mis}</li>
+                                                </apex:repeat>
+                                            </td>
+                                        </tr>
+                                        <tr><td><div style="min-height:10px;"></div></td></tr>
+                                    </apex:repeat>
+                                </table>
+                            </apex:outputPanel>
+                            </td>
+                        </tr>
+                        
+                    </table><br/><br/>
+                    
+                    <apex:actionFunction name="rerenderAttach" rerender="attachmentsSection" action="{!SelectAttachements}" status="loadingStatus"/>
+                    <apex:outputPanel id="attachmentsSection">
+                        <div class="panel-heading" style="width:100%; background-color: lightgrey; padding-left: 100px;">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;
+                                <b>Attachments List</b>&nbsp;&nbsp;&nbsp;
+                                <span width="20%" style="padding-left:250px;">
+                                   <apex:commandLink StyleClass="btn btn-custom" action="{!produceUIPDoc}"  style="width:170px;" target="_blank"><span class="glyphicon glyphicon glyphicon-file"></span>&nbsp;Produce Draft UIP</apex:commandLink>
+                                <span width="20%" style="padding-left:20px;"><apex:commandLink StyleClass="btn btn-custom" oncomplete="window.open('/{!IF(isCommunityUser,'UIP','apex')}/NewAttachment?id={!uip.Id}','_blank','width=810,height=310,top=150,left=200,directories=0,titlebar=0,toolbar=0,location=0,status=0,scrollbars=yes,resizable=yes',!1);" rerender="empty" style="width:200px;" ><span class="glyphicon glyphicon glyphicon-tag"></span>Add Attachment</apex:commandLink></span>
+                                &nbsp;&nbsp;&nbsp; <apex:commandLink StyleClass="btn btn-custom" action="{!executiveSummary}"  style="width:170px;" target="_blank"><span class="glyphicon glyphicon glyphicon-file"></span>&nbsp;Executive Summary</apex:commandLink>
+                                </span>
+                            </h3>
+                        </div>
+                        <apex:outputPanel id="msgProduceUIP">
+                            <apex:outputPanel rendered="{!showProduceUIPmessage}">
+                                <div width="100%" style="text-align: center; color: red; font-style: italic;">Your document is being produced.  Please check back in a few minutes.<br/> When you open the document, please download and then rename the file with the appropriate file extension (eg:  .pdf, .xls) to view.</div>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!attachWrapperList}" var="attach">
+                            <div style="vertical-align: center; padding-left: 100px; padding-top: 10px; color: black; "><u>
+                            <!-- <apex:outputLink style="color: black; " value="/servlet/servlet.FileDownload?file={!attach.Id}" target="_blank">{!attach.Name} - &nbsp; -->
+                            <apex:outputLink style="color: black; " value="/apex/DownloadAttachment?attId={!attach.att.Id}" target="_blank">{!attach.attName}
+                                <!--  - &nbsp;
+                                <apex:outputText value="{0,date,M/d/yyyy h:mm a z}">
+                                    <apex:param value="{!attach.CreatedDate}" />
+                                </apex:outputText> -->
+                            </apex:outputLink></u></div>
+                            <!-- <object data="{!baseURL}/servlet/servlet.FileDownload?file={!attach.id}" type="{!attach.ContentType}">hhh</object> -->
+                        </apex:repeat>
+                        <br/><br/>
+                    </apex:outputPanel>
+                    </apex:outputPanel>
+</apex:define>
+</apex:composition>
+</apex:page>

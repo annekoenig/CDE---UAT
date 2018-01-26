@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><fields>
+        <fullName>PIT_RecordType__c</fullName>
+        <externalId>false</externalId>
+        <label>PIT RecordType</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><fields>
+        <fullName>UIP_RT__c</fullName>
+        <externalId>false</externalId>
+        <label>UIP RecordType</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><customSettingsType>List</customSettingsType><enableFeeds>false</enableFeeds><label>Record Type Dependencies</label><visibility>Public</visibility></CustomObject>

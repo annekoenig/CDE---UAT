@@ -1,0 +1,801 @@
+﻿<?xml version="1.0" encoding="utf-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides><fields>
+        <fullName>Interim_Measures_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Interim Measures 1</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields><fields>
+        <fullName>Last_Year_Target_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Year Target 1</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields><fields>
+        <fullName>Major_Improvement_Strategy_1__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Major Improvement Strategy 1</label>
+        <referenceTo>UIP_Element__c</referenceTo>
+        <relationshipLabel>Performance Indicator Targets (UIP Element)</relationshipLabel>
+        <relationshipName>Performance_Indicator_Targets2</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields><fields>
+        <fullName>Measures_Metrics2__c</fullName>
+        <externalId>false</externalId>
+        <label>Measures/Metrics</label>
+        <picklist>
+            <controllingField>Performance_Indicator__c</controllingField>
+            <picklistValues>
+                <fullName>R</fullName>
+                <default>false</default>
+                <controllingFieldValues>Academic Achievement (Status)</controllingFieldValues>
+                <controllingFieldValues>Academic Growth</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Achievement</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Growth</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>M</fullName>
+                <default>false</default>
+                <controllingFieldValues>Academic Achievement (Status)</controllingFieldValues>
+                <controllingFieldValues>Academic Growth</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Achievement</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Growth</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>W</fullName>
+                <default>false</default>
+                <controllingFieldValues>Academic Achievement (Status)</controllingFieldValues>
+                <controllingFieldValues>Academic Growth</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Achievement</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Growth</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>S</fullName>
+                <default>false</default>
+                <controllingFieldValues>Academic Achievement (Status)</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Achievement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ELP</fullName>
+                <default>false</default>
+                <controllingFieldValues>Academic Growth</controllingFieldValues>
+                <controllingFieldValues>English Language Development and Attainment</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Graduation Rate</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disaggregated Grad Rate</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dropout Rate</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mean CO ACT</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ACCESS Growth (AMAO 1)</fullName>
+                <default>false</default>
+                <controllingFieldValues>English Language Development and Attainment</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ACCESS Proficiency (AMAO 2)</fullName>
+                <default>false</default>
+                <controllingFieldValues>English Language Development and Attainment</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>AMAO 3</fullName>
+                <default>false</default>
+                <controllingFieldValues>English Language Development and Attainment</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other PWR Measures</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Attendance</fullName>
+                <default>false</default>
+                <controllingFieldValues>Student Engagement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Truancy</fullName>
+                <default>false</default>
+                <controllingFieldValues>Student Engagement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Supplemental Measure(s)</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+                <controllingFieldValues>Student Engagement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Completion Rate</fullName>
+                <default>false</default>
+                <controllingFieldValues>Postsecondary &amp; Workforce Readiness</controllingFieldValues>
+                <controllingFieldValues>Student Engagement</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ELA</fullName>
+                <default>false</default>
+                <controllingFieldValues>Academic Achievement (Status)</controllingFieldValues>
+                <controllingFieldValues>Academic Growth</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Achievement</controllingFieldValues>
+                <controllingFieldValues>Disaggregated Growth</controllingFieldValues>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SAT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Measures_Metrics__c</fullName>
+        <defaultValue>"TCAP/CSAP, CoAlt/CSAPA, Lectura, Escritura"</defaultValue>
+        <externalId>false</externalId>
+        <label>Measures and Metrics</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields><fields>
+        <fullName>Next_Year_Related_Target__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This field ties This Year's Target to Next Year's Target.</description>
+        <externalId>false</externalId>
+        <label>Next Year Related Target</label>
+        <referenceTo>Performance_Indicator_Targets__c</referenceTo>
+        <relationshipLabel>Performance Indicator Targets</relationshipLabel>
+        <relationshipName>Performance_Indicator_Targets</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields><fields>
+        <fullName>Next_Year_Target_1__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>2015-16 Annual Performance Target</inlineHelpText>
+        <label>Next Year Target 1</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields><fields>
+        <fullName>Performance_Indicator__c</fullName>
+        <externalId>false</externalId>
+        <label>Performance Indicator</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Academic Achievement (Status)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disaggregated Achievement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Academic Growth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disaggregated Growth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Postsecondary &amp; Workforce Readiness</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Student Engagement</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Student Behavior</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>English Language Development and Attainment</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Performance_against_Target_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Performance against Target 1</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields><fields>
+        <fullName>Priority_Performance_Challenge_1__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Priority Performance Challenge 1</label>
+        <referenceTo>UIP_Element__c</referenceTo>
+        <relationshipLabel>Performance Indicator Targets</relationshipLabel>
+        <relationshipName>Performance_Indicator_Targets</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields><fields>
+        <fullName>Public_Facing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Public Facing</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Subject_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Subject 1</label>
+        <picklist>
+            <picklistValues>
+                <fullName>R</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>M</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>W</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>S</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ELP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Graduation Rate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disaggregated Grad Rate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dropout Rate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Mean CO ACT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ACCESS Growth (AMAO 1)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ACCESS Proficiency (AMAO 2)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>TCAP (AMAO 3)</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Target_Reflection_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Target Reflection 1</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields><fields>
+        <fullName>This_Year_Target_1__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>2014-15 Annual Performance Target</inlineHelpText>
+        <label>This Year Target 1</label>
+        <length>5000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields><fields>
+        <fullName>UIP__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>UIP</label>
+        <referenceTo>UIP__c</referenceTo>
+        <relationshipLabel>Performance Indicator Targets</relationshipLabel>
+        <relationshipName>Performance_Indicator_Targets</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields><fields>
+        <fullName>ZPIF_UIP_Identidier__c</fullName>
+        <externalId>false</externalId>
+        <label>ZPIF UIP Identidier</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields><allowInChatterGroups>false</allowInChatterGroups><compactLayoutAssignment>SYSTEM</compactLayoutAssignment><deploymentStatus>Deployed</deploymentStatus><enableActivities>false</enableActivities><enableBulkApi>true</enableBulkApi><enableFeeds>false</enableFeeds><enableHistory>false</enableHistory><enableReports>true</enableReports><enableSearch>true</enableSearch><enableSharing>true</enableSharing><enableStreamingApi>true</enableStreamingApi><label>Performance Indicator Targets</label><nameField>
+        <displayFormat>PI-{00000000}</displayFormat>
+        <label>Performance Indicator Targets Name</label>
+        <type>AutoNumber</type>
+    </nameField><pluralLabel>Performance Indicator Targets</pluralLabel><searchLayouts>
+        <customTabListAdditionalFields>UIP__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RECORDTYPE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Performance_Indicator__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Measures_Metrics2__c</customTabListAdditionalFields>
+    </searchLayouts><sharingModel>ReadWrite</sharingModel><listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Performance_Indicator__c</columns>
+        <columns>Priority_Performance_Challenge_1__c</columns>
+        <columns>UIP__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews><recordTypes>
+        <fullName>Next_Year_s_Target</fullName>
+        <active>true</active>
+        <description>This record type is used in Section IV to display Next Years target and any Interim Measures.</description>
+        <label>Next Year's Target</label>
+        <picklistValues>
+            <picklist>Measures_Metrics2__c</picklist>
+            <values>
+                <fullName>ACCESS Growth %28AMAO 1%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCESS Proficiency %28AMAO 2%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AMAO 3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attendance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completion Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Grad Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dropout Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ELA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ELP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduation Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mean CO ACT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other PWR Measures</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SAT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Supplemental Measure%28s%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Truancy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>W</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Performance_Indicator__c</picklist>
+            <values>
+                <fullName>Academic Achievement %28Status%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Academic Growth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Achievement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Growth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>English Language Development and Attainment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Postsecondary %26 Workforce Readiness</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Behavior</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Engagement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Subject_1__c</picklist>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>W</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes><recordTypes>
+        <fullName>Prior_Year_Target</fullName>
+        <active>true</active>
+        <description>This record type is used in Section II to display Prior Year targets.  It will auto-populate with the Current Years target from last years UIP.</description>
+        <label>Prior Year Target</label>
+        <picklistValues>
+            <picklist>Measures_Metrics2__c</picklist>
+            <values>
+                <fullName>ACCESS Growth %28AMAO 1%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCESS Proficiency %28AMAO 2%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AMAO 3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Grad Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dropout Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ELA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ELP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduation Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mean CO ACT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SAT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>W</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Performance_Indicator__c</picklist>
+            <values>
+                <fullName>Academic Achievement %28Status%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Academic Growth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Achievement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Growth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>English Language Development and Attainment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Postsecondary %26 Workforce Readiness</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Behavior</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Engagement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Subject_1__c</picklist>
+            <values>
+                <fullName>ELP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>W</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes><recordTypes>
+        <fullName>This_Year_s_Target</fullName>
+        <active>true</active>
+        <description>This record type is used in Section IV to display This Years targets.  It will auto-populate with Next Year's Target from last years UIP.</description>
+        <label>This Year's Target</label>
+        <picklistValues>
+            <picklist>Measures_Metrics2__c</picklist>
+            <values>
+                <fullName>ACCESS Growth %28AMAO 1%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCESS Proficiency %28AMAO 2%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AMAO 3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attendance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completion Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Grad Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dropout Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ELA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ELP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduation Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mean CO ACT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other PWR Measures</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SAT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Supplemental Measure%28s%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Truancy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>W</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Performance_Indicator__c</picklist>
+            <values>
+                <fullName>Academic Achievement %28Status%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Academic Growth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Achievement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disaggregated Growth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>English Language Development and Attainment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Postsecondary %26 Workforce Readiness</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Behavior</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Engagement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Subject_1__c</picklist>
+            <values>
+                <fullName>M</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>R</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>W</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes></CustomObject>

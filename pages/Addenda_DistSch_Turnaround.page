@@ -1,0 +1,166 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <table width="100%">
+                <tr>
+                    <td width="60%">
+                        <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                            <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                        </apex:outputPanel>
+                    </td>
+                    <!-- <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addendumPositionMap['Turnaround__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addendumPositionMap['Turnaround__c'] <= countAddendum && addendumPositionMap['Turnaround__c'] != 1}">
+                                <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Turnaround__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addendumPositionMap['Turnaround__c'] < countAddendum}">
+                                <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Turnaround__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                            </apex:outputPanel>
+                        </div>
+                        <apex:outputPanel rendered="{!(addendumPositionMap['Turnaround__c'] <= countAddendum && addendumPositionMap['Turnaround__c'] != 1) || addendumPositionMap['Turnaround__c'] < countAddendum}">
+                            <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                            </div>
+                        </apex:outputPanel>
+                    </td> -->
+                    <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        
+            <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="70%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                        </td>
+                        <td width="30%">
+                            <apex:inputField value="{!uip.Turnaround_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b>
+                        </td>
+                     </tr>
+                  </table></div>
+                  
+            
+             <p style="padding: 10px 10px 50px;">
+                
+                <span style="font-size:130%; color:#101e8e;"><b>Required For Schools or Districts with a Turnaround Plan under State Accountability</b></span><br/><br/>
+          
+            <span style="padding: 10px;">
+            All schools and districts must complete an improvement plan that addresses state requirements. Per SB09-163, this includes setting targets, identifying trends, identifying root 
+            causes, specifying strategies to address identified performance challenges, indicating resources and identifying benchmarks and interim targets to monitor progress.  
+            For further detail on those requirements, consult the <a href="http://www.cde.state.co.us/uip/UIP_TrainingAndSupport_Resources.asp" target="_blank">Quality Criteria</a>.  Schools and 
+            districts with a Turnaround Plan must also identify one or more turnaround strategies from the list below as one of their major improvement strategies.  The selected strategy
+            should be indicated below and described within the UIP’s Action Plan form. 
+            </span></p>
+           <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+           <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                <table width="100%" style = "border: 1px solid;display: grid">
+                    <tr>
+                 <td width="30%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Description of State Accountability Requirements</h1></td>
+                        <td width="20%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Recommended Location in UIP</h1></td>
+                        <td width="50%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of Requirement</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">
+                        <p style= "font-size:100%; "><b>Turnaround Plan Options.</b><br/> Only schools and districts with a Turnaround Plan Type must meet this requirement. 
+                        One or more of the Turnaround Plan options must be selected and described.</p></td>
+                        <td class="addendum-table-row">Section IV: A description of the selected turnaround strategy in the Action Plan Form.
+                        <br/><br/>If the school or district is in the process of implementing one of these options from a prior year, please include this description within Section IV as well. Actions completed and currently underway should be included in the Action Plan form.
+                        </td>
+                        
+                        <td class="addendum-table-row"> 
+                        <apex:inputField value="{!Addendum.Turnaround_Partner__c}" style="width:2%;"/>
+                        <b>Turnaround Partner.</b>
+                        A lead turnaround partner has been employed that uses research-based strategies and has a proven record of 
+                        success working with schools or districts under similar circumstances. The turnaround partner is immersed in all aspects of developing 
+                        and collaboratively executing the plan and serves as a liaison to other school or district partners.<br/>
+                        <b>Provide name of Turnaround Partner:</b><br/> <apex:inputField value="{!Addendum.Turnaround_Partner_Name__c}" style="width:60%;"/><br/>
+                        <apex:inputField value="{!Addendum.School_District_Management__c}" style="width:2%;"/>
+                        <b>School/District Management.</b>The oversight and management structure of the school or district has been reorganized. 
+                        The new structure provides greater, more effective support.<br/>
+                        
+                        <apex:inputField value="{!Addendum.Innovation_School__c}" style="width:2%;"/>
+                        <b>Innovation School.</b> School has been recognized as an innovation school or is clustered with other schools that have similar 
+                        governance management structures to form an innovation school zone pursuant to the Innovation Schools Act.<br/>
+                        <apex:inputField value="{!Addendum.School_District_Management_Contract__c}" style="width:2%;"/>
+                        <b>School/District Management Contract.</b> A public or private entity has been hired that uses research-based strategies
+                        and has a proven record of success working with schools or districts under similar circumstances to manage the school or district pursuant to a contract with the local school board or the Charter School Institute.<br/>
+                        <b>Provide name of Management Contractor:</b><br/>
+                        <apex:inputField value="{!Addendum.Management_Contractor_Name__c}" style="width:60%;"/><br/>
+                        <apex:inputField value="{!Addendum.Charter_Conversion__c}" style="width:2%;"/>
+                        <b>Charter Conversion.</b>(For schools without a charter) The school has converted to a charter school.<br/>
+                        <apex:inputField value="{!Addendum.Restructure_Charter__c}" style="width:2%;"/>
+                        <b>Restructure Charter.</b>(For schools with a charter) The school’s charter contract has been renegotiated and significantly restructured.<br/>
+                        <apex:inputField value="{!Addendum.School_Closure__c}" style="width:2%;"/>
+                        <b>School Closure.</b><br/>
+                        <apex:inputField value="{!Addendum.Other__c}" style="width:2%;"/>
+                        <b>Other.*</b> Another action of comparable or greater significance or effect has been adopted, 
+                        including those interventions required for persistently low-performing schools under ESEA (e.g., “turnaround 
+                        model”, “restart model”, “school closure”, “transformation model”).</td>
+                        
+                        
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+                
+                <p style="padding: 10px 10px 10px 10px;">
+                    <span style="padding: 10px 10px;">
+                        *Districts or schools selecting “Other” should consider that the turnaround strategy must be commensurate in magnitude to the district/school’s identified performance challenges. High-quality implementation of the strategy should result in moving the 
+                        district/school off of a Turnaround plan. Did the plan identify at least one of the options? What still needs to occur?
+            </span></p>
+                
+            </div><br/><br/>
+            <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+</apex:Composition>
+
+</apex:page>

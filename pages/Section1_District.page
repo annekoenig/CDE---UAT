@@ -1,0 +1,651 @@
+<apex:page standardController="UIP__c" extensions="Section1" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+        
+        <apex:outputPanel rendered="{!NOT(uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null)}">
+                <div class="emptySection">Section I data has not been populated!</div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!uip.Section_I_Progress_Status__c != 'Not Started' && uip.Section_1__c != null}">
+               <div id="pup" class="pup" style="position:abolute; display:none; z-index:200;"></div>
+                <div width="100%" style="background-color: #d3ccbc;">
+                    <table width="100%">
+                        <tr>
+                            <td width="60%">
+                                <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section I:  Summary Information about the District</h1>
+                            </td>
+                            <td width="40%" style="text-align: right; padding-right: 100px;">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <table width="100%">
+                    <tr>
+                        <td width="60%">
+                            <p style="padding: 10px 10px 10px 50px;">
+                                
+                            </p>
+                        </td>
+                        <td width="40%" style="text-align: right; padding-right: 100px; padding-top:10px;">
+                            <apex:commandLink StyleClass="btn btn-custom" value="Download" action="{!DownloadExcel_S1_District}" style="width:170px;" />
+                        </td>
+                    </tr>
+                </table>
+                <p style="padding: 10px 10px 10px 10px;">
+                    This section summarizes your district's performance on the federal and state accountability measures in 2014-2015. In the tables below, CDE has pre-populated the data in blue text. This data shows the district's performance in meeting minimum federal and state accountability expectations, including the official District Performance Framework (DPF). Make sure to scroll to the bottom to see customized directions for any requirements that must be included in your district's UIP.   Unlike in the past, this report is just for your reference.  It is no longer expected to be attached to your publicly available UIP.  
+                </p>
+                <p style="padding: 10px 10px 10px 50px;">
+                    <span style="font-size:130%; color:#6d3a5d;"><b>Student Performance Measures for State and Federal Accountability - Official 2014 DPF: {!uip.x1_3_RATING_YEAR_USED__c} Year</b></span><br/><br/>
+                </p>
+                <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                    <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                        <span class="helpButtonOn" id="helperId">
+                            Academic Achievement (Status)
+                            <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Academic_Achievement_Measures_Metrics__c}" escape="false"/>
+                        </span>
+                    </div>
+                </div><br/>
+                <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                    <table width="100%">
+                        <tr>
+                            <td width="15%"></td>
+                            <td width="32%" colspan="{!sectionsNumber_AA}" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+                            <td width="2%"></td>
+                            <td width="32%" colspan="{!sectionsNumber_AA}" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+                            <td width="2%"></td>
+                            <td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="UIP-element-subheader">Elementary</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}">
+                                <td class="UIP-element-subheader">Middle</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}">
+                                <td class="UIP-element-subheader">High</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="UIP-element-subheader">Elementary</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}">
+                                <td class="UIP-element-subheader">Middle</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}">
+                                <td class="UIP-element-subheader">High</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                            <td width="15%" rowspan="5" class="section1-element-col" style="text-align:center;"><b>Overall Rating for Academic Achievment:</b> <br/><br/><span style="color: blue;">{!uip.x1_3_ACHIEVE_RATING__c}</span></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Reading</td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_READ__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_READ__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_READ__c}%</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_READ__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_READ__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_READ__c}%</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Math</td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_MATH__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_MATH__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_MATH__c}%</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_MATH__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_MATH__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_MATH__c}%</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Writing</td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_WRITE__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_WRITE__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_WRITE__c}%</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_WRITE__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_WRITE__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_WRITE__c}%</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Science</td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_E_ACH_PA_PCT_SCI__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}">
+                                <td class="section1-element-col-blue">{!uip.TARG_M_ACH_PA_PCT_SCI__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.TARG_H_ACH_PA_PCT_SCI__c}%</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AA}">
+                                <td class="section1-element-col-blue">{!uip.E_ACH_PA_PCT_SCI__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.M_ACH_PA_PCT_SCI__c}%</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AA}" >
+                                <td class="section1-element-col-blue">{!uip.H_ACH_PA_PCT_SCI__c}%</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                    </table>
+                </div><br/><br/>
+                
+                
+                <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                    <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                        <span class="helpButtonOn" id="helperId">
+                            Academic Growth
+                            <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Academic_Growth_Median_Growth_Perc__c}" escape="false"/>
+                        </span>
+                    </div>
+                </div><br/>
+                <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                    <table width="100%">
+                        <tr>
+                            <td width="15%"></td>
+                            <td width="32%" colspan="{!sectionsNumber_AG}" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+                            <td width="2%"></td>
+                            <td width="32%" colspan="{!sectionsNumber_AG}" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+                            <td width="2%"></td>
+                            <td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="UIP-element-subheader" colspan="{!sectionsNumber_AG}">Median Adequate Growth Percentile (AGP)</td>
+                            <td width="2%"></td>
+                            <td class="UIP-element-subheader" colspan="{!sectionsNumber_AG}">Median Growth Percentile (MGP)</td>
+                            <td width="2%"></td>
+                            <td rowspan="6" class="section1-element-col" style="text-align:center;"><b>Overall Rating for Academic Growth Gaps:</b> <br/><br/><br/><span style="color: blue;">{!uip.x1_3_GROWTH_RATING__c}</span></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="UIP-element-subheader">Elementary</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}">
+                                <td class="UIP-element-subheader">Middle</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}">
+                                <td class="UIP-element-subheader">High</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="UIP-element-subheader">Elementary</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}">
+                                <td class="UIP-element-subheader">Middle</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}">
+                                <td class="UIP-element-subheader">High</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Reading</td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_AGP_READ__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}">
+                                <td class="section1-element-col-blue">{!uip.M_GRO_AGP_READ__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_AGP_READ__c}</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_MGP_READ__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.M_GRO_MGP_READ__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_MGP_READ__c}</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Math</td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_AGP_MATH__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}">
+                                <td class="section1-element-col-blue">{!uip.M_GRO_AGP_MATH__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_AGP_MATH__c}</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_MGP_MATH__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.M_GRO_MGP_MATH__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_MGP_MATH__c}</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">Writing</td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_AGP_WRITE__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}">
+                                <td class="section1-element-col-blue">{!uip.M_GRO_AGP_WRITE__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_AGP_WRITE__c}</td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_MGP_WRITE__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.M_GRO_MGP_WRITE__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_MGP_WRITE__c}</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-row-target" style="background-color:#f5eedf;">English Language Proficiency</td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col"></td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}">
+                                <td class="section1-element-col"></td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col"></td>
+                            </apex:outputPanel>
+                                <td width="2%"></td>
+                            <apex:outputPanel rendered="{!showElementary_AG}">
+                                <td class="section1-element-col-blue">{!uip.E_GRO_MGP_ELP__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showMS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.M_GRO_MGP_ELP__c}</td>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showHS_AG}" >
+                                <td class="section1-element-col-blue">{!uip.H_GRO_MGP_ELP__c}</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                        </tr>
+                    </table>
+                </div><br/><br/>
+                
+                <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                    <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                        <span class="helpButtonOn" id="helperId">
+                            Academic Growth Gaps
+                            <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Academic_Growth_Gaps_Median_Growth_Perc__c}" escape="false"/>
+                        </span>
+                    </div>
+                </div><br/>
+                <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                    <table width="100%">
+                        <tr>
+                            <td width="15%"></td>
+                           <!-- <td width="16%" class="uip-element-header-purp">Measures / Metrics</td> -->
+                            <td width="16%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+                            <td width="2%"></td>
+                            <td width="32%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+                            <td width="2%"></td>
+                            <td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <apex:outputPanel >
+                              <!--  <td class="section1-element-col">Median Growth Percentile
+    Description: Growth for reading, writing and math by disaggregated groups.
+    Expectation:  If disaggregated groups met adequate growth, MGP is at or above 45.
+    If disaggregated groups did not meet adequate growth, MGP is at or above 55. </td> -->
+                            </apex:outputPanel>
+                            <apex:outputPanel >
+                                <td class="section1-element-col">See your District Performance Framework for listing of median adequate growth expectations for your district's disaggregated groups, including free/reduced lunch eligible, minority students, students with disabilities, English Language Learners (ELLs) and students below proficient. </td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                            <apex:outputPanel >
+                                <td class="section1-element-col">See your School Performance Framework for listing of median growth by each disaggregated group.  
+    * Consult your District Performance Framework for the ratings for each student disaggregated group at each content area at each level.</td>
+                            </apex:outputPanel>
+                            <td width="2%"></td>
+                            <td class="section1-element-col" style="text-align:center;"><b>Overall Rating for Academic Growth Gaps:</b> <br/><br/><span style="color: blue;">{!uip.x1_3_GRO_GAPS_RATING__c}</span></td>
+                        </tr>
+                    </table>
+                </div><br/><br/>
+                
+                <apex:outputPanel rendered="{!showPostsecondary}">
+                    <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                        <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                            <span class="helpButtonOn" id="helperId">
+                                Postsecondary &amp; Workforce Readiness
+                                <img src="/s.gif" alt="" class="helpOrb" title="This section only appears for schools with high school metrics" escape="false"/>
+                            </span>
+                        </div>
+                    </div><br/>
+                    <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="15%"></td>
+                               <!-- <td width="16%" class="uip-element-header-purp">Measures / Metrics</td>-->
+                                <td width="16%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+                                <td width="2%"></td>
+                                <td width="32%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} School Results</td>
+                                <td width="2%"></td>
+                                <td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                        Graduation Rate
+                                        <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Graduation_Rate_Expectation__c}" escape="false"/>
+                                    </span>
+                                </td>
+                               <!-- <td class="section1-element-col">Expectation: At 80% or above on the best of 4-year, 5-year, 6-year or 7-year graduation rate.</td>-->
+                                <td class="section1-element-col">At 80% or above</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col">Best of 4-year through 7- year Grad Rate: <br/><a style="color: blue;">{!uip.PS_GRAD_BEST_GR__c} using a {!uip.PS_GRAD_BEST_YR__c} year grad rate</a></td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_GRAD_RATING__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                        Disaggregated Graduation Rate
+                                        <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Disaggregated_Grad_Rate_Expectation__c}" escape="false"/>
+                                    </span>
+                                </td>
+                              <!--  <td class="section1-element-col">Expectation: At 80% or above on the disaggregated group's best of 4-year, 5-year, 6-year or 7-year graduation rate.</td>-->
+                                <td class="section1-element-col">At 80% or above for each disaggregated group</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col">See your District Performance Framework for listing of 4-year, 5-year, 6-year and 7-year graduation rates for disaggregated groups, including free/reduced lunch eligible, minority students, students with disabilities, and ELLs.</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_GRAD_DSAG_RATING__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                        Dropout Rate
+                                        <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Dropout_Rate_Expectation__c}" escape="false"/>
+                                    </span>
+                                </td>
+                               <!-- <td class="section1-element-col">Expectation: At or below state average overall</td>-->
+                                <td class="section1-element-col-blue">{!uip.TARG_PS_DROP_RATE__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue">{!uip.PS_DROP_RATE__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_DROP_RATING__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    <span class="helpButtonOn" id="helperId">
+                                        Mean Colorado ACT Composite Score
+                                        <img src="/s.gif" alt="" class="helpOrb" title="{!uip.UIP_Annual_CDE_Plan__r.Mean_CO_ACT_Composite_Score_Expecation__c}" escape="false"/>
+                                    </span>
+                                </td>
+                              <!--  <td class="section1-element-col">Expectation: At or above state average.</td>-->
+                                <td class="section1-element-col-blue">{!uip.TARG_PS_ACT_SCORE__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue">{!uip.PS_ACT_SCORE__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.PS_ACT_RATING__c}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            <!--    <td></td>-->
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right;"><b>Overall Rating for Postsecondary &amp; Workforce Readiness:</b></td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.x1_3_POST_SEC_RATING__c}</td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!showEnglishLanguage_District}">
+                    <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                        <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+                            <span class="helpButtonOn" id="helperId">
+                                English Language Development and Attainment
+                              
+                            </span>
+                        </div>
+                    </div><br/>
+                    <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="15%"></td>
+                                <td width="16%" class="uip-element-header-purp">Measures / Metrics</td>
+                                <td width="16%" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Federal and State Expectations</td>
+                                <td width="2%"></td>
+                                <td width="32%" colspan="2" class="uip-element-header-purp">{!uip.UIP_Annual_CDE_Plan__r.This_School_Year__c} Grantee Results</td>
+                                <td width="2%"></td>
+                                <td width="15%" class="uip-element-header-purp">Meets Expectations?</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    AMAO 1
+                                </td>
+                                <td class="section1-element-col">Description: TBD – Pending approval from USDE</td>
+                                <td class="section1-element-col">TBD – Pending approval from USDE</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" colspan="2">{!uip.AMAO1_RATING__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.AMAO1_MEETS_EXP__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    AMAO 2
+                                </td>
+                                <td class="section1-element-col">Description: TBD – Pending approval from USDE</td>
+                                <td class="section1-element-col">TBD – Pending approval from USDE</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" colspan="2">{!uip.AMAO2_RATE__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" style="vertical-align: middle;">{!uip.AMAO2_MEETS_EXP__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" rowspan="5" style="background-color:#f5eedf;">
+                                    AMAO 3
+                                </td>
+                                <td class="section1-element-col" rowspan="5">Description: Academic Growth Gaps content sub-indicator ratings (median and adequate growth percentiles in reading, mathematics, and writing) for ELLs; Disaggregated Graduation Rate sub-indicator for ELLs; and Participation Rates for ELLs.</td>
+                                <td class="section1-element-col" rowspan="5">(1) Meets or Exceeds ratings on Academic Growth Gaps content sub-indicators for ELLs, (2) Meets or Exceeds rating on Disaggregated Graduation Rate sub-indicator for ELLs and (3) 95% Participation Rate for ELLs.</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col" style="text-align:center;">R</td>
+                                <td class="section1-element-col-blue">{!uip.AMAO3_RATING_READ__c}</td>
+                                <td width="2%"></td>
+                                <td class="section1-element-col-blue" rowspan="5" style="vertical-align: middle;">{!uip.AMAO3_MEETS_EXP__c}</td>
+                            </tr>
+                            <tr>
+                                <td width="2%"></td>
+                                <td class="section1-element-col" style="text-align:center;">W</td>
+                                <td class="section1-element-col-blue">{!uip.AMAO_3_Write_Rating__c}</td>
+                                <td width="2%"></td>
+                            </tr>
+                            <tr>
+                                <td width="2%"></td>
+                                <td class="section1-element-col" style="text-align:center;">M</td>
+                                <td class="section1-element-col-blue">{!uip.AMAO3_RATING_MATH__c}</td>
+                                <td width="2%"></td>
+                            </tr>
+                            <tr>
+                                <td width="2%"></td>
+                                <td class="section1-element-col" style="text-align:center;">Grad</td>
+                                <td class="section1-element-col-blue">{!uip.AMAO3_RATING_ELL_GRAD__c}</td>
+                                <td width="2%"></td>
+                            </tr>
+                            <tr>
+                                <td width="2%"></td>
+                                <td class="section1-element-col" style="text-align:center;">Participation</td>
+                                <td class="section1-element-col-blue">{!uip.AMAO3_RATING_PARTIC__c}</td>
+                                <td width="2%"></td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                </apex:outputPanel>
+                
+                <p style="padding: 10px 10px 10px 50px;">
+                    <span style="font-size:130%; color:#6d3a5d;"><b>Accountability Status and Requirements for Improvement Plan</b></span><br/><br/>
+                </p>
+                
+                <apex:outputPanel rendered="{!showStateAccountability_District}">
+                    <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                        <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">State Accountability and Grant Programs</div>
+                    </div><br/>
+                    <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="15%" class="uip-element-header-purp">Program</td>
+                                <td width="23%" class="uip-element-header-purp">Identification Process</td>
+                                <td width="22%" class="uip-element-header-purp">Identification for District</td>
+                                <td width="40%" class="uip-element-header-purp">Directions for Completing Improvement Plan</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Plan Type for State Accreditation
+                                </td>
+                                <td class="section1-element-col">Plan type is assigned based on the district's overall District Performance Framework score (achievement, growth, growth gaps, postsecondary and workforce readiness) and meeting requirements for finance, safety, participation and test administration.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.A_TTL_RATING_OFFICIAL__c} {!uip.YEAR_ENTERING_PI_TA__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.RATING_DIRECTIONS__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    School(s) on Accountability Clock
+                                </td>
+                                <td class="section1-element-col">At least one school in the district has a Priority Improvement or Turnaround plan type – meaning that the school is on the accountability clock.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">Number of Schools on Clock: {!uip.SCHLS_ON_CLOCK_NUM__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.UIP_Annual_CDE_Plan__r.School_s_on_Accountability_Clock__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Student Graduation and Completion Plan (Designated Graduation District)
+                                </td>
+                                <td class="section1-element-col">In one or more of the four prior school years, the district (1) had an overall Postsecondary and Workforce Readiness rating of “Does Not Meet” or “Approaching” on the District Performance Framework and (2) had an on-time graduation rate below 59.5% or an annual dropout rate at least two times greater than the statewide dropout rate for that year</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GRAD_PLAN_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GRAD_PLAN_DIRECTIONS__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Gifted Education
+                                </td>
+                                <td class="section1-element-col">All Administrative Units (AUs) that are the lead agency for the Gifted Program.  Multiple district AUs (including BOCES) may incorporate the Gifted Program requirements into each individual district level UIP.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GIFTED_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.GIFTED_DIRECTIONS__c}</td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!showESEAccountability_District}">
+                    <div width="100%" style="height:50px; background-color: #d3ccbc;">
+                        <div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">ESEA and Grant Accountability</div>
+                    </div><br/>
+                    <div width="90%" style="padding-left:10px; padding-right: 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="15%" class="uip-element-header-purp">Program</td>
+                                <td width="23%" class="uip-element-header-purp">Identification Process</td>
+                                <td width="22%" class="uip-element-header-purp">Identification for District</td>
+                                <td width="40%" class="uip-element-header-purp">Directions for Completing Improvement Plan</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Title IA
+                                </td>
+                                <td class="section1-element-col">Title IA funded Districts with a Priority Improvement or Turnaround plan type assignment.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE1A_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE1A_DIRECTIONS__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Title IIA
+                                </td>
+                                <td class="section1-element-col">Title IIA funded Districts with a Priority Improvement or Turnaround plan type assignment.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;"> {!uip.TITLE2A_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE2A_DIRECTIONS__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    Program Improvement under Title III
+                                </td>
+                                <td class="section1-element-col">District/Consortium missed AMAOs for two or more consecutive years.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE3_TYPE__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TITLE3_DIRECTIONS__c}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-row-target" style="background-color:#f5eedf;">
+                                    District with an Identified Focus School and /or School with a Tiered Intervention Grant (TIG) 
+                                </td>
+                                <td class="section1-element-col">District has at least one school that (1) has been identified as a Title I Focus School and/or (2) has a current TIG award.</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TIG_Type__c}</td>
+                                <td class="section1-element-col-blue" style="text-align:left;">{!uip.TIG_DIRECTIONS__c}</td>
+                            </tr>
+                        </table>
+                    </div><br/><br/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = '{!isPageChanged}';
+                    var isNewContact = '{!isNewContact}';
+                    var isEditContact = '{!isEditContact}';
+                    var isEditRTF = false;
+                    var isEditPit = false;
+                    var isEditPint = false;
+                    var elementValue = '';
+                    var isEditElem = false;
+                    var isEditElemx = false;
+                    var isTextChanged = false;
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

@@ -1,0 +1,230 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <!-- <apex:includescript value="{!URLFOR($Resource.CKEditor, 'ckeditor/ckeditor.js')}" /> -->
+    <apex:includeScript value="/ckeditor/ckeditor-4.x/rel/ckeditor.js?t=4.4.4.5"/>
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <div class="thetabcontent">
+                <apex:outputPanel rendered="{!NOT(uip.Section_3__c != 'No' && uip.Section_3__c != null)}">
+                    <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+                    <div id="empty"></div>
+                    <div width="100%" style="background-color: #d3ccbc;">
+                        <table width="100%">
+                            <tr>
+                                <td width="60%">
+                                    <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section III: Step Six - Root Causes</h1>
+                                </td>
+                                <td width="40%" style="text-align: right; padding-right: 50px;">
+                                <apex:inputField value="{!uip.Section_III_Root_Cause_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b></td>
+                            </tr>
+                        </table>
+                    </div><br/>
+                    <div style="padding-left: 10px;">
+                        <p><b>Directions:</b> Identify at least one root cause for every priority performance challenge. Root causes should address adult actions, 
+                         be under the control of the school, and address the priority performance challenge(s). Provide evidence that the root 
+                        cause was verified through the use of additional data. This can be included in the "reflection" box. A description of the selection process for the corresponding major 
+                        improvement strategies is encouraged.</p>
+                        <HR Style="border: 1px outset #5c666f" />
+                     <!--   <p>
+                            <em><strong>Priority Performance Challenges:</strong></em><br/>
+                            <em>(from previous section) </em>
+                        </p>-->
+                    </div>
+                    
+                   <!-- <p class="table-header-target">Performance Challenge(s)</p>-->
+                    <apex:outputPanel id="elementsSection">
+                        <apex:repeat value="{!challengeMap}" var="challenge">
+                            <blockquote>
+                             <div style="padding: 5px; margin:0px 0px 5px;background-color: #d2dfdf;" class="bg-warning">
+                              <p style="margin:0px;padding:0px;"><b>Priority Performance Challenge:  &nbsp;&nbsp;</b>
+                              <apex:outputText value="{!challengeMap[challenge].Name}" /><br/>
+                               <apex:outputText value="{!challengeMap[challenge].Description__c}"/></p></div>
+                            
+                           <!-- <p class="table-header-target" style="text-align: left;padding: 20px;"><apex:outputText value="{!challengeMap[challenge].Name}" /></p>
+                              <i> <apex:outputText value="{!challengeMap[challenge].Description__c}"/></i><br/><br/>-->
+                                <div style="background-color:#ececec;padding: 5px; margin:0px 0px 5px 50px;">
+                                    <p> 
+                                       <!-- <i><b><apex:outputText value="{!challengeMap[challenge].Name}"/></b><br/>-->
+                                      <!-- <i> <apex:outputText value="{!challengeMap[challenge].Description__c}"/></i><br/><br/>-->
+                                      <b>Root Cause (s) Associated with this Performance Challenge</b> [&nbsp;
+                                        <apex:commandLink action="{!associateElem}" rerender="script, newElemSection"><em>Add / Associate Root Cause</em>
+                                            <apex:param name="elemValue" value="Root Cause"/>
+                                            <apex:param name="challengeId" value="{!challengeMap[challenge].Id}"/>
+                                        </apex:commandLink> ]
+                                    </p>
+                                    <apex:repeat value="{!rcForChallengeMap[challenge]}" var="rc">
+                                        <apex:outputPanel id="ViewSection">
+                                            <apex:outputPanel rendered="{!NOT(isEditElem)}">
+                                                <!--<blockquote>-->
+                                                    <div style="background-color:#ffffff; padding : 10px; margin : 10px;">
+                                                        <p><b>{!rc.Name}</b> - {!rc.Description__c}</p>
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!EditElem}" rerender="script, editSection, ViewSection, errorSection" status="loadingStatus">
+                                                            <span class="glyphicon glyphicon glyphicon-pencil"></span> &nbsp;Edit
+                                                        </apex:commandLink>&nbsp;&nbsp;
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!DeleteRC}" rerender="script, elementsSection, errorSection" status="loadingStatus" onclick="if(!confirm('Are you sure you want to unassociate this record?')){return};">
+                                                            <span class="glyphicon glyphicon glyphicon-minus"></span> &nbsp;Unassociate
+                                                            <apex:param name="elemId" value="{!rc.Id}"/>
+                                                            <apex:param name="challengeId" value="{!challengeMap[challenge].Id}"/>
+                                                        </apex:commandLink>&nbsp;&nbsp;
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!DeleteElem}" rerender="script, elementsSection, errorSection" status="loadingStatus" onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                            <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Delete
+                                                            <apex:param name="ElemId" value="{!rc.Id}"/>
+                                                        </apex:commandLink>
+                                                    </div>
+                                               <!-- </blockquote>-->
+                                            </apex:outputPanel>
+                                       </apex:outputPanel>
+                                        <apex:outputPanel id="editSection">
+                                            <apex:outputPanel rendered="{!isEditElem}">
+                                                <blockquote>
+                                                    <div style="background-color:#ffffff; padding : 10px;">
+                                                        <table width="100%">
+                                                            <tr>
+                                                                <td style="text-align: left;"><b>Name</b></td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                            <tr>
+                                                                <td style="text-align: left;"><apex:inputField value="{!rc.Name}" style="width: 60%;"/></td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                            <tr>
+                                                                <td style="text-align: left;"><b>Description</b> </td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <apex:inputField style="width: 90%; height:50px;" value="{!rc.Description__c}" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                        </table><br/>
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelEditElem}" rerender="script, elementsSection, errorSection" status="loadingStatus">
+                                                            <span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel
+                                                        </apex:commandLink>&nbsp;&nbsp;
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveEditRCElem}" rerender="script, elementsSection, errorSection" status="loadingStatus">
+                                                            <span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save
+                                                            <apex:param name="elemId" value="{!rc.Id}"/>
+                                                            <apex:param name="challengeId" value="{!challenge}"/>
+                                                        </apex:commandLink>
+                                                    </div>
+                                                </blockquote>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </apex:repeat>
+                                    <apex:outputPanel id="newElemSection">
+                                        <apex:outputPanel rendered="{!elementValue == 'Root Cause'}">
+                                            <blockquote>
+                                                <div style="background-color:#ffffff; padding : 10px;">
+                                                    <apex:outputPanel rendered="{!NOT(isExistingRC)}">
+                                                        <table width="100%">
+                                                            <tr>
+                                                                <td style="text-align: left;"><b>Name</b></td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                            <tr>
+                                                                <td style="text-align: left;"><apex:inputField value="{!dummyUipe.Name}" style="width: 60%;"/></td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                            <tr>
+                                                                <td style="text-align: left;"><b>Description</b> </td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <apex:inputField style="width: 90%; height:50px;" value="{!dummyUipe.Description__c}" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr><td style="height:10px;"></td></tr>
+                                                        </table><br/>
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelNewElem}" rerender="script, elementsSection, newElemSection, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveNewRC}" rerender="script, elementsSection, newElemSection, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp;Save New Root Cause
+                                                            <apex:param name="challengeId" value="{!challengeMap[challenge].Id}"/>
+                                                        </apex:commandLink>&nbsp;&nbsp;
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!isExistingRC}">
+                                                        Select existing Root Cause&nbsp;&nbsp;
+                                                        <apex:selectList value="{!choosedRC[challenge]}" size="1">
+                                                            <apex:selectOptions value="{!RcForChallengeList}"/>
+                                                        </apex:selectList>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                         [&nbsp; <apex:commandLink action="{!addElem}" rerender="newElemSection"><em>Add New Root Cause</em>
+                                                            <apex:param name="elemValue" value="Root Cause"/>
+                                                            <apex:param name="challengeId" value="{!challengeMap[challenge].Id}"/>
+                                                        </apex:commandLink> ]<br/><br/>
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!CancelNewElem}" rerender="script, elementsSection, newElemSection, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+                                                        <apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!SaveNewRC}" rerender="script, elementsSection, newElemSection, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp;Associate Root Cause
+                                                            <apex:param name="challengeId" value="{!challengeMap[challenge].Id}"/>
+                                                        </apex:commandLink>&nbsp;&nbsp;
+                                                    </apex:outputPanel>
+                                                </div><br/>
+                                            </blockquote>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </div>
+                            </blockquote>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                    
+                    <HR Style="border: 1px outset #5c666f" />
+                    <p><b>Provide a rationale for how these Root Causes were selected and verified:</b></p>
+                    <div width="100%" style="text-align: right; padding-left:50px;"><u><apex:commandlink value="Clear formatting" onclick="clearText();" rerender="empty"/></u></div>
+                    <apex:inputTextarea id="myEditor" value="{!uip.Root_Cause_Narrative__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:300px;" onchange="refreshText();"></apex:inputTextarea><br/><br/>
+                    
+                    <apex:outputPanel layout="none" id="theCode">
+                        <div id="hideMe" style="display:none">
+                            <apex:inputTextarea id="hideTheCode" value="{!uip.Root_Cause_Narrative__c}"/>
+                        </div>
+                    </apex:outputPanel>
+                    <script type="text/javascript">
+                        function refreshText() {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].getData();
+                            x=jQuery("*[id$=hideTheCode]").attr("id");
+                            document.getElementById(x).value = newContent;
+                        }
+                        function clearText() {
+                            var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].getData();
+                            //newContent=newContent.replace(/<[^>]+>/gm, '');
+                            newContent=newContent.replace(/<(?!(img|\/img))[^>]+>/gm, '');
+                            CKEDITOR.instances[jQuery("*[id$=myEditor]").attr("id")].setData(newContent);
+                            console.log('newContent:::' + newContent);
+                        }
+                    </script>
+                    <p style="width:100%; text-align: center;">
+                    <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText();" rerender="script, errorSection" status="loadingStatus"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+                    <br/>
+                    </p>
+                    <div style="width:100%; text-align: left; padding: 10px;">
+                     <!--   <p><apex:inputField value="{!uip.Section_III_Root_Cause_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b></p>-->
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!BackTrendAnalysis}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};"><span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink>&nbsp;&nbsp;
+                        
+                        <!--<apex:commandLink StyleClass="btn btn-custom" action="{!NextRootCauses}" rerender="errorSection" status="loadingStatus">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></apex:commandLink><br/><br/>-->
+                    </div>
+                    
+                    <c:RichTextEditorJS myEditor="{!$Component.myEditor}"/>
+                </apex:outputPanel>
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

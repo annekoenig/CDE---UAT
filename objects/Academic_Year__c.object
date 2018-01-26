@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><fields>
+        <fullName>CurrentAcademicYrEndDate__c</fullName>
+        <description>currentAcademicYearEndDate</description>
+        <externalId>false</externalId>
+        <inlineHelpText>currentAcademicYearEndDate</inlineHelpText>
+        <label>CurrentAcademicYrEndDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>CurrentAcademicYrStartDate__c</fullName>
+        <description>currentAcademicYearStartDate</description>
+        <externalId>false</externalId>
+        <inlineHelpText>currentAcademicYearStartDate</inlineHelpText>
+        <label>CurrentAcademicYrStartDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>NextAcademicYrEndDate__c</fullName>
+        <description>nextAcademicYearEndDate</description>
+        <externalId>false</externalId>
+        <inlineHelpText>nextAcademicYearEndDate</inlineHelpText>
+        <label>NextAcademicYrEndDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><fields>
+        <fullName>NextAcademicYrStartDate__c</fullName>
+        <description>nextAcademicYearStartDate</description>
+        <externalId>false</externalId>
+        <inlineHelpText>nextAcademicYearStartDate</inlineHelpText>
+        <label>NextAcademicYrStartDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields><customSettingsType>List</customSettingsType><description>Academic Year</description><enableFeeds>false</enableFeeds><label>Academic Year</label><visibility>Public</visibility></CustomObject>

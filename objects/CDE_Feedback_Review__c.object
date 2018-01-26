@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?><CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"><actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides><actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides><fields>
+        <fullName>Academic_Achievement_Subjects__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Achievement Subjects</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Reading</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Math</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Writing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Science</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Achievement__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Academic Achievement</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Academic_Growth_Gaps_Subjects__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Growth Gaps Subjects</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Reading</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Math</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Writing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Growth_Gaps__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Academic Growth Gaps</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Academic_Growth_Subjects__c</fullName>
+        <externalId>false</externalId>
+        <label>Academic Growth Subjects</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Reading</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Math</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Writing</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>English Language Proficiency</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields><fields>
+        <fullName>Academic_Growth__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Academic Growth</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Identifies_Major_Improvement_Strategies__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies research-based major improvement strategies that have a likelihood to eliminate the root causes</inlineHelpText>
+        <label>Identifies Major Improvement Strategies</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Identifies_Root_Cause__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies root causes that explain the magnitude of the performance challenges</inlineHelpText>
+        <label>Identifies Root Cause</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Investigates_Critical__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Investigates the most critical performance areas and prioritizes the most urgent performance challenges</inlineHelpText>
+        <label>Investigates Critical Performance</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Post_Secondary_Readiness_Subjects__c</fullName>
+        <externalId>false</externalId>
+        <label>Post Secondary Readiness Subjects</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Graduation Rate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disaggregated Graduation Rate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dropout Rate</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ACT</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <visibleLines>4</visibleLines>
+    </fields><fields>
+        <fullName>Post_Secondary_Readiness__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Post Secondary Readiness</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields><fields>
+        <fullName>Presents_Well_Designed_Plan__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Presents a well-designed plan for implementing the major improvement strategies to bring about dramatic improvement</inlineHelpText>
+        <label>Presents Well Designed Plan</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Review_Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Review Period</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1st Review</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2nd Review</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Summary_Info__c</fullName>
+        <externalId>false</externalId>
+        <label>Summary Info</label>
+        <picklist>
+            <picklistValues>
+                <fullName>The plan has required changes. The school must make changes to the UIP and resubmit through Tracker by March 31, 2014 for additional review by CDE to ensure that the changes were adequately addressed.</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>The plan has required changes. CDE will verify that these changes have been addressed in next year’s plan (2014-15), if the school is required to submit the UIP for review. See required changes outlined below.</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>This plan meets basic expectations but recommendations have been provided to help strengthen the plan. The school may make adjustments to the UIP based upon this feedback.</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields><fields>
+        <fullName>Summary_of_Feedback__c</fullName>
+        <externalId>false</externalId>
+        <label>Summary of Feedback about School Plan</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields><fields>
+        <fullName>UIP__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>UIP</label>
+        <referenceTo>UIP__c</referenceTo>
+        <relationshipLabel>CDE Feedback Reviews</relationshipLabel>
+        <relationshipName>CDE_Feedback_Reviews</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields><allowInChatterGroups>false</allowInChatterGroups><compactLayoutAssignment>SYSTEM</compactLayoutAssignment><deploymentStatus>Deployed</deploymentStatus><enableActivities>false</enableActivities><enableBulkApi>true</enableBulkApi><enableFeeds>false</enableFeeds><enableHistory>false</enableHistory><enableReports>true</enableReports><enableSearch>true</enableSearch><enableSharing>true</enableSharing><enableStreamingApi>true</enableStreamingApi><label>CDE Feedback Review</label><nameField>
+        <label>CDE Review Feedback Name</label>
+        <type>Text</type>
+    </nameField><pluralLabel>CDE Feedback Reviews</pluralLabel><searchLayouts /><sharingModel>ReadWrite</sharingModel><listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews></CustomObject>

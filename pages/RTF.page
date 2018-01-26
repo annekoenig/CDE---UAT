@@ -1,0 +1,286 @@
+<apex:page controller="RTFPage" id="ckEditorPage" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <head>
+    <apex:outputPanel id="ckEditorSection">
+        <!-- <apex:includescript value="{!URLFOR($Resource.CkEditor, 'ckeditor/ckeditor.js')}" /> -->
+		<apex:includeScript value="/ckeditor/ckeditor-4.x/rel/ckeditor.js?t=4.4.4.5"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"/>
+    
+        <script>
+            var j$ = jQuery.noConflict();
+            j$(window).load(function() {
+                j$('iframe').contents().find('body').attr('spellcheck','true');
+                console.log('test:::');
+                console.log(j$('iframe'));
+            });
+            j$(function() {
+                j$( ".jQueryDatepicker" ).datepicker({dateFormat:"yy-mm-dd"});
+            });
+            j$(document).ready(function () {
+                j$(document).on('focus', '.jQueryDatepicker', function () {
+                    j$(this).datepicker({dateFormat:"yy-mm-dd"});
+                });
+            });
+            /*//alert('fff');
+                            //var j$ = jQuery.noConflict();
+                            var x = 0;
+                            j$(document).ready(function(){
+                                //var y = document.getElementById('cke_1_contents');
+                                CKEDITOR.on('instanceReady', function(e) {
+                                    //alert(e.editor.config.magic);
+                                    if (x > 0) return;
+                                    if (e.editor.config.magic) return;
+                                    var target = e.editor.config.bodyId;
+                                    var name = e.editor.name;
+                                    e.editor.destroy();
+                                    //alert(name);
+                                    CKEDITOR.editorConfig = function( config ) { config.magic = true; }
+                                    CKEDITOR.replace(name, {
+                                                height : 400, 
+                                                width : '98%', 
+                                                bodyId : target
+                                    });
+                                    x++;
+                                });
+                                
+                            });*/
+        </script>
+        <style>
+        .btn-custom {
+                background-color: #7b8893 !important;
+                //background-color: hsl(208, 9%, 40%) !important;  /*Hh Chaning - hsl(205, 62%, 62%) !important;  */
+                border-color: #5c666f;
+                color: #fff;
+            }
+            .btn-custom:hover {
+                color: #333;
+                background-color: #ebebeb !important;
+                border-color: #adadad;
+                }
+            }
+        </style>
+    
+    </apex:outputPanel>
+    </head>
+    
+    <apex:form >
+        
+        <apex:outputPanel rendered="{!target == 'Academic Achievement (Status)'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(1);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor1" value="{!uip.Narrative_Academic_Achievement_Targets__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor1}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!target == 'Academic Growth'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(2);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor2" value="{!uip.Narrative_Academic_Growth_Targets__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor2}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!target == 'Disaggregated Growth'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(3);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor3" value="{!uip.Narrative_Academic_Growth_Gaps_Target__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor3}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!CONTAINS(target,'Postsecondary ')}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(4);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor4" value="{!uip.Narrative_Postsecondary_Workforce_Target__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor4}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!target == 'English Language Development and Attainment'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(5);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor5" value="{!uip.Narrative_English_Lang_Dev_Attain_Target__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor5}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!target == 'Student Engagement'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(6);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor6" value="{!uip.Narrative_Student_Engagement_Target__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor6}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!target == 'Disaggregated Achievement'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(7);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor7" value="{!uip.Narrative_Disaggregated_Achievement__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor7}"/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!target == 'Student Behavior'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(8);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor8" value="{!uip.Narrative_Student_Behavior__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor8}"/>
+        </apex:outputPanel>
+         <apex:outputPanel rendered="{!target == 'Other'}">
+        	<div width="98%" style="text-align: right; padding-right:50px;"><u>
+	            <apex:commandlink value="Clear formatting" onclick="clearText(9);" rerender="empty">
+	                <!-- <apex:param name="target" value="{!target}"/> -->
+	            </apex:commandlink>
+	        </u></div>
+            <apex:inputTextarea id="myEditor9" value="{!uip.Narrative_Other__c}" styleClass="ckeditor-" richText="false" style="width:90%; height:600px;" onchange="refreshText();"></apex:inputTextarea>
+            <c:RichTextEditorJS myEditor="{!$Component.myEditor9}"/>
+        </apex:outputPanel>
+        
+        <apex:outputPanel layout="none" id="theCode">
+            <div id="hideMe" style="display:none">
+                <apex:outputPanel rendered="{!target == 'Academic Achievement (Status)'}">
+                    <apex:inputTextarea id="hideTheCode1" value="{!uip.Narrative_Academic_Achievement_Targets__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!target == 'Academic Growth'}">
+                    <apex:inputTextarea id="hideTheCode2" value="{!uip.Narrative_Academic_Growth_Targets__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!target == 'Disaggregated Growth'}">
+                    <apex:inputTextarea id="hideTheCode3" value="{!uip.Narrative_Academic_Growth_Gaps_Target__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!CONTAINS(target,'Postsecondary ')}">
+                    <apex:inputTextarea id="hideTheCode4" value="{!uip.Narrative_Postsecondary_Workforce_Target__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!target == 'English Language Development and Attainment'}">
+                    <apex:inputTextarea id="hideTheCode5" value="{!uip.Narrative_English_Lang_Dev_Attain_Target__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!target == 'Student Engagement'}">
+                    <apex:inputTextarea id="hideTheCode6" value="{!uip.Narrative_Student_Engagement_Target__c}"/>
+                </apex:outputPanel>
+                 <apex:outputPanel rendered="{!target == 'Disaggregated Achievement'}">
+                    <apex:inputTextarea id="hideTheCode7" value="{!uip.Narrative_Disaggregated_Achievement__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!target == 'Student Behavior'}">
+                    <apex:inputTextarea id="hideTheCode8" value="{!uip.Narrative_Student_Behavior__c}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!target == 'Other'}">
+                    <apex:inputTextarea id="hideTheCode9" value="{!uip.Narrative_Other__c}"/>
+                </apex:outputPanel>
+            </div>
+        </apex:outputPanel>
+        <script type="text/javascript">
+            function refreshText1() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor1]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode1]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText2() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor2]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode2]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText3() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor3]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode3]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText4() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor4]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode4]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText5() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor5]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode5]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText6() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor6]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode6]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+             function refreshText7() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor7]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode7]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText8() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor8]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode8]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function refreshText9() {
+                var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor9]").attr("id")].getData();
+                x=jQuery("*[id$=hideTheCode9]").attr("id");
+                document.getElementById(x).value = newContent;
+            }
+            function clearText(i) {
+			    var newContent = CKEDITOR.instances[jQuery("*[id$=myEditor" + i +"]").attr("id")].getData();
+			    //newContent=newContent.replace(/<[^>]+>/gm, '');
+			    newContent=newContent.replace(/<(?!(img|\/img))[^>]+>/gm, '');
+			    CKEDITOR.instances[jQuery("*[id$=myEditor"+ i +"]").attr("id")].setData(newContent);
+			    console.log('newContent:::' + newContent);
+			}
+        </script>
+        <apex:outputPanel rendered="{!closeWindow}">
+            <script type="text/javascript">
+                javascript:parent.rerenderRTFSection(); 
+                self.close();
+            </script>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!closeReflexionWindow}">
+            <script type="text/javascript">
+                javascript:parent.rerenderMainSection(); 
+                self.close();
+            </script>
+        </apex:outputPanel>
+        <div style="width:100%; text-align: center; padding: 10px;">
+            <apex:commandLink StyleClass="btn btn-custom" action="{!Cancel}"><span class="glyphicon glyphicon glyphicon-remove"></span> &nbsp;Cancel</apex:commandLink>&nbsp;&nbsp;
+            <apex:outputPanel rendered="{!target == 'Academic Achievement (Status)'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText1();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'Academic Growth'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText2();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'Disaggregated Growth'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText3();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!CONTAINS(target,'Postsecondary ')}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText4();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'English Language Development and Attainment'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText5();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'Student Engagement'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText6();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'Disaggregated Achievement'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText7();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'Student Behavior'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText8();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!target == 'Other'}">
+                <apex:commandLink StyleClass="btn btn-custom" action="{!SaveReflexion}" onclick="refreshText9();"><span class="glyphicon glyphicon glyphicon-save"></span> &nbsp;Save</apex:commandLink>&nbsp;&nbsp;
+            </apex:outputPanel>
+        </div>
+    </apex:form>
+</apex:page>

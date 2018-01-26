@@ -1,0 +1,263 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0"> 
+<apex:composition template="SectionHeader">
+
+        <apex:define name="body">
+        <table width="100%">
+            <tr>
+                <td width="60%">
+                    <apex:outputPanel rendered="{!(uip.RecordType.Name == 'District UIP' || uip.RecordType.Name == 'District UIP 2015' || uip.RecordType.Name == 'District UIP 2016') && addWPositionMap[addPosition].schoolName != null}">
+                        <span style="font-size:130%; color:#101e8e;"><b>{!addWPositionMap[addPosition].schoolName}</b></span><br/>
+                    </apex:outputPanel>
+                </td>
+                <!-- <td width="40%" style="text-align: center;">
+                            <div width="100%" style="padding-top: 8px;">
+                                Page {!addendumPositionMap['Gifted_Education__c']} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                                <apex:outputPanel rendered="{!addendumPositionMap['Gifted_Education__c'] <= countAddendum && addendumPositionMap['Gifted_Education__c'] != 1}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Gifted_Education__c']-2]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!addendumPositionMap['Gifted_Education__c'] < countAddendum}">
+                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/{!addendumMap[addendumList[addendumPositionMap['Gifted_Education__c']]]}?id={!currentId}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!(addendumPositionMap['Gifted_Education__c'] <= countAddendum && addendumPositionMap['Gifted_Education__c'] != 1) || addendumPositionMap['Gifted_Education__c'] < countAddendum}">
+                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                    
+                                </div>
+                            </apex:outputPanel>
+                        </td> -->
+                        <td width="40%" style="text-align: center;">
+                        <div width="100%" style="padding-top: 8px;">
+                            Page {!addPosition} of {!countAddendum}&nbsp;&nbsp;&nbsp;
+                            <apex:outputPanel rendered="{!addPosition <= countAddendum && addPosition != 1}">
+                                <apex:commandLink StyleClass="btn btn-custom" action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">&lt;&lt; Back
+                                    <apex:param value="{!addPosition - 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>&nbsp;
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!addPosition < countAddendum}">
+                                <apex:commandLink StyleClass="btn btn-custom"  action="{!nextAddenda}" target="_parent" style="width:100px; padding-top: 8px;">Next >>
+                                    <apex:param value="{!addPosition + 1}" name="addPosition" assignTo="{!addPosition}"/>
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                        </div>
+                        <div width="100%" style="padding: 10px 10px 8px 0px;">
+                                
+                        </div>
+                    </td>
+                    </tr>
+                </table>
+            <div width="100%" style="background-color: #d3ccbc;">
+                <table width="100%">
+                    <tr>
+                        <td width="70%">
+                            <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section V:  Supporting Addenda Forms</h1>
+                        </td>
+                        <td width="30%">
+                            <apex:inputField value="{!uip.Gifted_Education_Complete__c}" >
+                            <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                            </apex:inputField>
+                            <b>Complete &amp; Ready to submit</b>
+                        </td>
+                     </tr>
+                 </table>
+                 
+            </div>
+             <p style="padding: 10px 10px 50px;">
+                <span style="font-size:130%; color:#101e8e;"><b>For Administrative Units with Gifted Education Programs</b></span><br/><br/>
+          
+            <span style="padding: 10px;">
+            Administrative Units (AU) must complete this form to document Gifted Education program plan requirements for student performance. AUs responsible for multiple districts may collaborate 
+            with districts, this is especially true for AUs with member district that have small n-counts. Numbers can be aggregated to the AU level and common targets can be recorded, as appropriate, in district 
+            documents.  As a part of the improvement planning process, districts are strongly encouraged to weave appropriate requirements into earlier sections of the UIP. This form provides a way to ensure 
+            all components of the program are met through assurances and by (1) describing the requirements in this addendum or by (2) listing the page numbers of where the gifted education elements are 
+            located in the UIP.
+            </span></p>
+           <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+           <div width="90%" style="padding-left:10px; padding-right: 10px; ">
+                <table width="100%" style = "border: 1px solid;display: grid">
+                    <tr>
+                 <td width="30%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Description of Gifted Education Program Requirements</h1></td>
+                        <td width="20%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Recommended Location in UIP</h1></td>
+                        <td width="50%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of Requirement or Crosswalk of Description in UIP Data Narrative 
+                        or Action Plan (include page numbers)</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Record reflection on progress towards previous year’s targets.</td>
+                        <td class="addendum-table-row">Section III:  Data Narrative</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Review_on_Progress__c}" style="width:90%;"/></td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Disaggregate gifted student performance by sub-groups (e.g., grade ranges, minority, and FRED) to reveal strengths and/or gaps (disparities) in achievement and/or growth on state and/or district assessments.</td>
+                        <td class="addendum-table-row">Section III:  Data Narrative</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Disaggregate_gifted_student_performance__c}" style="width:90%;"/> </td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Provide a data analysis that includes trend statements, prioritized performance challenges and root causes that investigates the needs of selected student groups.</td>
+                        <td class="addendum-table-row">Section III:  Data Narrative</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Data_Analysis__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Set targets for gifted students’ performance that meet or exceed state expectations that facilitate gifted students’ achievement and growth (e.g., move-up, keep-up) in their area(s) of strength.</td>
+                        <td class="addendum-table-row">Section IV:  Target Setting Form</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Student_Performance_Targets__c}" style="width:90%;"/> </td> 
+                 </tr>
+                    <tr>
+                       <td class="addendum-table-row">Describe gifted student performance targets in terms of either the district targets (convergence) or as a specific gifted student target/s (divergence) based upon performance challenges of gifted students.</td>
+                        <td class="addendum-table-row">Section IV:  Target Setting Form</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Target_Setting__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe the interim measures to monitor progress of individual student performance for the selected student sub-group or grade level range.</td>
+                        <td class="addendum-table-row">Section IV:  Target Setting Form</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Interim_Measures_to_Monitor_Progress__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Identify major (differentiated) strategies to be implemented that support and address the identified performance challenges and will enable the AU to meet the performance targets.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Identify_Major_Strategies__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe steps and timeline for major improvement strategies and professional development that will have positive and long term impact to improve gifted student performance.</td>
+                        <td class="addendum-table-row">Section IV:  Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Steps_and_Timeline_for_Improvement__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Describe who has primary responsibility for implementing action steps for improvement of gifted student performance.</td>
+                        <td class="addendum-table-row">Section IV:  Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.Person_Resp_for_Step_Implementation__c}" style="width:90%;"/> </td> 
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Indicate how student achievement is reported to parents and students, especially when gifted students are above grade level instruction in one or more contents at a grade level.</td>
+                        <td class="addendum-table-row">Section IV: Action Plan</td>
+                        <td class="addendum-table-row"><apex:inputField value="{!Addendum.How_is_Achievement_Reported__c}" style="width:90%;"/> </td> 
+                    
+                    
+                    
+                    </tr>
+                    
+                    </Table>
+                    <p style="padding: 10px 10px 10px 10px;">
+                         
+                    <span style="padding: 10px 10px;">
+                        * Note that the Gifted Education Program budget is due in April. The budget can be found at: http://www.cde.state.co.us/gt/director.htm.<br/><br/>
+                 <!--  <span style="font-size:130%; color:#101e8e;"><b>Gifted Program Assurances</b></span> -->
+                    </span> </p>
+                    
+                 <!--    <table width="100%" style = "border: 1px solid;display: grid">
+                    <tr>
+                 <td width="35%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Description of General Program Assurances</h1></td>
+                        <td width="6%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Select Appropriate Option:</h1></td>
+                        <td width="35%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">Description of Requirement or Crosswalk of Description in UIP Data Narrative 
+                        or Action Plan <br/>(include page numbers)</h1></td>
+                        <td width="6%" class="addendum-table-header">
+                        <h1 style="font-size:110%; padding-left: 10px; font-weight:bold;">
+                        Select Appropriate Option:</h1></td>
+                    </tr>
+                
+                    <tr>  
+                    
+                    <td class="addendum-table-row">The district uses multiple pathways and tools to ensure equal and fair 
+                            access to identification, especially in traditionally underserved student groups; 
+                            and makes progress toward proportional representation in the gifted population.</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Tools_for_Fair_Access_to_Identification__c}" style="width:90%;"/></td>
+                        <td class="addendum-table-row">The district/BOCES maintains a local database of gifted students 
+                            that records the students’ area(s) of strength as defined in 
+                            regulations: general ability, a specific academic area(s), visual 
+                            arts, music, performing arts, creativity, and/or leadership.</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Local_Database_of_Gifted_Students__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">Gifted students receive special provisions, Tier II and Tier III, for 
+                            appropriate instruction and content extensions in the academic 
+                            standards that align with individual strengths.<br/><br/>
+                    
+                            Note: The AU’s program plan should describe the key programming 
+                            options matched to areas of giftedness and utilized in serving gifted 
+                            students.</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Special_Provisions__c}" style="width:90%;"/></td>
+                        <td class="addendum-table-row">ALPS are implemented and annually reviewed for every gifted 
+                            student for monitoring individual achievement and affective 
+                            goals. (Districts may choose to substitute the ALP with 
+                            the School Readiness Plan at the kindergarten level; and with the 
+                            ICAP at the secondary level, if conditions of individual affective 
+                            and achievement goals and parental engagement are fulfilled.)</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.ALPS_Implemented_and_Reviewed_Annually__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="addendum-table-row">The budget and improvement planning process is a collaboration 
+                            among stakeholders of schools or districts within the administrative 
+                            unit. </td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Budget_and_Planning_is_Collaborative__c}" style="width:90%;"/></td>
+                        <td class="addendum-table-row">The district/BOCES provides a certified person to administer the 
+                            gifted education program plan, provide professional 
+                            development, and facilitate implementation of the READ Act 
+                            to accelerate reading skills of advanced readers.</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Certified_Person_to_Administer_the_Plan__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                    <td class="addendum-table-row">AU will increase the identification of gifted students from traditionally 
+                        under-represented populations as evidenced in proportionality of local 
+                        data by 2016. </td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Increase_ID_of_Gifted_Students__c}" style="width:90%;"/></td>
+                        <td class="addendum-table-row">AU will implement ALPs in high schools either as a blended plan 
+                            with the ICAP or as a separate individual ALP by fall 2014.</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Implement_ALSP_in_High_Schools__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                    <td class="addendum-table-row">AU will implement procedures to identify exceptional potential/gifted 
+                        students in all categories of giftedness. </td>
+                    <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Procedures_to_ID_Gifted_Students__c}" style="width:90%;"/></td>
+                    <td class="addendum-table-row">AU will have a policy or guidelines for acceleration. Districts 
+                        reviewed acceleration plans for students in general and have a 
+                        local acceleration plan for gifted students.</td>
+                    <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Policy_or_Guidelines_for_Acceleration__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                    <td class="addendum-table-row">AU will be successful in identifying and moving toward gifted student achievement/growth targets by 2016. </td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Move_Toward_Growth_Targets_by_2016__c}" style="width:90%;"/></td>
+                        <td class="addendum-table-row">AU will accomplish priorities set through the Colorado Gifted Education Review (C-GER).</td>
+                        <td class="addendum-table-row"> <apex:inputField value="{!Addendum.Accomplish_Priorities_set_through_C_GER__c}" style="width:90%;"/></td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table> -->
+            </div><br/><br/>
+              <div width="100%" style="text-align:center;">
+                <apex:commandLink StyleClass="btn btn-custom" value="Save" action="{!Save}" style="width:170px;" /><br/><br/>
+            </div>
+            <div width="100%" height="30px" style="background-color: #101e8e; color: white; padding:20px;">
+                
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+            
+          </apex:define>
+</apex:Composition>
+
+</apex:page>

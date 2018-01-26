@@ -1,0 +1,12 @@
+<apex:page controller="AttachmentController" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    
+        <apex:define name="body">
+        <!-- <img src="{!$Resource.Section_1_Help}"/> -->
+        <!-- <apex:iframe src="/apex/DisplayPdf" scrolling="true" id="theIframe" height="600px;"/> -->
+                
+        <apex:outputPanel id="mainSection" rendered="{!if(att.Id !=null,true,false)}">
+           <apex:iframe src="{!URLFOR($Action.Attachment.Download, att.Id)}" height="600" /> 
+        </apex:outputPanel> 
+        </apex:define>
+    
+</apex:page>

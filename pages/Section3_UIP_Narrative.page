@@ -1,0 +1,295 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+    <apex:composition template="SectionHeader">
+        <apex:define name="body">
+            <div class="thetabcontent">
+                <apex:outputPanel rendered="{!NOT(uip.Section_3__c != 'No' && uip.Section_3__c != null)}">
+                    <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!uip.Section_3__c != 'No' && uip.Section_3__c != null}">
+                    <div id="empty"></div>
+                    
+                    <div width="100%" style="background-color: #d3ccbc;">
+                        <table width="100%">
+                            <tr>
+                                <td width="60%">
+                                    <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section III: Narrative on Data Analysis and Root Cause Identification</h1>
+                                </td>
+                                <td width="40%" style="text-align: right; padding-right: 50px;">
+                                    <apex:inputField value="{!uip.Section_III_Data_Narrative_Complete__c}" >
+                                        <apex:actionSupport event="onchange" rerender="empty" action="{!updateUIP}" status="loadingStatus"/>
+                                    </apex:inputField>
+                                    <b>Complete &amp; Ready to submit</b>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br/>
+                    <div width="100%" style="padding-right: 100px; text-align: right; padding-bottom: 5px;">
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!DownloadWord_S3}" >
+                            <span class="glyphicon glyphicon glyphicon-download"></span>&nbsp;Download
+                        </apex:commandLink>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-9" style= "padding-right: 0px;">
+                        <p style="padding: 10px 10px 20px 10px;"> This section corresponds with the “Evaluate” 
+                        portion of the continuous improvement cycle. The main outcome is to construct a narrative that describes 
+                        the process and results of the analysis of the data for your school. The analysis should justify the performance 
+                        targets and actions proposed in Section IV. This analysis section includes: identifying where the school did not at least meet 
+                        minimum state and federal accountability expectations; describing progress toward targets for the prior school 
+                        year; describing what performance data were used in the analysis of trends; identifying trends and priority 
+                        performance challenges (negative trends); describing how performance challenges were prioritized; identifying 
+                        the root causes of performance challenges; describing how the root causes were identified and verified and what 
+                        data were used; and describing stakeholder involvement in the analysis.  Additional guidance on how to engage in 
+                        the data analysis process is provided in <a href="http://www.cde.state.co.us/uip/20142015uiphandbook" target="_blank">Unified Improvement Planning Handbook</a>. </p>
+                    </div> 
+                    <div class="col-md-3 left-col" style= "padding-top: 10px; padding-bottom: 70px; text-align: center;">
+                        <apex:image url="{!URLFOR($Resource.UIPCYCLE)}" width="150" height="150" />
+                    </div>
+                    </div>
+                    <HR Style="border: 2px outset #5c666f" />
+                    
+                    <apex:actionFunction name="rerenderMainSection" reRender="script, mainSection" action="{!rerenderAllRTF}" status="loadingStatus"/>
+                    
+                    <apex:outputPanel id="mainSection">
+                    <div style="padding-left:10px; padding-right: 10px; align: center;" width="100%">
+                        <apex:outputPanel id="briefDescription">
+                            <h3>Brief Description</h3>
+                            <p style="margin-left:20px;">
+                                <apex:outputPanel rendered="{!uip.TextAreaRich_Test__c == null || uip.TextAreaRich_Test__c == ''}">
+                                    <em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Brief_Description?id={!currentId}">Begin Brief Description Narrative</a></em>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!uip.TextAreaRich_Test__c != null && uip.TextAreaRich_Test__c != '' && NOT(isEditRTF)}">
+                                    <div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+                                        <apex:outputText value="{!uip.TextAreaRich_Test__c}" escape="false"/>
+                                        <p>[ 
+                                        <apex:commandLink action="{!EditRTF}" rerender="script, briefDescription"><em>Edit Brief Description Narrative</em>
+                                        </apex:commandLink>
+                                        ] </p>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!isEditRTF}">
+                                    <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/AllRTF?id={!uip.Id}&target=Brief Description" scrolling="true" id="theIframe" height="650px;"/>
+                                </apex:outputPanel>
+                            </p>
+                        </apex:outputPanel>
+                        
+                        <h3>Prior Year Targets</h3>
+                        <p style="margin-left:20px;">
+                            <apex:outputPanel rendered="{!uip.Narrative_Academic_Achievement_Targets__c == null && uip.Narrative_Academic_Growth_Targets__c == null && uip.Narrative_Academic_Growth_Gaps_Target__c == null && uip.Narrative_English_Lang_Dev_Attain_Target__c == null && uip.Narrative_Postsecondary_Workforce_Target__c == null && uip.Narrative_Student_Engagement_Target__c == null}">
+                                <em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Prior_Year_Targets?id={!currentId}">Begin Prior Year Targets</a></em>
+                            </apex:outputPanel>
+                        </p>
+                        <apex:repeat value="{!pitTargetsMap}" var="target">
+                        
+                            <apex:outputPanel id="PriorYearTargets">
+                                <p style="margin-left:20px;">
+                                    <apex:outputPanel rendered="{!uip[pitNarrativeMap[target]] != null && uip[pitNarrativeMap[target]] != '' && NOT(isEditRTF)}">
+                                        <div style="padding-left: 20px;">
+                                        
+                                            <strong><apex:outputText value="{!target}"/></strong>
+                                            <br/>
+                                            <apex:repeat value="{!pitTargetsMap[target]}" var="pit">
+                                                <p style= "Margin : 20px;">
+                                                    <em><strong>Prior Year Target: </strong></em>
+                                                    <apex:outputText value="{!pit.Last_Year_Target_1__c}" escape="false" />
+                                                    <br/>
+                                                    <em><strong>Performance: </strong></em>
+                                                    <apex:outputText value="{!pit.Performance_against_Target_1__c}" escape="false" />
+                                                </p>
+                                            </apex:repeat>
+                                            <div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+                                                <p><apex:outputText value="{!uip[pitNarrativeMap[target]]}" escape="false"/></p>
+                                                <p>[ 
+                                                <apex:commandLink action="{!EditRTF}" rerender="script, PriorYearTargets"><em>Edit {!target} Narrative</em>
+                                                </apex:commandLink>
+                                                ]</p>
+                                            </div>
+                                            <hr/>
+                                            
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!(uip[pitNarrativeMap[target]] == null || uip[pitNarrativeMap[target]] == '') && NOT(isEditRTF)}">
+                                        <div style="padding-left: 20px;">
+                                         <!--   <p>[ 
+                                            <em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Prior_Year_Targets?id={!currentId}">Add {!target}</a></em> 
+                                            ] </p> -->
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!isEditRTF}">
+                                        <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/AllRTF?id={!uip.Id}&target={!target}" scrolling="true" height="650px;"/>
+                                    </apex:outputPanel>
+                                </p>
+                            </apex:outputPanel>
+                        
+                        </apex:repeat>
+                        <apex:outputPanel id="CurrentPerformance">  
+                            <h3>Current Performance</h3>
+                            <p style="margin-left:20px;">
+                                <apex:outputPanel rendered="{!uip.Target_Reflection__c == null || uip.Target_Reflection__c == ''}">
+                                    <em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Current_Performance?id={!currentId}">Begin Current Performance Narrative</a></em>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!uip.Target_Reflection__c != null && uip.Target_Reflection__c != '' && NOT(isEditRTF)}">
+                                    <div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+                                        <apex:outputText value="{!uip.Target_Reflection__c}" escape="false"/>
+                                        <p>[ 
+                                        <apex:commandLink action="{!EditRTF}" rerender="script, CurrentPerformance"><em>Edit Current Performance Narrative</em>
+                                        </apex:commandLink>
+                                        ] </p>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!isEditRTF}">
+                                    <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/AllRTF?id={!uip.Id}&target=Current Performance" scrolling="true" height="650px;"/>
+                                </apex:outputPanel>
+                            </p>
+                        </apex:outputPanel>
+                        
+                        <h3>Trend Analysis</h3>
+                        <apex:outputPanel rendered="{!NOT(existTrendAnalysis)}">
+                            <p style="margin-left:20px;"><em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Trend_Analysis?id={!currentId}">Begin Trend Analysis</a></em></p>
+                        </apex:outputPanel>
+                        <apex:repeat value="{!rtKeys}" var="target">
+                            <apex:repeat value="{!piNotableTrendsMap[target]}" var="pint">
+                                <apex:outputPanel rendered="{!pint.Notable_Trend__c == 'Yes'}">
+                                    <blockquote>
+                                        <div style="float: left; padding: 5px;">
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_increasing.jpg')}" rendered="{!pint.Trend_Direction__c == 'Increasing'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_decreasing.jpg')}" rendered="{!pint.Trend_Direction__c == 'Decreasing'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_decreas_increasing.jpg')}" rendered="{!pint.Trend_Direction__c == 'Decreasing then increasing'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_decrease_stable.jpg')}" rendered="{!pint.Trend_Direction__c == 'Decreasing then stable'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_increas_decreasing.jpg')}" rendered="{!pint.Trend_Direction__c == 'Increasing then decreasing'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_increase_stable.jpg')}" rendered="{!pint.Trend_Direction__c == 'Increasing then stable'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_stable.jpg')}" rendered="{!pint.Trend_Direction__c == 'Stable'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_stable_decreasing.jpg')}" rendered="{!pint.Trend_Direction__c == 'Stable then decreasing'}"/>
+                                            <apex:image url="{!URLFOR($Resource.CDE_direction, 'CDE_stable_increasing.jpg')}" rendered="{!pint.Trend_Direction__c == 'Stable then increasing'}"/>
+                                        </div>
+                                        <div style="padding-left: 10px;">
+                                            <p>
+                                                <b>{!target}: </b>
+                                                <apex:outputText value="{!pint.Notable_Trends_1__c}" escape="false"/><br/>
+                                                Trend Direction: <i><apex:outputText value="{!pint.Trend_Direction__c}"/></i>
+                                            </p>
+                                        </div>
+                                    </blockquote>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                        </apex:repeat>
+                        
+                        <apex:outputPanel id="PPC">
+                            <h3>Priority Performance Challenges</h3>
+                            <apex:repeat value="{!challengeMap}" var="challenge">
+                                <div style="padding : 10px; margin : 10px;">
+                                    <p style="margin-left:20px;">
+                                        <b><apex:outputText value="{!challengeMap[challenge].Name}" /></b><br/>
+                                        <apex:outputText value="{!challengeMap[challenge].Description__c}"/>
+                                    </p>
+                                </div>
+                            </apex:repeat>
+                            <p style="margin-left:20px;">
+                                <apex:outputPanel rendered="{!uip.Performance_Challenge_Narrative__c == null || uip.Performance_Challenge_Narrative__c == ''}">
+                                    <em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Priority_Performance_Challenges?id={!currentId}">Begin Priority Performance Challenge Narrative</a></em>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!uip.Performance_Challenge_Narrative__c != null && uip.Performance_Challenge_Narrative__c != '' && NOT(isEditRTF)}">
+                                    <div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+                                    <h5><i>Reflection of Priority Performance Challenges</i></h5>
+                                        <apex:outputText value="{!uip.Performance_Challenge_Narrative__c }" escape="false"/>
+                                        <p>[ 
+                                        <apex:commandLink action="{!EditRTF}" rerender="script, PPC"><em>Edit Priority Performance Challenges Narrative</em>
+                                        </apex:commandLink>
+                                        ] </p>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!isEditRTF}">
+                                    <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/AllRTF?id={!uip.Id}&target=Priority Performance Challenges" scrolling="true" height="650px;"/>
+                                </apex:outputPanel>
+                            </p>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="RootCauses">
+                            <h3>Root Causes</h3>
+                            <div style="padding : 10px 10px 0px 10px; margin : 10px 10px 0px 10px;">
+                                <apex:repeat value="{!challengeMap}" var="challenge">
+                                    <b><i>Priority Performance Challenge: </i></b><apex:outputText value="{!challengeMap[challenge].Name}" />
+                                    <apex:repeat value="{!rcForChallengeMap[challenge]}" var="rc">
+                                        
+                                        <p style="margin-left:20px;"><br/>
+                                        <b><apex:outputText value="{!rc.Name}"/></b><br/> 
+                                        <apex:outputText value="{!rc.Description__c}"/></p>
+                                        
+                                    </apex:repeat><br/>
+                                </apex:repeat>
+                            </div>
+                            <p style="margin-left:20px;">
+                                <apex:outputPanel rendered="{!uip.Root_Cause_Narrative__c == null || uip.Root_Cause_Narrative__c == ''}">
+                                    <em><a href="/{!IF(isCommunityUser,'UIP','apex')}/Section3_Root_Causes?id={!currentId}">Begin Root Cause Narrative</a></em>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!uip.Root_Cause_Narrative__c != null && uip.Root_Cause_Narrative__c != '' && NOT(isEditRTF)}">
+                                    <div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+                                            <h5><i>Reflection on Root Causes</i></h5>
+                                        <apex:outputText value="{!uip.Root_Cause_Narrative__c}" escape="false"/>
+                                        <p>[ 
+                                        <apex:commandLink action="{!EditRTF}" rerender="script, RootCauses"><em>Edit Root Causes Narrative</em>
+                                        </apex:commandLink>
+                                        ] </p>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!isEditRTF}">
+                                    <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/AllRTF?id={!uip.Id}&target=Root Causes" scrolling="true" height="650px;"/>
+                                </apex:outputPanel>
+                            </p>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="AdditionalNarrative">
+                            <h3>Additional Narrative / Conclusion</h3>
+                            <p style="margin-left:20px;">
+                                <apex:outputPanel rendered="{!uip.Narrative_Additional__c== null || uip.Narrative_Additional__c== ''}">
+                                    <p style="margin-left:20px;"> 
+                                        <apex:commandLink action="{!EditRTF}" rerender="script, AdditionalNarrative"><em>Add Additional Narrative</em>
+                                        </apex:commandLink>
+                                    </p>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!uip.Narrative_Additional__c != null && uip.Narrative_Additional__c != '' && NOT(isEditRTF)}">
+                                    
+                                    <div style="padding-left: 20px;background-color: #ebf4f4;" class="bg-warning">
+                                    
+                                        <apex:outputText value="{!uip.Narrative_Additional__c}" escape="false"/>
+                                        <p>[ 
+                                        <apex:commandLink action="{!EditRTF}" rerender="script, AdditionalNarrative"><em>Edit Additional Narrative</em>
+                                        </apex:commandLink>
+                                        ] </p>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!isEditRTF}">
+                                    <apex:iframe src="/{!IF(isCommunityUser,'UIP','apex')}/AllRTF?id={!uip.Id}&target=Additional Narrative" scrolling="true" height="650px;"/>
+                                </apex:outputPanel>
+                            </p>
+                        </apex:outputPanel>
+                        
+                    </div><br/><br/><br/><br/>
+                    
+                    <div style="width:100%; text-align: left; padding: 10px;">
+                        <apex:commandLink StyleClass="btn btn-custom" action="{!NextBriefDescription}" rerender="errorSection" status="loadingStatus" onclick="if(!goNext()) {return};">Next&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></apex:commandLink><br/><br/>
+                    </div>
+                    
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </div>
+        
+            <apex:outputPanel id="script">
+                <script type="text/javascript">
+                    var isPageChanged = false;
+                    var isNewContact = false;
+                    var isEditContact = false;
+                    var isEditRTF = '{!isEditRTF}';
+                    var isEditPit = '{!isEditPit}';
+                    var isEditPint = '{!isEditPint}';
+                    var elementValue = '{!elementValue}';
+                    var isEditElem = '{!isEditElem}';
+                    var isEditElemx = '{!isEditElemx}';
+                    var isTextChanged = '{!isTextChanged}';
+                    var richTextChanged = false;
+                </script>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+</apex:page>

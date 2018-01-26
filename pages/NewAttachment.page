@@ -1,0 +1,38 @@
+<apex:page controller="NewAttachment" showHeader="false">
+    <style>
+        .popup-top {
+            background-image: linear-gradient(to bottom,#223a6c 0,#95B6D2 100%);
+            height: 40px;
+            width: 100%;
+            border: 1px solid;
+            color: white;
+            font-weight:bold;
+            vertical-align: center;
+        }
+    </style>
+    <apex:form >
+        <div class="popup-top">
+            <table width="100%" height="100%">
+                <tr>
+                    <td width="95%" style="text-align:center; vertical-align: center; color:white;"><b>Add attachment</b></td>
+                </tr>
+            </table>
+        </div><br/>
+        <apex:outputPanel id="mainSection">
+        	<apex:pageBlock >
+	          <apex:pageBlockSection >
+	            <apex:inputFile value="{!att.body}" filename="{!att.Name}" contentType="Type of File" id="inputFile" title="Type the path of the file or click the Browse button to find the file."/>
+	            <apex:commandButton value="Save" action="{!save}"/>
+	          </apex:pageBlockSection>
+	       </apex:pageBlock>
+            
+            <apex:pageMessages />
+            <apex:outputPanel rendered="{!closeWindow}">
+                <script type="text/javascript">
+                    javascript:parent.window.opener.rerenderAttach(); 
+                    self.close();
+                </script>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

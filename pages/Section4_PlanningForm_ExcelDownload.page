@@ -1,0 +1,181 @@
+<apex:page standardController="UIP__c" extensions="Section3" showHeader="false" standardStylesheets="false" contenttype="application/vnd.ms-excel#Section4_PlanningForm_Export.xls" cache="true">
+    <apex:outputPanel rendered="{!NOT(uip.Section_4__c != 'No' && uip.Section_4__c != null)}">
+        <div class="emptySection">School is not required to fill this section of the UIP out!</div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!uip.Section_4__c != 'No' && uip.Section_4__c != null}">
+        <div width="100%" style="background-color: #d3ccbc;">
+            <table width="100%">
+                <tr>
+                    <td width="100%">
+                        <h1 style="font-size:150%; padding-left: 50px; font-weight:bold; color: #5c666f;">Section IV: Action Plans - Planning Form</h1>
+                    </td>
+                </tr>
+            </table>
+        </div><br/>
+        <p>This section addresses the "Plan" portion of the continuous improvement cycle. First, identify annual performance 
+            targets and the interim measures. This will be documented in the required School Target Setting Form on the next page. 
+            Then move into action planning, which should be captured in the Action Planning Form.</p>
+        
+        <p><b>Directions:</b> Identify the major improvement strategy(s) for 2014-2015 and 2015-2016 that will address the root causes 
+            determined in Section III. For each major improvement strategy, identify the root cause(s) that the action steps will help to dissolve. 
+            Then, indicate which accountability provision or grant opportunity it will address. In the chart below, provide details about key action 
+            steps necessary to implement the major improvement strategy. Details should include the action steps that will be taken to implement the major 
+            improvement strategy, a general timeline, resources that will be used to implement the actions, and implementation benchmarks. </p><br/>
+        
+        <p><b>Major Improvement Strategies</b></p>
+        <apex:outputPanel id="misSection">
+            <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                <apex:outputPanel id="viewMis">
+                    <apex:outputPanel rendered="{!NOT(isEditElem)}">
+                        <div class="table-header-target2" style="width: 100%; overflow: hidden; padding: 10px;">
+                            <div style="padding: 0px 0px 0px 10px; text-align: left; font-weight: bold; background-color: #46797A; float: left;"><u>{!misWrapper.mis.Name}</u></div>
+                        </div>
+                        <blockquote>
+                            <table border="1px solid gray">
+                                <tr>
+                                    <td style="width:15%; font-weight:bold;">Description</td>
+                                    <td style="width:85%;" colspan="7">{!misWrapper.mis.Description__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:15%; font-weight:bold; vertical-align: top;">Root Cause</td>
+                                    <td style="width:85%;" colspan="7">
+                                        <apex:repeat value="{!misWrapper.rcForMisList}" var="rc">
+                                            <p><b>{!rc.elem.Name}:</b> {!rc.elem.Description__c}</p>
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:15%; font-weight:bold;">Accountability Provisions</td>
+                                    <td style="width:85%;" colspan="7">
+                                        <div style="background-color:#ececec; padding: 10px; min-height: 40px;">
+                                            <apex:outputPanel rendered="{!misWrapper.mis.State_Accreditation__c}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;State Accreditation
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Title_I_Focus_School__c && (misWrapper.mis.UIP__r.RecordType.Name == 'School UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'AEC UIP')}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Title I Focus School
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Tiered_Intervention_Grant_TIG__c && (misWrapper.mis.UIP__r.RecordType.Name == 'School UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'AEC UIP')}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Tiered Intervention Grant (TIG)
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Student_Graduation_and_Completion_Plan__c && misWrapper.mis.UIP__r.RecordType.Name == 'District UIP'}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Student Graduation and Completion Plan
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Colorado_Graduation_Pathways_Program__c && (misWrapper.mis.UIP__r.RecordType.Name == 'School UIP' || misWrapper.mis.UIP__r.RecordType.Name == 'AEC UIP')}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Colorado Graduation Pathways Program (CGP)
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Title_IA__c && misWrapper.mis.UIP__r.RecordType.Name == 'District UIP'}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Title IA
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Title_IIA__c && misWrapper.mis.UIP__r.RecordType.Name == 'District UIP'}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Title IIA
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Title_III__c && misWrapper.mis.UIP__r.RecordType.Name == 'District UIP'}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Title III
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Gifted_Program__c && misWrapper.mis.UIP__r.RecordType.Name == 'District UIP'}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;Gifted Education
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!misWrapper.mis.Other__c && misWrapper.mis.Other_Description__c != null && misWrapper.mis.Other_Description__c != ''}">
+                                                &nbsp;&nbsp;-&nbsp;&nbsp;{!misWrapper.mis.Other_Description__c}
+                                            </apex:outputPanel>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="background-color:#97c2c3;"><b>Action Steps</b></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:12.5%;"><strong>Name: </strong></td>
+                                    <td style="width:12.5%;"><strong>Description: </strong></td>
+                                    <td style="width:12.5%;"><strong>Start: </strong></td>
+                                    <td style="width:12.5%;"><strong>End: </strong></td>
+                                    <td style="width:12.5%;"><strong>Resource: </strong></td>
+                                    <td style="width:12.5%;"><strong>Key Personnel: </strong></td>
+                                    <td style="width:12.5%;"><strong>Status: </strong></td>
+                                    <td style="width:12.5%;"><strong>School Year: </strong></td>
+                                </tr>
+                                <apex:repeat value="{!misWrapper.iasList}" var="iasWrapper">                                    
+                                    <tr>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputField value="{!iasWrapper.ias.Name}" /></td>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputField value="{!iasWrapper.ias.Description_of_Action_Step__c}"/></td>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputText value="{0,date,MMMM yyyy}">
+                                            <apex:param value="{!iasWrapper.ias.Start_Date__c}" />
+                                            </apex:outputText></td>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputText value="{0,date,MMMM yyyy}">
+                                            <apex:param value="{!iasWrapper.ias.Target_Date__c}" />
+                                            </apex:outputText></td>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputField value="{!iasWrapper.ias.Resources__c}" /></td>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputField value="{!iasWrapper.ias.Key_Personnel__c}" /></td>                                        
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputField value="{!iasWrapper.ias.Status_of_Action_Step__c}" /></td>
+                                        <td style="width:12.5%; vertical-align: top;"><apex:outputField value="{!iasWrapper.ias.School_Year__c}" /></td>
+                                    </tr>
+                                </apex:repeat> 
+                            </table>
+                        </blockquote>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:repeat>
+            <apex:repeat value="{!misWrapperList}" var="misWrapper">
+                <apex:outputPanel id="viewMis">
+                    <apex:outputPanel rendered="{!NOT(isEditElem)}">
+                        <div class="table-header-target2" style="width: 100%; overflow: hidden; padding: 10px;">
+                            <div style="padding: 0px 0px 0px 10px; text-align: left; font-weight: bold; background-color: #46797A; float: left;"><u>{!misWrapper.mis.Name}</u></div>
+                        </div>
+                        <blockquote>
+                            <table border="1px solid gray">
+                                <tr>
+                                    <td style="width:15%; font-weight:bold;">Description</td>
+                                    <td style="width:85%;" colspan="8">{!misWrapper.mis.Description__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:15%; font-weight:bold; vertical-align: top;">Root Cause</td>
+                                    <td style="width:85%;" colspan="8">
+                                        <apex:repeat value="{!misWrapper.rcForMisList}" var="rc">
+                                            <p><b>{!rc.elem.Name}:</b> {!rc.elem.Description__c}</p>
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="9" style="background-color:#97c2c3;"><b>Implementation Benchmarks</b></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:11.11%;"><strong>Action Step Name (Association) </strong></td>
+                                    <td style="width:11.11%;"><strong>IB Name </strong></td>
+                                    <td style="width:11.11%;"><strong>Description </strong></td>
+                                    <td style="width:11.11%;"><strong>Start </strong></td>
+                                    <td style="width:11.11%;"><strong>End </strong></td>
+                                    <td style="width:11.11%;"><strong>Repeats </strong></td>
+                                    <td style="width:11.11%;"><strong>Key Personnel </strong></td>                                        
+                                    <td style="width:11.11%;"><strong>Status </strong></td>
+                                    <td style="width:11.11%;"><strong>School Year </strong></td>
+                                </tr> 
+                                <apex:repeat value="{!misWrapper.ibList}" var="ibWrapper">
+                                    
+                                    <tr>	  
+                                        <td style="width:11.11%; vertical-align: top;">
+                                            <apex:repeat value="{!actionStepRelatedMap[ibWrapper.ib.id]}" var="as" rendered="{! NOT(ibWrapper.ib.id == null)}">
+                                                {!as},
+                                            </apex:repeat>                                   	
+                                        </td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputField value="{!ibWrapper.ib.Name__c}"/></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputField value="{!ibWrapper.ib.Description__c}"/></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputText value="{0,date,MMMM yyyy}">
+                                            <apex:param value="{!ibWrapper.ib.Start_Date__c}" />
+                                            </apex:outputText></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputText value="{0,date,MMMM yyyy}">
+                                            <apex:param value="{!ibWrapper.ib.End_Date__c}" />
+                                            </apex:outputText></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputField value="{!ibWrapper.ib.Frequency__c}" /></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputField value="{!ibWrapper.ib.Key_Personel__c}" /></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputField value="{!ibWrapper.ib.Status__c}" /></td>
+                                        <td style="width:11.11%; vertical-align: top;"><apex:outputField value="{!ibWrapper.ib.School_Year__c}" /></td>
+                                    </tr>
+                                </apex:repeat>
+                            </table>
+                        </blockquote>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:repeat>
+        </apex:outputPanel>
+    </apex:outputPanel>
+</apex:page>

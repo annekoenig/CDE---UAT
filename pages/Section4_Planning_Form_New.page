@@ -1,0 +1,980 @@
+<apex:page standardController="UIP__c" extensions="Section3"
+    showHeader="false" standardStylesheets="false" docType="HTML-5.0"
+    id="pg">
+
+    <script>
+     function testMe()
+     {
+      cancel();
+     }
+    </script>
+
+    <apex:pageMessages />
+    <style>
+.custPopup {
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+    z-index: 9999;
+    left: 50%;
+    padding: 10px;
+    position: absolute;
+    /* These are the 3 css properties you will need to change so the popup 
+            displays in the center of the screen. First set the width. Then set 
+            margin-left to negative half of what the width is. You can add 
+            the height property for a fixed size pop up if you want.*/
+    width: 500px;
+    margin-left: -250px;
+    top: 600px;
+}
+
+.popupBackground {
+    background-color: black;
+    opacity: 0.20;
+    filter: alpha(opacity = 20);
+    position: absolute;
+    width: 100%;
+    height: 1000%;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+}
+</style>
+
+    <style>
+.col-md-3 {
+    background-color: #ffffff !important;
+}
+
+.left-col {
+    padding: 5px;
+    font-weight: bold;
+}
+
+.div-header {
+    background-color: #ececec;
+    form font-weight: bold;
+}
+
+.column {
+    float: left;
+    overflow: hidden;
+    margin: 0;
+    padding: 10px;
+}
+
+.wrapWithWordBreak {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.wrappable {
+    overflow: hidden;
+    max-width: 400px;
+    word-wrap: break-word;
+}
+
+.btn-full {
+    width: 96%;
+    margin: 5px auto;
+}
+</style>
+
+
+<style type="text/css">
+    
+    .MISDisc {
+        width: 100%;
+        background-color: #FFFFFF;
+        border: 1px solid #DDDDDD;
+        padding: 10px;
+    }
+
+    .MISHeader {
+        height: 40px; 
+        line-height: 40px; 
+        padding-left: 10px; 
+        border: 1px solid #DDDDDD;
+        font-size: 14px;
+        margin-bottom : 0px;
+        font-weight: 700;
+        width: 100%; 
+    }
+
+    .MISActionStepSectionStyle {
+        background-color: #ECF8E0; 
+    }
+
+    .MISBenchmarkSectionStyle {
+        background-color: #F0E8D0; 
+    }
+
+    .MISTable {
+        width: 100%; 
+        display: grid;
+        border: 1px solid #DDDDDD;
+    }
+
+    .MISTable td {
+        font-size: 100%; 
+        padding-left: 10px; 
+        font-weight: bold;
+    }
+
+</style>
+
+
+    <apex:pageBlock id="newPlanningForm">
+        <apex:composition template="SectionHeader">
+            <apex:define name="body">
+                <div class="thetabcontent" id="test">
+                    <div class="section4planningform">
+                        <blockquote>
+                            <apex:outputPanel rendered="{!IF(genericList.size==0,true,false)}">
+                                <div class="emptySection">MIS has not been populated!</div>
+                            </apex:outputPanel>
+                        </blockquote>
+                        <apex:outputpanel rendered="{!IF(genericList.size>0,true,false)}">
+                            <script>    
+                            function setFocus(eleID) 
+                            {
+                                var compLineSize;
+                                compLineSize = '{!genericList[0].iasList.size}';
+                                console.log(compLineSize);
+                                if(compLineSize!=0)
+                                {
+                                    for(var i=0;i<compLineSize;i++) 
+                                    {
+                                        if(document.getElementById('pg:newPlanningForm:SectionHeaderTemplate:j_id28:fullPage:j_id187:0:j_id189:' + i + ':' + eleID) !=null)
+                                                                   document.getElementById('pg:newPlanningForm:SectionHeaderTemplate:j_id28:fullPage:j_id187:0:j_id189:' + i + ':' + eleID).focus(); 
+                                                                   }
+                                                                   }
+                                                                   }                            
+                                                                   </script>
+                            <div>
+                                <div style="width: 100%; text-align: right; padding: 18px;">
+                                    <apex:outputPanel rendered="{!AND(IF(paginater.isAll, false, true), IF(genericList.size>0,true,false))}"
+                                        id="pag">
+                                        <div id="footer">
+                                            <apex:outputText >
+                                                <apex:commandButton StyleClass="btn btn-custom"
+                                                    action="{!previousPage}"
+                                                    style="vertical-align:top; float: center;"
+                                                    rendered="{!IF(paginater.totalPage > 1, true, false)}"
+                                                    value="Previous"
+                                                    rerender="test,refresh1,pag,bmark,refresh,iasPanel,iasInternalPanel,gantt"
+                                                    disabled="{!IF(paginater.showPrevious!=true,true,false)}" />
+                                            </apex:outputText>
+                                            <apex:outputlabel StyleClass="btn btn-custom"> {!paginater.Pagenum} of  {!paginater.totalPage}</apex:outputlabel>
+                                            <apex:outputText >
+                                                <apex:commandbutton StyleClass="btn btn-custom" value="Next"
+                                                    style="vertical-align:top; float: center;"
+                                                    rendered="{!IF(paginater.totalPage > 1, true, false)}"
+                                                    action="{!nextPage}"
+                                                    rerender="test,refresh1,pag,bmark,refresh,iasPanel,iasInternalPanel,gantt"
+                                                    disabled="{!IF(paginater.showNext!=true,true,false)}" />
+                                            </apex:outputText>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                            <div class="header">
+                                <apex:outputPanel rendered="{!uip.Section_4__c != 'No' && uip.Section_4__c != null}"
+                                    id="refresh1">
+                                    <div width="100%" style="background-color: #d3ccbc;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="60%">
+                                                    <h1
+                                                        style="font-size: 150%; padding-left: 10px; font-weight: bold; color: #5c666f;">Section
+                                                        IV: Action Plans - Planning Form</h1>
+                                                </td>
+                                                <td width="32%"
+                                                    style="text-align: right; padding-right: 50px;"><apex:inputField value="{!uip.Section_IV_Action_Planning_Complete__c}">
+                                                        <apex:actionSupport event="onchange" rerender="empty"
+                                                            action="{!updateUIP}" status="loadingStatus" />
+                                                    </apex:inputField> <b>Complete &amp; Ready to submit</b></td>
+                                                <td width="8%"><apex:commandLink StyleClass="btn btn-custom"
+                                                        action="{!DownloadExcel_S4_PlanningForm}">
+                                                        <span class="glyphicon glyphicon glyphicon-download"></span>&nbsp;Download
+                                                    </apex:commandLink></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <br />
+                                    <p>
+                                        <b>Directions:</b> Based on the Major Improvement Strategies
+                                        identified, develop Action Steps and Implementation
+                                        Benchmarks. For more guidance on the new format, view the <a
+                                            href=" http://www.cde.state.co.us/uip/action_plan_and_implementation_benchmarks_info"
+                                            target="_blank">Action Plan and Implementation Info Sheet</a>
+
+                                    </p>
+                                    <br />
+
+
+
+                                <div class="MISDisc">
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p><strong>Major Improvement Strategy Name:</strong></p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            {!IF(genericList.size > 0,
+                                            genericList[0].mis.Name, '')}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p><strong>Describe what success will look like:</strong></p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            {!IF(genericList.size > 0,
+                                            genericList[0].mis.Description__c, '')}
+                                        </div>
+                                    </div>
+
+                                </div>
+                                  
+                                </apex:outputPanel>
+
+                                <apex:outputpanel id="bmark">
+
+                                <h2 class="MISHeader MISBenchmarkSectionStyle">
+                                    Implementation Benchmark Associated with MIS</h2>
+
+                                <table class="MISTable MISBenchmarkSectionStyle">
+                                    <tr>
+                                        <td width="12.5%">
+                                            Action Step Name (Association)
+                                        </td>
+                                        <td width="12.5%">
+                                            IB Name
+                                        </td>
+                                        <td width="12.5%">
+                                            Description
+                                        </td>
+                                        <td width="12.5%">
+                                            Start/End/Repeats
+                                        </td>
+                                        <td width="12.5%">
+                                            Key Personnel
+                                        </td>
+                                        <td width="12.5%">
+                                            Status
+                                        </td>
+                                        <td width="12.5%">
+                                            School Year
+                                        </td>
+                                        <td width="6%">
+                                            
+                                        </td>
+                                    </tr>
+                                </table>
+             
+
+                                    <apex:outputpanel id="refresh">
+                                        <link rel="stylesheet"
+                                            href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+                                        <link
+                                            href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+                                            rel="stylesheet" />
+                                        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+                                        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+                                        <script
+                                            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+                                        <script
+                                            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+                                        <link rel="stylesheet" href="/resources/demos/style.css" />
+
+                                        <style>
+                                            #sortable1 {
+                                                list-style-type: none;
+                                                margin: 0;
+                                                padding: 0;
+                                                width: 100%;
+                                            }
+                                            
+                                            #sortable1 li {
+                                                margin: 0 3px 3px 3px;
+                                                font-size: 1em;
+                                                width: 100%;
+                                            }
+                                            
+                                            #sortable1 li span {
+                                                position: absolute;
+                                                margin-left: -1.3em;
+                                            }
+                                            
+                                            .default-label {
+                                                background: #E0FFFF;
+                                                border: 1px solid #DDDDDD;
+                                                color: #333333;
+                                            }
+                                            
+                                            .default {
+                                                background: #FFFFFF;
+                                                color: #333333;
+                                            }
+                                        </style>
+                                        <script>
+                                        $.removeCookie("sortOrder1");
+                                        $(function() {
+                                            $("#sortable1").sortable({                                                
+                                                update: function(event, ui){
+                                                    saveOrd1 = $('#sortable1').sortable('toArray');
+                                                    $.cookie('sortOrder1',saveOrd1);
+                                                }
+                                            } );
+                                            $("#sortable1").disableSelection();
+                                        });
+                                        function test2()
+                                        {
+                                            
+                                            var mis='{!genericList[0].mis.id}';
+                                            savedOrd1 = $.cookie('sortOrder1');
+                                            echo1(savedOrd1,mis);
+                                        }  
+                                        </script>
+                                        <apex:actionFunction action="{!SaveOrderIB}" name="echo1"
+                                            status="loadingStatus" reRender="refresh">
+                                            <apex:param name="firstParam" assignTo="{!ibIdList}" value="" />
+                                            <apex:param name="secondParam" assignTo="{!mis}" value="" />
+                                        </apex:actionFunction>
+
+                                        <apex:repeat value="{!genericList}" var="misWrapper">
+                                            <div id="sortable1">
+                                                <apex:repeat value="{!genericList[0].ibList}"
+                                                    var="ibWrapper">
+                                                    <div class="default" id="{!ibWrapper.ib.id}">
+                                                        <div style="width: 100%; border: 1px solid #DDDDDD;">
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td class="wrapWithWordBreak" width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+
+                                                                        <apex:repeat value="{!actionStepRelatedMap[ibWrapper.ib.id]}"
+                                                                            var="as" rendered="{! NOT(ibWrapper.ib.id == null)}">
+                                                                            {!as},
+                                                                        </apex:repeat>
+
+                                                                    </td>
+                                                                    <td class="wrapWithWordBreak" width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <apex:outputText value="{!ibWrapper.ib.Name}"
+                                                                            rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}" />
+
+                                                                        <apex:inputField value="{!ibWrapper.ib.Name}"
+                                                                            rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                            style="width: 75%px; height: 30px;" id="testi3" /> <apex:inputField value="{!ibWrapper.ib.Name}"
+                                                                            rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                            style="width: 70%; height: 30px;" id="testid4" />
+                                                                    </td>
+                                                                    <td class="wrapWithWordBreak" width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <apex:outputText value="{!ibWrapper.ib.Description__c}"
+                                                                            rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}" />
+
+                                                                        <apex:inputField value="{!ibWrapper.ib.Description__c}"
+                                                                            rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                            style="width: 75%; height: 30px;" /> <apex:inputField value="{!ibWrapper.ib.Description__c}"
+                                                                            rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                            style="width: 75%; height: 30px;" />
+                                                                    </td>
+                                                                    <td width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <div style="padding-left: 1px">
+                                                                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"
+                                                                                rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}">
+                                                                                <apex:param value="{!ibWrapper.ib.Start_Date__c}" />
+                                                                            </apex:outputText>
+                                                                        </div>
+                                                                        <div style="padding-left: 1px">
+                                                                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"
+                                                                                rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}">
+                                                                                <apex:param value="{!ibWrapper.ib.End_Date__c}" />
+                                                                            </apex:outputText>
+                                                                        </div>
+
+                                                                        <div style="padding-left: 2px">
+                                                                            <apex:outputText value="{!ibWrapper.ib.Frequency__c}"
+                                                                                rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}" />
+                                                                        </div> <apex:inputText value="{!ibWrapper.ib.Start_Date__c}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="Start Date"
+                                                                            rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputText value="{!ibWrapper.Start_Date}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="Start Date"
+                                                                            rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputText value="{!ibWrapper.ib.End_Date__c}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="End Date"
+                                                                            rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputText value="{!ibWrapper.End_Date}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="End Date"
+                                                                            rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputField value="{!ibWrapper.ib.Frequency__c}"
+                                                                            rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputField value="{!ibWrapper.ib.Frequency__c}"
+                                                                            rendered="{!IF(isupdateRecord&&editRecId==ibWrapper.ib.id,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                    </td>
+                                                                    <td class="wrapWithWordBreak" width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <apex:outputText value="{!ibWrapper.ib.Key_Personel__c}"
+                                                                            rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}" />
+
+                                                                        <apex:inputField value="{!ibWrapper.ib.Key_Personel__c}"
+                                                                            rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /> <apex:inputField value="{!ibWrapper.ib.Key_Personel__c}"
+                                                                            rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                            style="width: 90%; height: 30px;" />
+                                                                    </td>
+                                                                    <td width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <apex:outputText value="{!ibWrapper.ib.Status__c}"
+                                                                            rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}" />
+                                                                            <apex:inputField value="{!ibWrapper.ib.Status__c}"
+                                                                                rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                                style="width: 90%; height: 30px;" />
+                                                                            <apex:inputField value="{!ibWrapper.ib.Status__c}"
+                                                                                rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                                style="width: 90%; height: 30px;" />
+                                                                    </td>
+                                                                    <td width="12.5%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <apex:outputText value="{!ibWrapper.ib.School_Year__c}"
+                                                                            rendered="{!IF( editRecId!=ibWrapper.ib.id ,true,false)}" />
+                                                                            <apex:inputField value="{!ibWrapper.ib.School_Year__c}"
+                                                                                rendered="{!IF(ibWrapper.ib.id==null,true,false)}"
+                                                                                style="width: 90%; height: 30px;" />
+                                                                            <apex:inputField value="{!ibWrapper.ib.School_Year__c}"
+                                                                                rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id,true,false)}"
+                                                                                style="width: 90%; height: 30px;" />
+                                                                    </td>
+
+                                                                    <td width="6%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                       <!-- <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!editRow}" rendered="{!dispButton}"
+                                                                            rerender="refresh" status="loadingStatus"
+                                                                            oncomplete="setFocus('testid4');">
+                                                                            <i class="glyphicon glyphicon-pencil"></i> &nbsp; Edit
+                                                                                    <apex:param name="editRecId" value="{!ibWrapper.ib.id}" />
+                                                                        </apex:commandLink> --> <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!EditRow}"
+                                                                            rendered="{!IF(isupdateRecord && editRecId==ibWrapper.ib.id ,true,false)}"
+                                                                            rerender="refresh,gantt" status="loadingStatus">
+                                                                            <i class="glyphicon glyphicon-ok"></i> &nbsp; Update
+                                                                                <apex:param name="updateRecId" value="{!ibWrapper.ib.id}" />
+                                                                        </apex:commandLink> <!--<apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!deleteRow}"
+                                                                            rendered="{!IF(dispButton && (ibWrapper.ib.id!=null)&&(editRecId!=ibWrapper.ib.id),true,false)}"
+                                                                            rerender="refresh,actionsteps,gantt"
+                                                                            status="loadingStatus"
+                                                                            onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                                            <i class="glyphicon glyphicon-trash"></i> &nbsp; Delete
+                                                                                <apex:param name="deleteRecId" value="{!ibWrapper.ib.id}" />
+                                                                        </apex:commandLink> --> <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!SaveNewIb}"
+                                                                            rendered="{!IF(ibWrapper.ib.id ==null,true,false)}"
+                                                                            rerender="refresh,gantt" status="loadingStatus">
+                                                                            <i class="glyphicon glyphicon-save"></i> &nbsp; Save
+                                                                                <apex:param name="misId" value="{!ibWrapper.ib.id}" />
+                                                                        </apex:commandLink> <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            rendered="{!IF(editRecId==ibWrapper.ib.id || ibWrapper.ib.id==null ,true,false)}"
+                                                                            action="{!cancelRow}"
+                                                                            rerender="iasPanel,iasInternalPanel,bmark,refresh,gantt"
+                                                                            status="loadingStatus">
+                                                                            <i class="glyphicon glyphicon-remove"></i> &nbsp; Cancel
+                                                                                <apex:param name="updateRecId" value="{!ibWrapper.ib.id}" />
+                                                                        </apex:commandLink>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </apex:repeat>
+                                            </div>
+                                        </apex:repeat>
+                                        <div style="width: 100%;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td width="87.5%"
+                                                        style="padding-left: 10px; vertical-align: top;"></td>
+                                                    <td width="12.5%"
+                                                        style="padding-left: 10px; vertical-align: top;"><!--<apex:commandLink StyleClass="btn btn-custom btn-xs" action="{!addRow}"
+                                                            rendered="{!dispButton}" rerender="bmark,refresh"
+                                                            status="loadingStatus" oncomplete="setFocus('testid3');">
+                                                            <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp; Add Benchmark
+                                                        </apex:commandLink> --> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-left: 5px;"><apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                            onclick="test2();return false;" reRender="refresh">
+                                                            <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp; Save Order
+                                                        </apex:commandLink></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </apex:outputpanel>
+                                </apex:outputpanel>
+                                
+                                                                <apex:outputpanel id="iasPanel">
+
+                                    <h2 class="MISHeader MISActionStepSectionStyle">
+                                        Action Steps Associated with MIS</h2>
+
+                                        <table class="MISTable MISActionStepSectionStyle">
+                                            <tr>
+                                                <td width="12.11%">
+                                                    Name
+                                                </td>
+                                                <td width="14.22%">
+                                                    Description
+                                                </td>
+                                                <td width="8%">
+                                                    Start/End Date
+                                                </td>
+                                                <td width="12.11%">
+                                                    Resource
+                                                </td>
+                                                <td width="12.11%">
+                                                    Key Personnel
+                                                </td>
+                                                <td width="9.11%">
+                                                    Status
+                                                </td>
+                                                <td width="9.11%">
+                                                    School Year
+                                                </td>
+                                                <td width="10.11%">
+                                                    IB Name (Association)
+                                                </td>
+                                                <td width="6%">
+                                            
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+
+                                    <apex:outputpanel id="iasInternalPanel">
+
+                                        <apex:outputPanel id="tstpopup">
+                                            <apex:outputPanel styleClass="popupBackground" layout="block"
+                                                rendered="{!displayPopUp}" />
+                                            <apex:outputPanel styleClass="custPopup" layout="block"
+                                                rendered="{!displayPopUp}">
+                                                <apex:repeat value="{!benchmarkWrapList }" var="item">
+                                                    <apex:inputCheckbox value="{!item.flag}" />&nbsp;&nbsp;{!item.benchRecord.name}<br />
+                                                    <br />
+                                                </apex:repeat>
+                                                <apex:commandButton value="Close" action="{!closePopup}"
+                                                    rerender="tstpopup" />
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel id="tstpopupNew">
+                                            <apex:outputPanel styleClass="popupBackground" layout="block"
+                                                rendered="{!displayPopUpNew}" />
+                                            <apex:outputPanel styleClass="custPopup" layout="block"
+                                                rendered="{!displayPopUpNew}">
+                                                <apex:repeat value="{!benchmarkWrapListNew}" var="item">
+                                                    <apex:inputCheckbox value="{!item.flag}" />&nbsp;&nbsp;{!item.benchRecord.name}<br />
+                                                    <br />
+                                                </apex:repeat>
+                                                <apex:commandButton value="Save & Close" onclick="testMe();"
+                                                    rerender="none" />
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+
+
+                                        <link rel="stylesheet"
+                                            href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+                                        <link
+                                            href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+                                            rel="stylesheet" />
+                                        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+                                        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+                                        <script
+                                            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+                                        <script
+                                            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+                                        <link rel="stylesheet" href="/resources/demos/style.css" />
+
+                                        <style>
+                                            #sortable {
+                                                list-style-type: none;
+                                                margin: 0;
+                                                padding: 0;
+                                                width: 100%;
+                                            }
+                                            
+                                            #sortable li {
+                                                margin: 0 3px 3px 3px;
+                                                font-size: 1em;
+                                            }
+                                            
+                                            #sortable li span {
+                                                position: absolute;
+                                                margin-left: -1.3em;
+                                            }
+                                            
+                                            .default-label {
+                                                background: #E0FFFF;
+                                                border: 1px solid #DDDDDD;
+                                                color: #333333;
+                                            }
+                                            
+                                            .default {
+                                                background: #FFFFFF;
+                                                color: #333333;
+                                            }
+                                            
+                                            li {
+                                                cursor: pointer;
+                                                cursor: grab;
+                                            }
+                                        </style>
+                                        <script>
+                                        $.removeCookie("sortOrder");
+                                        $(function() {
+                                            $("#sortable").sortable({
+                                                update: function(event, ui){
+                                                    saveOrd = $('#sortable').sortable('toArray');
+                                                    $.cookie('sortOrder', saveOrd);
+                                                }
+                                            } );
+                                            $("#sortable")
+                                            .disableSelection();
+                                        });
+                                        
+                                        function test1()
+                                        {
+                                            var mis='{!genericList[0].mis.id}';
+                                            savedOrd1 = $.cookie('sortOrder');
+                                            echo(savedOrd1,mis);
+                                        }  
+                                        </script>
+                                        <!--<apex:outputpanel id="panel" rendered="{!$Profile.Name == 'System Administrator'}">-->
+                                        <apex:repeat value="{!genericList}" var="misWrapper">
+                                            <ul id="sortable">
+                                                <apex:repeat value="{!genericList[0].iasList}"
+                                                    var="iasWrapper">
+                                                    <li class="default" id="{!iasWrapper.ias.ID}">
+                                                        <div style="width: 100%; border: 1px solid #DDDDDD;">
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td class="wrapWithWordBreak" width="12.11%"
+                                                                        style="padding-left: 10px; vertical-align: middle;"
+                                                                        id="TestData"><apex:outputText value="{!iasWrapper.ias.Name}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}" />
+                                                                        <apex:inputField value="{!iasWrapper.ias.Name}"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 75%; height: 30px; resize:both;"
+                                                                            id="testid1" /> <apex:inputField value="{!iasWrapper.ias.Name}"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width:75%; height: 30px; resize:both;"
+                                                                            id="testid" /></td>
+                                                                    <td class="wrapWithWordBreak" width="14.22%"
+                                                                        style="padding-left: 10px; vertical-align: middle;"><apex:outputText value="{!iasWrapper.ias.Description_of_Action_Step__c}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}" />
+                                                                        <apex:inputField value="{!iasWrapper.ias.Description_of_Action_Step__c}"
+                                                                            rendered="{!IF(iasWrapper.ias.id=null,true,false)}"
+                                                                            style="width: 75%; height: 30px;" /> <apex:inputField value="{!iasWrapper.ias.Description_of_Action_Step__c}"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 75%; height: 30px;" /></td>
+                                                                    <td width="8%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <div style="padding-left: 1px">
+                                                                            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"
+                                                                                rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}">
+                                                                                <apex:param value="{!iasWrapper.ias.Start_Date__c}" />
+                                                                            </apex:outputText>
+                                                                        </div> <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}">
+                                                                            <apex:param value="{!iasWrapper.ias.Target_Date__c}" />
+                                                                        </apex:outputText> <apex:inputText value="{!iasWrapper.Start_Date}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="Start Date"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputText value="{!iasWrapper.Start_Date}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="Start Date"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputText value="{!iasWrapper.Target_Date}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="Target Date"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                        <apex:inputText value="{!iasWrapper.Target_Date}"
+                                                                            styleClass="jQueryDatepicker"
+                                                                            html-placeholder="Target Date"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 60%; height: 30px; margin-bottom:5px;" />
+                                                                    </td>
+                                                                    <td class="wrapWithWordBreak" width="12.11%"
+                                                                        style="padding-left: 10px; vertical-align: middle;"><apex:outputText value="{!iasWrapper.ias.Resources__c}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}" />
+                                                                        <apex:inputField value="{!iasWrapper.ias.Resources__c}"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /> <apex:inputField value="{!iasWrapper.ias.Resources__c}"
+                                                                            rendered="{!IF(isIasUpdateRecord&&editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 75%; height: 30px;" /></td>
+                                                                    <td class="wrapWithWordBreak" width="12.11%"
+                                                                        style="padding-left: 10px; vertical-align: middle;"><apex:outputText value="{!iasWrapper.ias.Key_Personnel__c}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}" />
+                                                                        <apex:inputField value="{!iasWrapper.ias.Key_Personnel__c}"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /> <apex:inputField value="{!iasWrapper.ias.Key_Personnel__c}"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 75%; height: 30px;" /></td>
+                                                                    <td width="9.11%"
+                                                                        style="padding-left: 10px; vertical-align: middle;"><apex:outputText value="{!iasWrapper.ias.Status_of_Action_Step__c}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}" />
+                                                                        <apex:inputField value="{!iasWrapper.ias.Status_of_Action_Step__c}"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /> <apex:inputField value="{!iasWrapper.ias.Status_of_Action_Step__c}"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /></td>
+                                                                    <td width="9.11%"
+                                                                        style="padding-left: 10px; vertical-align: middle;"><apex:outputText value="{!iasWrapper.ias.School_Year__c}"
+                                                                            rendered="{!IF( editIasRecId!=iasWrapper.ias.id ,true,false)}" />
+                                                                        <apex:inputField value="{!iasWrapper.ias.School_Year__c}"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /> <apex:inputField value="{!iasWrapper.ias.School_Year__c}"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id,true,false)}"
+                                                                            style="width: 90%; height: 30px;" /></td>
+                                                                    <td width="10.11%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+                                                                        <!--   <apex:selectList value="{!selectedRecNameId}" size="1"
+                                                                            StyleClass="btn btn-custom" multiselect="true"
+                                                                            style="vertical-align:top; float: center; width:100%; height: 60px; resize:both;"
+                                                                            rendered="{!IF(editIasRecId == iasWrapper.ias.id|| (iasWrapper.ias.id==null&&editableIBNameselectList==true) ,true,false)}">
+                                                                            <apex:selectOptions value="{!nameOption}"></apex:selectOptions>
+                                                                        </apex:selectList> -->
+                                                                        <apex:commandButton style="vertical-align:top; float: center; width:100%; height: 30px;"
+                                                                            action="{!showpopup}"
+                                                                            rerender="iasInternalPanel,fm,tstpopup"
+                                                                            value="Assign/DeAssign"
+                                                                            rendered="{!IF((editIasRecId == iasWrapper.ias.id && (isIasUpdateRecord ==true) ) && (iasWrapper.ias.id!=null&&editableIBNameselectList==true) ,true,false)}" />
+
+                                                                        <apex:commandButton style="vertical-align:top; float: center; width:100%; height: 30px;"
+                                                                            action="{!showpopupNew}"
+                                                                            rerender="iasInternalPanel,fm,tstpopupNew"
+                                                                            value="Assign"
+                                                                            rendered="{!IF(iasWrapper.ias.id==null,true,false)}" /> 
+                                                                    </td>
+                                                                    <td width="6%"
+                                                                        style="padding-left: 10px; vertical-align: middle;">
+
+                                                                       <!-- <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!EditIasRow}" rendered="{!dispIasButton}"
+                                                                            rerender="iasPanel,iasInternalPanel,bmark,refresh,gantt"
+                                                                            status="loadingStatus"
+                                                                            oncomplete="setFocus('testid');">
+                                                                            <i class="glyphicon glyphicon-pencil"></i> &nbsp; Edit
+                                                                            <apex:param name="editIasRecId" value="{!iasWrapper.ias.id}" />
+                                                                        </apex:commandLink> --> <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!EditIasRow}"
+                                                                            rendered="{!IF(isIasUpdateRecord && editIasRecId==iasWrapper.ias.id ,true,false)}"
+                                                                            rerender="iasPanel,iasInternalPanel,bmark,refresh,gantt"
+                                                                            status="loadingStatus">
+                                                                            <i class="glyphicon glyphicon-ok"></i> &nbsp; Update
+                                                                        <apex:param name="updateIasRecId" value="{!iasWrapper.ias.id}" />
+                                                                        </apex:commandLink> 
+                                                                        <!--<apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!DeleteIasForMis}"
+                                                                            rendered="{!IF(dispIasButton && (iasWrapper.ias.id!=null) && (editIasRecId!=iasWrapper.ias.id),true,false)}"
+                                                                            rerender="iasPanel,iasInternalPanel,bmark,refresh,gantt"
+                                                                            status="loadingStatus"
+                                                                            onclick="if(!confirm('Are you sure you want to delete this record?')){return};">
+                                                                            <i class="glyphicon glyphicon-trash"></i> &nbsp; Delete
+                                                                        <apex:param name="deleteIasRecId" value="{!iasWrapper.ias.id}" />
+                                                                            <apex:param name="misId" value="{!misWrapper.mis.Id}" />
+                                                                        </apex:commandLink> --> <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            action="{!SaveNewIas}"
+                                                                            rendered="{!IF(iasWrapper.ias.id ==null,true,false)}"
+                                                                            rerender="iasPanel,iasInternalPanel,bmark,refresh,gantt"
+                                                                            status="loadingStatus">
+                                                                            <i class="glyphicon glyphicon-save"></i> &nbsp; Save
+                                                                        <apex:param name="saveIasRecId" value="{!iasWrapper.ias.Id}" />
+                                                                        </apex:commandLink> <apex:commandLink StyleClass="btn btn-custom btn-xs btn-full"
+                                                                            rendered="{!IF(editIasRecId==iasWrapper.ias.id || iasWrapper.ias.id==null ,true,false)}"
+                                                                            action="{!cancelIasRow}"
+                                                                            rerender="iasPanel,iasInternalPanel,bmark,refresh,gantt"
+                                                                            status="loadingStatus">
+                                                                            <i class="glyphicon glyphicon-remove"></i> &nbsp; Cancel
+                                                                        <apex:param name="updateRecId" value="{!iasWrapper.ias.id}" />
+                                                                        </apex:commandLink>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                </apex:repeat>
+                                            </ul>
+                                        </apex:repeat>
+                                        <div style="width: 100%;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td width="88.86%"
+                                                        style="padding-left: 10px; vertical-align: top;"></td>
+                                                    <td width="11.14%"
+                                                        style="padding-left: 10px; vertical-align: top;">
+                                                        <!-- <apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                            action="{!AddNewIasRow}" rerender="iasPanel"
+                                                            rendered="{!dispIasButton}" status="loadingStatus"
+                                                            oncomplete="setFocus('testid1');">
+                                                            <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp; Add Action Step
+                                                        </apex:commandLink> --> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-left: 5px;"><apex:commandLink StyleClass="btn btn-custom btn-xs"
+                                                            onclick="test1();return false;"
+                                                            reRender="iasInternalPanel">
+                                                            <span class="glyphicon glyphicon glyphicon-plus"></span> &nbsp; Save Order
+                                                        </apex:commandLink></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </apex:outputpanel>
+                                    <br />
+                                    <br />
+                                </apex:outputpanel>
+                                  
+                                <apex:actionFunction name="cancel" action="{!cancelMe}"
+                                    reRender="tstpopupNew,iasPanel,iasInternalPanel,bmark,refresh,gantt" /> 
+                                <apex:actionFunction name="echo" action="{!SaveOrder}"
+                                    status="loadingStatus" reRender="iasInternalPanel">
+                                    <apex:param name="firstParam" assignTo="{!asIdList}" value="" />
+                                    <apex:param name="secondParam" assignTo="{!mis}" value="" />
+                                </apex:actionFunction>
+                                
+                                <br /> <br /> <br /> <br />
+                                <!-- new section -->
+                                <apex:outputpanel id="actionsteps">
+                                    <div style="float: right;">
+                                        <apex:image width="20" height="20"
+                                            value="{!$Resource.calender}" />
+                                        &nbsp; School Years: &nbsp;
+                                        <apex:selectList value="{!selectedYear}" size="1"
+                                            StyleClass="btn btn-custom"
+                                            style="vertical-align:top; float: center; width:150px">
+                                            <apex:actionSupport event="onchange"
+                                                action="{!callIbIasRefresh}" reRender="gantt" />
+
+                                            <apex:selectOptions value="{!yearsOption}"></apex:selectOptions>
+                                        </apex:selectList>
+                                    </div>
+                                    <br />
+                                    <br />
+                                </apex:outputpanel>
+                                <!-- new section ends here -->
+                                <apex:outputpanel id="gantt">
+                                    <div style="width: 100%;">
+                                        <table style="border: 1px solid #DDDDDD; text-align: center; vertical-align: middle; background-color: #B0C4DE; display: grid">
+                                            <tr>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> August</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> September</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> October</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> November</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> December</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> January</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> February</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> March</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> April</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> May</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> June</h1></td>
+                                                <td style="width:8.33%; border: 1px solid #DDDDDD;"><h1 style="font-size: 110%; padding: 10px; font-weight: bold;"> July</h1></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <apex:repeat value="{!filterIbList}" var="ibWrapper">
+                                        <div class="wrapWithWordBreak">
+                                            <div class="{!ibWrapper.finalIbDivClass}" style="background-color: #F0E8D0; text-align: center; border: 1px solid #DDDDDD;">
+                                                <i style="color: blue;"></i>
+                                                <apex:outputText value="{!ibWrapper.ib.Name}" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <br />
+                                    </apex:repeat>
+                                    <apex:repeat value="{!filterIasList}" var="iasWrapper">
+                                        <div class="wrapWithWordBreak">
+                                            <div class="{!iasWrapper.finalDivClass}" style="background-color: #ECF8E0; text-align: center; border: 1px solid #DDDDDD;">
+                                                <i style="color: blue;"></i>
+                                                <apex:outputText value="{!iasWrapper.ias.Name}" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <br />
+                                    </apex:repeat>
+                                </apex:outputpanel>
+                            </div>
+                            <div style="width: 100%; text-align: left; padding: 5px;">
+                                <apex:commandLink StyleClass="btn btn-custom"
+                                    action="{!NextMajorImpStrategyForm}" rerender="errorSection"
+                                    status="loadingStatus" onclick="if(!goNext()) {return};">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> &nbsp;Previous</apex:commandLink>
+                                &nbsp;&nbsp;
+                                <apex:commandLink StyleClass="btn btn-custom"
+                                    action="{!NextFullPlanForm}" rerender="errorSection"
+                                    status="loadingStatus" onclick="if(!goNext()) {return};">Next&nbsp;<span
+                                        class="glyphicon glyphicon-chevron-right"></span>
+                                </apex:commandLink>
+                                <br /> <br />
+                            </div>
+                        </apex:outputpanel>
+                    </div>
+                </div>
+        
+                <apex:outputPanel id="script">
+                    <script type="text/javascript">
+                        var isPageChanged = false;
+                        var isNewContact = false;
+                        var isEditContact = false;
+                        var isEditRTF = '{!isEditRTF}';
+                        var isEditPit = '{!isEditPit}';
+                        var isEditPint = '{!isEditPint}';
+                        var elementValue = '{!elementValue}';
+                        var isEditElem = '{!isEditElem}';
+                        var isEditElemx = '{!isEditElemx}';
+                        var isTextChanged = '{!isTextChanged}';
+                        var richTextChanged = false;
+                    </script>
+                </apex:outputPanel>
+            </apex:define>
+        </apex:composition>
+    </apex:pageBlock>
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+</apex:page>

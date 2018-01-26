@@ -1,0 +1,136 @@
+<apex:page controller="Comments" showHeader="false" standardStylesheets="false" docType="HTML-5.0">
+	<apex:composition template="SectionHeader">
+		<apex:define name="body">
+			<apex:outputPanel rendered="{!NOT(isfeedback)}">
+				<div class="emptySection">There is no feedback for this school!</div>
+			</apex:outputPanel>
+			<apex:outputPanel rendered="{!isfeedback}">
+				<!-- <div class="panel-heading" width="100%" >
+	                <table width="100%">
+	                    <tr>
+	                        <td style="text-align:center; font-style: italic;"><h1 style="font-size:125%; font-weight:bold;">School Summary -- {!cdeFeedbackRev.Review_Period__c}</h1></td>
+	                    </tr>
+	                </table>
+	            </div><br/> -->
+	            <div width="100%" style="background-color: #d3ccbc;">
+	                <table width="100%">
+	                    <tr>
+	                        <td width="65%">
+	                            <h1 style="font-size:150%;  padding-left: 50px; font-weight:bold; color: #5c666f;">School Summary -- {!cdeFeedbackRev.Review_Period__c}</h1>
+	                        </td>
+	                        <td width="35%" style="text-align: center;">
+	                            <div width="100%" style="padding-top: 8px;">
+	                                <apex:outputPanel rendered="{!feedbackNumber <= feedbackCount && feedbackNumber > 1}">
+	                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/Comments?id={!currentId}&feedback={!(feedbackNumber - 1)}" target="_parent" style="width:170px; padding-top: 8px;">&lt;&lt; Back</apex:outputLink>&nbsp;
+	                                </apex:outputPanel>
+	                                <apex:outputPanel rendered="{!feedbackNumber < feedbackCount}">
+	                                    <apex:outputLink StyleClass="btn btn-custom" value="/apex/Comments?id={!currentId}&feedback={!(feedbackNumber + 1)}" target="_parent" style="width:170px; padding-top: 8px;">Next >></apex:outputLink>
+	                                </apex:outputPanel>
+	                            </div>
+	                            <apex:outputPanel rendered="{!(feedbackNumber <= feedbackCount && feedbackNumber > 1) || feedbackNumber < feedbackCount}">
+	                                <div width="100%" style="padding: 10px 10px 8px 0px;">
+	                                    Page {!feedbackNumber} of {!feedbackCount}
+	                                </div>
+	                            </apex:outputPanel>
+	                        </td>
+	                    </tr>
+	                </table>
+	            </div>
+				<p style="padding: 10px 10px 10px 10px;">
+					The Unified Improvement Plan is intended to provide schools with a consistent format to capture and streamline improvement planning efforts that address state and federal planning requirements.  To assist with that process, the UIP Quality Criteria offer guidance on creating an improvement plan that incorporates all of the state accountability and Title I requirements.  (UIP Templates for individual program requirements are available on the CDE website at <a href="http://www.cde.state.co.us/uip/UIP_Templates.asp" >http://www.cde.state.co.us/uip/UIP_Templates.asp</a>.) Quality Criteria are provided for Section III: Narrative on Data Analysis and Root Cause Identification, and Section IV: Action Plans of the Unified Improvement Planning template.  The Quality Criteria are the basis for school plan reviews and are intended to provide assurance that the UIP, if implemented as written, provides a solid foundation for improvement efforts.<br/><br/>
+					*The feedback provided in this form is intended to convey the areas of highest concern as the school plans for dramatic change, which will in turn lead to improved student outcomes. While the feedback considers the quality criteria, it is not a comprehensive evaluation against individual criteria.<br/> 
+					**Please note, feedback from previous years' plans are kept on file and will be examined along with the current plan for concerns of plan quality/required changes.
+				</p>
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+					Description of state and federal expectations NOT met by the school
+					</div>
+				</div>
+				<p style="padding: 10px 10px 10px 50px;">
+					<span style="color:#6d3a5d;"><b><i>For which performance indicators did the school NOT meet state or federal expectations?</i></b></span><br/><br/>
+				</p>
+				<table width="70%" style="margin-left:auto; margin-right:auto; padding: 10px 10px 10px 10px;">
+					<tr>
+						<td width="5%"><apex:outputField value="{!cdeFeedbackRev.Academic_Achievement__c}" /></td>
+						<td width="35%">Academic Achievement (Status)</td>
+						<td width="60%">{!cdeFeedbackRev.Academic_Achievement_Subjects__c}</td>
+					</tr>
+					<tr><td style="height:20px;" ></td></tr>
+					<tr>
+						<td><apex:outputField value="{!cdeFeedbackRev.Academic_Growth__c}" /></td>
+						<td>Academic Growth</td>
+						<td>{!cdeFeedbackRev.Academic_Growth_Subjects__c}</td>
+					</tr>
+					<tr><td style="height:20px;"></td></tr>
+					<tr>
+						<td><apex:outputField value="{!cdeFeedbackRev.Academic_Growth_Gaps__c}" /></td>
+						<td>Academic Growth Gaps</td>
+						<td>{!cdeFeedbackRev.Academic_Growth_Gaps_Subjects__c}</td>
+					</tr>
+					<tr><td style="height:20px;"></td></tr>
+					<tr>
+						<td><apex:outputField value="{!cdeFeedbackRev.Post_Secondary_Readiness__c}" /></td>
+						<td>Post Secondary Readiness</td>
+						<td>{!cdeFeedbackRev.Post_Secondary_Readiness_Subjects__c}</td>
+					</tr>
+					<tr><td style="height:20px;"></td></tr>
+				</table><br/>
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+					Summary Reviewer Feedback
+					</div>
+				</div>
+				<p style="padding: 10px 10px 10px 50px;">
+					Feedback on ways to strengthen the UIP can be found in the Feedback Form. Consult with your district staff to determine how this feedback might be incorporated into the school’s planning work. As a reminder, the UIP must be resubmitted to Tracker by April 15, 2014 for posting to SchoolView.org.<br/><br/>
+				</p>
+				<p style="padding: 10px 10px 10px 50px;">As it is written, this plan:</p>
+				<table width="70%" style="margin-left:auto; margin-right:auto; padding: 10px 10px 10px 10px;">
+					<tr>
+						<td width="80%" style="padding: 10px 10px 10px 10px; border: 1px solid;">Investigates the most critical performance areas and prioritizes the most urgent performance challenges.</td>
+						<td width="20%" style="padding: 10px 10px 10px 10px; border: 1px solid; text-align:center;"><apex:outputField value="{!cdeFeedbackRev.Investigates_Critical__c}" /></td>
+					</tr>
+					<tr>
+						<td width="80%" style="padding: 10px 10px 10px 10px; border: 1px solid;">Identifies root causes that explain the magnitude of the performance challenges.</td>
+						<td width="20%" style="padding: 10px 10px 10px 10px; border: 1px solid; text-align:center;"><apex:outputField value="{!cdeFeedbackRev.Identifies_Root_Cause__c}" /></td>
+					</tr>
+					<tr>
+						<td width="80%" style="padding: 10px 10px 10px 10px; border: 1px solid;">Identifies research-based major improvement strategies that have a likelihood to eliminate the root causes.</td>
+						<td width="20%" style="padding: 10px 10px 10px 10px; border: 1px solid; text-align:center;"><apex:outputField value="{!cdeFeedbackRev.Identifies_Major_Improvement_Strategies__c}" /></td>
+					</tr>
+					<tr>
+						<td width="80%" style="padding: 10px 10px 10px 10px; border: 1px solid;">Presents a well-designed plan for implementing the major improvement strategies to bring about dramatic improvement.</td>
+						<td width="20%" style="padding: 10px 10px 10px 10px; border: 1px solid; text-align:center;"><apex:outputField value="{!cdeFeedbackRev.Presents_Well_Designed_Plan__c}" /></td>
+					</tr>
+				</table><br/><br/>
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+					Summary
+					</div>
+				</div>
+				<p style="padding: 10px 10px 10px 50px;">
+					<apex:outputField value="{!cdeFeedbackRev.Summary_Info__c}" /><br/>
+					The UIP must be submitted to CDE through Tracker by  April 15, 2014 for public posting on SchoolView.org. See the content of the feedback form for recommended changes.<br/><br/>
+				</p>
+				<table width="70%" style="margin-left:auto; margin-right:auto; padding: 10px 10px 10px 10px;">
+					<tr>
+						<td style="padding: 10px 10px 10px 10px; border: 1px solid;"><div style="min-height:200px;"><apex:outputText value="{!cdeFeedbackRev.Summary_of_Feedback__c}" escape="false" /></div></td>
+					</tr>
+				</table><br/><br/>
+				<div width="100%" style="height:50px; background-color: #d3ccbc;">
+					<div style="height:50px; font-size:130%; padding-left: 50px; font-weight:bold; vertical-align: middle; display:table-cell; color: #5c666f;">
+					UIP Comments
+					</div>
+				</div><br/><br/>
+				<table width="70%" style="margin-left:auto; margin-right:auto; padding: 10px 10px 10px 10px;">
+					<apex:repeat value="{!cdeFeedbackMap[cdeFeedbackRev.Id]}" var="item">
+						<tr>
+							<td width="25%" style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:outputField value="{!item.Section_Reference__c}" /></td>
+							<td width="25%" style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:outputField value="{!item.Worksheet_Reference__c}" /></td>
+							<td width="50%" style="padding: 10px 10px 10px 10px; border: 1px solid;"><apex:outputText value="{!item.Comments__c}" escape="false"/></td>
+						</tr>
+					</apex:repeat>
+				</table><br/><br/>
+			</apex:outputPanel>
+		</apex:define>
+	</apex:composition>
+</apex:page>
